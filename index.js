@@ -40,4 +40,6 @@ app.listen(process.env.PORT || 5300, () =>
   console.log("Server ready on port 5300.")
 );
 
+app.post("/test", (req, res) => res.send("Testing this works"));
+
 module.exports = app;
