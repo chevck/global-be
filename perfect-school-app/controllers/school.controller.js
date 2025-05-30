@@ -1,52 +1,123 @@
 const schoolModel = require("../models/school.model");
-const { Resend } = require("resend");
-const { sendRegisterEmail } = require("../utils");
+const {
+  sendRegisterEmail,
+  generateNumericCode,
+  sendOTPEmail,
+} = require("../utils");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
+const mongoose = require("mongoose");
 
 module.exports = {
   register: async (req, res) => {
+    const session = await mongoose.startSession();
     try {
-      let school = new schoolModel(req.body);
+      session.startTransaction();
+      const hashedPassword = await bcrypt.hash(req.body.adminPassword, 10);
+      console.log("password", hashedPassword);
+      let school = new schoolModel({
+        ...req.body,
+        registrationId: `PSA-${generateNumericCode()}`,
+        adminPassword: hashedPassword,
+      });
       school = await school.save();
       await sendRegisterEmail({
         ...req.body,
-        password: await bcrypt.hash(req.body.password, 10),
+        registrationId: school.registrationId,
       });
       return res.status(201).json({ ...school._doc });
     } catch (error) {
-      console.log("ereoe", error);
+      await session.abortTransaction();
       return res.status(500).json({
         message:
           "Failed to create this school right now. Please try again later",
         error,
       });
+    } finally {
+      await session.endSession();
     }
   },
 
   login: async (req, res) => {
     try {
       const { email, password } = req.body;
-      const school = await schoolModel.findOne({ email });
+      const school = await schoolModel.findOne({ adminEmail: email });
       if (!school) {
-        return res.status(401).json({ message: "School not found" });
+        return res.status(401).json({
+          message:
+            "This email is not registered to a school. Please use the right email or contact support",
+        });
       }
-      const isPasswordValid = await bcrypt.compare(password, school.password);
+      const isPasswordValid = await bcrypt.compare(
+        password,
+        school.adminPassword
+      );
       if (!isPasswordValid) {
         return res.status(401).json({ message: "Invalid password" });
       }
+      const otpCode = generateNumericCode();
+      schoolModel.db.collection("schools").updateOne(
+        { _id: school._id },
+        {
+          $set: {
+            otp: otpCode,
+            otpExpiry: new Date(Date.now() + 1000 * 60 * 10), // 10 minutes
+          },
+        }
+      );
+      await sendOTPEmail({
+        email: email,
+        otp: otpCode,
+      });
+      return res.status(200).json({
+        message: "OTP sent to your email",
+      });
+    } catch (error) {
+      console.log("error", error);
+      return res.status(500).json({
+        message: "Failed to login",
+        error,
+      });
+    }
+  },
+
+  verifyEmailOTP: async (req, res) => {
+    try {
+      const { email, otp } = req.body;
+      const school = await schoolModel.findOne({ adminEmail: email });
+      if (!school) {
+        return res.status(401).json({
+          message:
+            "This email is not registered to a school. Please use the right email or contact support",
+        });
+      }
+      if (school.otp !== otp) {
+        return res.status(401).json({
+          message: "Invalid OTP",
+        });
+      }
+      if (school.otpExpiry < new Date()) {
+        return res.status(401).json({
+          message: "OTP expired",
+        });
+      }
+      await schoolModel.db
+        .collection("schools")
+        .updateOne({ _id: school._id }, { $unset: { otp: "", otpExpiry: "" } });
       const token = jwt.sign(
-        { id: school._id, email: school.email, exp: 1000 * 60 * 60 * 24 }, // expires in 24 hours
+        { id: school._id, email: school.adminEmail, exp: 1000 * 60 * 60 * 24 }, // expires in 24 hours
         process.env.JWT_SECRET
       );
       return res.status(200).json({
+        message: "OTP verified",
         token,
-        email: school.email,
+        email: school.adminEmail,
         schoolName: school.schoolName,
       });
     } catch (error) {
+      console.log("error", error);
       return res.status(500).json({
-        message: "Failed to login",
+        message: "Failed to verify OTP. Please try again later",
         error,
       });
     }

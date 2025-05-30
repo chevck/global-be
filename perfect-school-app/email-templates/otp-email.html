@@ -1,0 +1,281 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Login Verification Code</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,200..800&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body
+    style="
+      margin: 0;
+      padding: 20px;
+      font-family:
+        Bricolage Grotesque,
+        sans-serif;
+      background-color: #f5f5f5;
+    "
+  >
+    <table
+      cellpadding="0"
+      cellspacing="0"
+      border="0"
+      style="
+        max-width: 500px;
+        margin: 0 auto;
+        background-color: white;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      "
+    >
+      <!-- Header -->
+      <tr>
+        <td
+          style="
+            background-color: #2563eb;
+            color: white;
+            padding: 24px;
+            text-align: center;
+          "
+        >
+          <table cellpadding="0" cellspacing="0" border="0" style="width: 100%">
+            <tr>
+              <td style="text-align: center">
+                <svg
+                  width="32"
+                  height="32"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="white"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  style="margin-bottom: 12px"
+                >
+                  <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+                </svg>
+                <h1
+                  style="margin: 0 0 4px 0; font-size: 20px; font-weight: bold"
+                >
+                  The Perfect School App
+                </h1>
+                <p style="margin: 0; color: #bfdbfe; font-size: 14px">
+                  Login Verification
+                </p>
+              </td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+
+      <!-- Main Content -->
+      <tr>
+        <td style="padding: 24px">
+          <table cellpadding="0" cellspacing="0" border="0" style="width: 100%">
+            <tr>
+              <td style="padding-bottom: 12px">
+                <h2
+                  style="
+                    margin: 0 0 12px 0;
+                    font-size: 18px;
+                    font-weight: 600;
+                    color: #111827;
+                  "
+                >
+                  Your Login Code
+                </h2>
+                <p style="margin: 0 0 24px 0; color: #4b5563">
+                  Use the following code to complete your login to the perfect
+                  school application:
+                </p>
+              </td>
+            </tr>
+
+            <!-- OTP Code -->
+            <tr>
+              <td style="padding-bottom: 24px">
+                <table
+                  cellpadding="0"
+                  cellspacing="0"
+                  border="0"
+                  style="
+                    width: 100%;
+                    border: 1px solid #e5e7eb;
+                    border-radius: 8px;
+                  "
+                >
+                  <tr>
+                    <td style="padding: 24px; text-align: center">
+                      <div
+                        style="
+                          font-size: 30px;
+                          font-weight: bold;
+                          color: #2563eb;
+                          letter-spacing: 8px;
+                          margin-bottom: 8px;
+                        "
+                      >
+                        {{ otp }}
+                      </div>
+                      <p style="margin: 0; font-size: 14px; color: #6b7280">
+                        Enter this code in your login screen
+                      </p>
+                    </td>
+                  </tr>
+                </table>
+              </td>
+            </tr>
+
+            <!-- Instructions -->
+            <tr>
+              <td style="padding-bottom: 24px">
+                <table
+                  cellpadding="0"
+                  cellspacing="0"
+                  border="0"
+                  style="width: 100%; margin-bottom: 16px"
+                >
+                  <tr>
+                    <td
+                      style="width: 24px; vertical-align: top; padding-top: 2px"
+                    >
+                      <svg
+                        width="20"
+                        height="20"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="#f59e0b"
+                        stroke-width="2"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                      >
+                        <circle cx="12" cy="12" r="10" />
+                        <polyline points="12,6 12,12 16,14" />
+                      </svg>
+                    </td>
+                    <td style="padding-left: 12px; vertical-align: top">
+                      <p style="margin: 0; font-size: 14px; color: #4b5563">
+                        <strong>This code expires in 10 minutes</strong> for
+                        your security.
+                      </p>
+                    </td>
+                  </tr>
+                </table>
+
+                <table
+                  cellpadding="0"
+                  cellspacing="0"
+                  border="0"
+                  style="width: 100%"
+                >
+                  <tr>
+                    <td
+                      style="width: 24px; vertical-align: top; padding-top: 2px"
+                    >
+                      <svg
+                        width="20"
+                        height="20"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="#ef4444"
+                        stroke-width="2"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                      >
+                        <path
+                          d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"
+                        />
+                        <line x1="12" x2="12" y1="9" y2="13" />
+                        <line x1="12" x2="12.01" y1="17" y2="17" />
+                      </svg>
+                    </td>
+                    <td style="padding-left: 12px; vertical-align: top">
+                      <p style="margin: 0; font-size: 14px; color: #4b5563">
+                        <strong>Keep this code private.</strong> Never share it
+                        with anyone.
+                      </p>
+                    </td>
+                  </tr>
+                </table>
+              </td>
+            </tr>
+
+            <!-- Security Notice -->
+            <tr>
+              <td>
+                <table
+                  cellpadding="0"
+                  cellspacing="0"
+                  border="0"
+                  style="
+                    width: 100%;
+                    background-color: #f9fafb;
+                    border-radius: 8px;
+                  "
+                >
+                  <tr>
+                    <td style="padding: 16px">
+                      <h3
+                        style="
+                          margin: 0 0 8px 0;
+                          font-size: 16px;
+                          font-weight: 500;
+                          color: #111827;
+                        "
+                      >
+                        Didn't request this code?
+                      </h3>
+                      <p
+                        style="
+                          margin: 0 0 12px 0;
+                          font-size: 14px;
+                          color: #4b5563;
+                        "
+                      >
+                        If you didn't try to log in, please ignore this email or
+                        contact our support team if you're concerned about your
+                        account security.
+                      </p>
+                      <p style="margin: 0; font-size: 14px">
+                        <a
+                          href="mailto:support@perfectschoolapp.com"
+                          style="color: #2563eb; text-decoration: none"
+                        >
+                          support@perfectschoolapp.com
+                        </a>
+                      </p>
+                    </td>
+                  </tr>
+                </table>
+              </td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+
+      <!-- Footer -->
+      <tr>
+        <td
+          style="background-color: #f3f4f6; padding: 16px; text-align: center"
+        >
+          <table cellpadding="0" cellspacing="0" border="0" style="width: 100%">
+            <tr>
+              <td style="text-align: center">
+                <p style="margin: 0 0 4px 0; font-size: 12px; color: #6b7280">
+                  © 2024 EduManage. All rights reserved.
+                </p>
+                <p style="margin: 0; font-size: 12px; color: #6b7280">
+                  This is an automated security email.
+                </p>
+              </td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+    </table>
+  </body>
+</html>

@@ -10,6 +10,9 @@ const SchoolSchema = new Schema({
   adminPassword: { type: String, required: true },
   logoUrl: { type: String },
   created_at: { type: Date, default: new Date() },
+  registrationId: { type: String, required: true, unique: true },
+  otp: { type: String },
+  otpExpiry: { type: Date },
 });
 
 module.exports = mongoose.model("school", SchoolSchema);

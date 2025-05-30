@@ -1,9 +1,12 @@
 const { Resend } = require("resend");
-// const registrationTemplate = require("../email-templates/registration.html");
 const fs = require("fs");
 const path = require("path");
 const registrationTemplate = fs.readFileSync(
   path.join(__dirname, "../email-templates/registration.html"),
+  "utf8"
+);
+const otpTemplate = fs.readFileSync(
+  path.join(__dirname, "../email-templates/otp-email.html"),
   "utf8"
 );
 
@@ -21,12 +24,16 @@ module.exports = {
   sendRegisterEmail: async (body) => {
     try {
       const htmlWithData = registrationTemplate
-        // .replace("{{name}}", "Excellence")
+        .replace("{{ schoolName }}", body.schoolName)
         .replace("{{ date }}", new Date().toLocaleDateString())
-        .replace("{{ plan }}", "Learner Plan");
-      // console.log("htmlWithData", htmlWithData);
+        .replace("{{ plan }}", "Starter Plan")
+        .replace("{{ registrationId }}", body.registrationId)
+        .replace(
+          "{{ loginUrl }}",
+          process.env.FRONTEND_APP_BASE_URL + "/sign-in"
+        );
       await module.exports.sendEmail(
-        body.email,
+        body.adminEmail,
         "Welcome to Perfect School App",
         htmlWithData
       );
@@ -35,5 +42,30 @@ module.exports = {
       console.log("error", error);
       return { message: "Failed to send email" };
     }
+  },
+
+  sendOTPEmail: async (body) => {
+    try {
+      const htmlWithData = otpTemplate
+        .replace("{{ otp }}", body.otp)
+        .replace("{{ date }}", new Date().toLocaleDateString());
+      await module.exports.sendEmail(
+        body.email,
+        "OTP for Perfect School App",
+        htmlWithData
+      );
+      return { message: "Email sent" };
+    } catch (error) {
+      console.log("error", error);
+      return { message: "Failed to send email" };
+    }
+  },
+
+  generateNumericCode: (length = 6) => {
+    let code = "";
+    for (let i = 0; i < length; i++) {
+      code += Math.floor(Math.random() * 10); // digits 0–9
+    }
+    return code;
   },
 };

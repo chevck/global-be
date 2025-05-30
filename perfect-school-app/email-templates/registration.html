@@ -65,7 +65,7 @@
                 <h1
                   style="margin: 0 0 8px 0; font-size: 32px; font-weight: bold"
                 >
-                  EduManage Pro
+                  The Perfect School App
                 </h1>
                 <p style="margin: 0; color: #bfdbfe">
                   Complete School Management Solution
@@ -107,8 +107,8 @@
                   Registration Successful!
                 </h2>
                 <p style="margin: 0; color: #6b7280">
-                  Welcome to EduManage Pro. Your school has been successfully
-                  registered.
+                  Welcome to The Perfect School App. Your school has been
+                  successfully registered.
                 </p>
               </td>
             </tr>
@@ -147,7 +147,7 @@
                         text-align: right;
                       "
                     >
-                      Greenwood High School
+                      {{ schoolName }}
                     </td>
                   </tr>
                   <tr>
@@ -161,7 +161,7 @@
                         text-align: right;
                       "
                     >
-                      #EDU-2024-001234
+                      {{ registrationId }}
                     </td>
                   </tr>
                   <tr>
@@ -175,7 +175,7 @@
                         text-align: right;
                       "
                     >
-                      January 15, 2024
+                      {{ date }}
                     </td>
                   </tr>
                   <tr>
@@ -187,7 +187,7 @@
                         text-align: right;
                       "
                     >
-                      Professional Plan
+                      {{ plan }}
                     </td>
                   </tr>
                 </table>
@@ -204,7 +204,7 @@
             <tr>
               <td style="text-align: center; padding-bottom: 16px">
                 <h3 style="margin: 0; font-size: 18px; font-weight: 600">
-                  Your EduManage Pro Features
+                  Your Perfect School App Features
                 </h3>
               </td>
             </tr>
@@ -391,11 +391,11 @@
                     </td>
                     <td style="vertical-align: top; padding-left: 12px">
                       <h4 style="margin: 0 0 4px 0; font-weight: 500">
-                        Check Your Email
+                        Login to your dashboard
                       </h4>
                       <p style="margin: 0; font-size: 14px; color: #6b7280">
-                        Login credentials have been sent to your administrator
-                        email
+                        Click the button "Access your Dashboard" to login to
+                        your dashboard.
                       </p>
                     </td>
                   </tr>
@@ -515,7 +515,7 @@
             <tr>
               <td style="padding-bottom: 12px">
                 <a
-                  href="#"
+                  href="{{ loginUrl }}"
                   style="
                     display: block;
                     padding: 12px 24px;
@@ -532,7 +532,7 @@
             <tr>
               <td>
                 <a
-                  href="#"
+                  href="{{ loginUrl }}"
                   style="
                     display: block;
                     padding: 12px 24px;
