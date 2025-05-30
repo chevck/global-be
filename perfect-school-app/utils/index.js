@@ -1,4 +1,11 @@
 const { Resend } = require("resend");
+// const registrationTemplate = require("../email-templates/registration.html");
+const fs = require("fs");
+const path = require("path");
+const registrationTemplate = fs.readFileSync(
+  path.join(__dirname, "../email-templates/registration.html"),
+  "utf8"
+);
 
 module.exports = {
   sendEmail: async (email, subject, html) => {
@@ -13,13 +20,19 @@ module.exports = {
 
   sendRegisterEmail: async (body) => {
     try {
-      await this.sendEmail(
+      const htmlWithData = registrationTemplate
+        // .replace("{{name}}", "Excellence")
+        .replace("{{ date }}", new Date().toLocaleDateString())
+        .replace("{{ plan }}", "Learner Plan");
+      // console.log("htmlWithData", htmlWithData);
+      await module.exports.sendEmail(
         body.email,
         "Welcome to Perfect School App",
-        "<p>Welcome to Perfect School App</p>"
+        htmlWithData
       );
       return { message: "Email sent" };
     } catch (error) {
+      console.log("error", error);
       return { message: "Failed to send email" };
     }
   },

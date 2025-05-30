@@ -36,10 +36,14 @@ module.exports = {
         return res.status(401).json({ message: "Invalid password" });
       }
       const token = jwt.sign(
-        { id: school._id, email: school.email, name: school.name },
+        { id: school._id, email: school.email, exp: 1000 * 60 * 60 * 24 }, // expires in 24 hours
         process.env.JWT_SECRET
       );
-      return res.status(200).json({ token });
+      return res.status(200).json({
+        token,
+        email: school.email,
+        schoolName: school.schoolName,
+      });
     } catch (error) {
       return res.status(500).json({
         message: "Failed to login",

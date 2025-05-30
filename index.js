@@ -5,6 +5,7 @@ const cors = require("cors");
 const mongoose = require("mongoose");
 const bcrypt = require("bcrypt");
 const schoolRoutes = require("./perfect-school-app/routes/school.route");
+const { sendRegisterEmail } = require("./perfect-school-app/utils");
 
 const app = express();
 app.use(cors());
@@ -44,20 +45,26 @@ app.listen(process.env.PORT || 5300, () =>
 
 app.use("/psa", schoolRoutes);
 
-// app.post("/test", async (req, res) => {
-//   const password = "password123";
-//   const hashedPassword = await bcrypt.hash(password, 10);
-//   console.log({ hashedPassword });
-//   const isPasswordValid = await bcrypt.compare(password, hashedPassword);
-//   console.log({ isPasswordValid });
-//   // const resend = new Resend(process.env.RESEND_API_KEY);
-//   // resend.emails.send({
-//   //   from: "onboarding@resend.dev",
-//   //   to: "oyeniranexcellenced@gmail.com",
-//   //   subject: "Hello, welcome to Perfect School App",
-//   //   html: "<p>Congrats on sending your <strong>first email</strong>!</p><p>This is a test email</p>",
-//   // });
-//   // res.send("Email sent");
-// });
+app.post("/test", async (req, res) => {
+  const result = await sendRegisterEmail({
+    email: "oyeniranexcellenced@gmail.com",
+    schoolName: "Perfect School App",
+    password: "password123",
+  });
+  res.status(200).send(result);
+  //   const password = "password123";
+  //   const hashedPassword = await bcrypt.hash(password, 10);
+  //   console.log({ hashedPassword });
+  //   const isPasswordValid = await bcrypt.compare(password, hashedPassword);
+  //   console.log({ isPasswordValid });
+  //   // const resend = new Resend(process.env.RESEND_API_KEY);
+  //   // resend.emails.send({
+  //   //   from: "onboarding@resend.dev",
+  //   //   to: "oyeniranexcellenced@gmail.com",
+  //   //   subject: "Hello, welcome to Perfect School App",
+  //   //   html: "<p>Congrats on sending your <strong>first email</strong>!</p><p>This is a test email</p>",
+  //   // });
+  //   // res.send("Email sent");
+});
 
 module.exports = app;
