@@ -3,11 +3,13 @@ const express = require("express");
 const morgan = require("morgan");
 const cors = require("cors");
 const mongoose = require("mongoose");
+const bcrypt = require("bcrypt");
+const schoolRoutes = require("./perfect-school-app/routes/school.route");
 
 const app = express();
 app.use(cors());
 
-const mongoURI = `mongodb+srv://haryoexcellence:O31L96Q0ysZTVed0@cluster0.fogbqsh.mongodb.net/`;
+const mongoURI = process.env.MONGOURI;
 mongoose.connect(mongoURI);
 
 mongoose.connection.on("connected", async () => {
@@ -15,7 +17,7 @@ mongoose.connection.on("connected", async () => {
 });
 
 mongoose.connection.on("error", (err) => {
-  console.log("Error connecting to MongoDB:", err);
+  // console.log("Error connecting to MongoDB:", err);
 });
 
 app.use(morgan("dev"));
@@ -40,6 +42,22 @@ app.listen(process.env.PORT || 5300, () =>
   console.log("Server ready on port 5300.")
 );
 
-app.post("/test", (req, res) => res.send("Testing this works"));
+app.use("/psa", schoolRoutes);
+
+// app.post("/test", async (req, res) => {
+//   const password = "password123";
+//   const hashedPassword = await bcrypt.hash(password, 10);
+//   console.log({ hashedPassword });
+//   const isPasswordValid = await bcrypt.compare(password, hashedPassword);
+//   console.log({ isPasswordValid });
+//   // const resend = new Resend(process.env.RESEND_API_KEY);
+//   // resend.emails.send({
+//   //   from: "onboarding@resend.dev",
+//   //   to: "oyeniranexcellenced@gmail.com",
+//   //   subject: "Hello, welcome to Perfect School App",
+//   //   html: "<p>Congrats on sending your <strong>first email</strong>!</p><p>This is a test email</p>",
+//   // });
+//   // res.send("Email sent");
+// });
 
 module.exports = app;
