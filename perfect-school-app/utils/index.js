@@ -9,6 +9,10 @@ const otpTemplate = fs.readFileSync(
   path.join(__dirname, "../email-templates/otp-email.html"),
   "utf8"
 );
+const teacherInviteTemplate = fs.readFileSync(
+  path.join(__dirname, "../email-templates/teacher-registration.html"),
+  "utf8"
+);
 
 module.exports = {
   sendEmail: async (email, subject, html) => {
@@ -61,11 +65,46 @@ module.exports = {
     }
   },
 
+  sendTeacherInviteEmail: async (body) => {
+    try {
+      const htmlWithData = teacherInviteTemplate
+        .replace("{{ schoolName }}", body.schoolName)
+        .replace("{{ teacherCode }}", body.teacherCode)
+        .replace("{{ date }}", new Date().toLocaleDateString())
+        .replace("{{ invitationExpiresAt }}", body.invitationExpiresAt)
+        .replace("{{ registrationUrl }}", body.registrationUrl);
+      await module.exports.sendEmail(
+        body.teacherEmail,
+        "Invitation to join " + body.schoolName + " via the Perfect School App",
+        htmlWithData
+      );
+      return { message: "Email sent" };
+    } catch (error) {
+      console.log("error", error);
+      return { message: "Failed to send email" };
+    }
+  },
+
   generateNumericCode: (length = 6) => {
     let code = "";
     for (let i = 0; i < length; i++) {
       code += Math.floor(Math.random() * 10); // digits 0–9
     }
     return code;
+  },
+
+  formatDate: (date) => {
+    const day = date.getDate();
+    const month = date.toLocaleString("default", { month: "long" });
+    const year = date.getFullYear();
+
+    // Add ordinal suffix
+    const ordinal = (n) => {
+      const s = ["th", "st", "nd", "rd"],
+        v = n % 100;
+      return s[(v - 20) % 10] || s[v] || s[0];
+    };
+
+    return `${month} ${day}${ordinal(day)}, ${year}`;
   },
 };

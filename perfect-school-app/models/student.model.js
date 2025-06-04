@@ -7,18 +7,21 @@ const studentSchema = new mongoose.Schema({
     required: true,
   },
   name: { type: String, required: true },
-  email: { type: String, required: true },
+  email: { type: String },
+  dob: { type: Date },
   password: { type: String },
-  phone: { type: String, required: true },
+  gender: { type: String },
+  phone: { type: String },
   address: { type: String },
-  city: { type: String },
-  state: { type: String },
-  teacher: {
+  class: { type: String, required: true },
+  joinDate: { type: Date, required: true },
+  admissionNumber: { type: String, required: true },
+  teacherId: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "Teacher",
     required: true,
   },
-  parents: [{ type: mongoose.Schema.ObjectId, ref: "Parents", required: true }],
+  parents: [{ type: mongoose.Schema.ObjectId, ref: "Parents" }],
 });
 
 module.exports = mongoose.model("Student", studentSchema);

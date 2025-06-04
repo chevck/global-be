@@ -3,9 +3,12 @@ const express = require("express");
 const morgan = require("morgan");
 const cors = require("cors");
 const mongoose = require("mongoose");
-const bcrypt = require("bcrypt");
 const schoolRoutes = require("./perfect-school-app/routes/school.route");
-const { sendRegisterEmail } = require("./perfect-school-app/utils");
+const studentRoutes = require("./perfect-school-app/routes/student.route");
+const teacherRoutes = require("./perfect-school-app/routes/teacher.route");
+const {
+  checkAuthorization,
+} = require("./perfect-school-app/middlewares/checkAuthorization");
 
 const app = express();
 app.use(cors());
@@ -44,14 +47,16 @@ app.listen(process.env.PORT || 5300, () =>
 );
 
 app.use("/psa", schoolRoutes);
+app.use("/psa", teacherRoutes);
+app.use("/psa", checkAuthorization, studentRoutes);
 
 app.post("/test", async (req, res) => {
-  const result = await sendRegisterEmail({
-    email: "oyeniranexcellenced@gmail.com",
-    schoolName: "Perfect School App",
-    password: "password123",
-  });
-  res.status(200).send(result);
+  // const result = await sendRegisterEmail({
+  //   email: "oyeniranexcellenced@gmail.com",
+  //   schoolName: "Perfect School App",
+  //   password: "password123",
+  // });
+  // res.status(200).send(result);
   //   const password = "password123";
   //   const hashedPassword = await bcrypt.hash(password, 10);
   //   console.log({ hashedPassword });

@@ -14,7 +14,6 @@ module.exports = {
     try {
       session.startTransaction();
       const hashedPassword = await bcrypt.hash(req.body.adminPassword, 10);
-      console.log("password", hashedPassword);
       let school = new schoolModel({
         ...req.body,
         registrationId: `PSA-${generateNumericCode()}`,
@@ -105,14 +104,20 @@ module.exports = {
         .collection("schools")
         .updateOne({ _id: school._id }, { $unset: { otp: "", otpExpiry: "" } });
       const token = jwt.sign(
-        { id: school._id, email: school.adminEmail, exp: 1000 * 60 * 60 * 24 }, // expires in 24 hours
-        process.env.JWT_SECRET
+        {
+          id: school._id,
+          email: school.adminEmail,
+        },
+        process.env.JWT_SECRET,
+        { expiresIn: "24h" }
       );
       return res.status(200).json({
         message: "OTP verified",
         token,
         email: school.adminEmail,
         schoolName: school.schoolName,
+        logoUrl: school.logoUrl,
+        role: "admin",
       });
     } catch (error) {
       console.log("error", error);
