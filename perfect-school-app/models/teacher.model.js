@@ -23,6 +23,7 @@ const teacherSchema = new mongoose.Schema({
   invitationExpiresAt: { type: Date },
   otp: { type: String },
   otpExpiry: { type: Date },
+  createdAt: { type: Date, default: new Date() },
 });
 
 module.exports = mongoose.model("Teacher", teacherSchema);

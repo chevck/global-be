@@ -16,12 +16,15 @@ const studentSchema = new mongoose.Schema({
   class: { type: String, required: true },
   joinDate: { type: Date, required: true },
   admissionNumber: { type: String, required: true },
+  studentId: { type: String, required: true, unique: true },
+  status: { type: String, default: "pending" },
   teacherId: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "Teacher",
     required: true,
   },
   parents: [{ type: mongoose.Schema.ObjectId, ref: "Parents" }],
+  createdAt: { type: Date, default: new Date() },
 });
 
 module.exports = mongoose.model("Student", studentSchema);

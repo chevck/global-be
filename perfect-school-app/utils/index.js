@@ -107,4 +107,8 @@ module.exports = {
 
     return `${month} ${day}${ordinal(day)}, ${year}`;
   },
+
+  formatNumberToThreeDigits: (num) => {
+    return num.toString().padStart(3, "0");
+  },
 };

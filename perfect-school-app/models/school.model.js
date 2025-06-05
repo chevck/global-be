@@ -13,6 +13,8 @@ const SchoolSchema = new Schema({
   registrationId: { type: String, required: true, unique: true },
   otp: { type: String },
   otpExpiry: { type: Date },
+  status: { type: String, default: "active" },
+  createdAt: { type: Date, default: new Date() },
 });
 
 module.exports = mongoose.model("school", SchoolSchema);
