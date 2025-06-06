@@ -1,6 +1,7 @@
 const mongoose = require("mongoose");
 const studentModel = require("../models/student.model");
 const { formatNumberToThreeDigits } = require("../utils");
+const logsController = require("./logs.controller");
 
 module.exports = {
   create: async (req, res) => {
@@ -28,6 +29,14 @@ module.exports = {
       const student = await studentModel.create(body);
       await session.commitTransaction();
       session.endSession();
+      logsController.create({
+        action: `New student ${student.name} has been registered`,
+        actionType: "create",
+        schoolId: req.user.id,
+        createdBy: req.user?.teacherId ? req.user.teacherId : req.user.id, // if teacher is creating the student, then the createdBy is the teacher id, otherwise it is the school id
+        createdAt: new Date(),
+        model_type: req.user?.teacherId ? "Teacher" : "School",
+      });
       res
         .status(201)
         .json({ message: "Student created successfully", student });
@@ -65,6 +74,14 @@ module.exports = {
           new: true,
         })
         .populate("teacherId");
+      logsController.create({
+        action: `Student ${student.name} has been updated`,
+        actionType: "update",
+        schoolId: req.user.id,
+        createdBy: req.user?.teacherId ? req.user.teacherId : req.user.id,
+        createdAt: new Date(),
+        model_type: req.user?.teacherId ? "Teacher" : "School",
+      });
       res
         .status(200)
         .json({ message: "Student updated successfully", student });
@@ -74,7 +91,15 @@ module.exports = {
   },
   delete: async (req, res) => {
     try {
-      await studentModel.findByIdAndDelete(req.params.id);
+      const student = await studentModel.findByIdAndDelete(req.params.id);
+      logsController.create({
+        action: `Student ${student.name} has been deleted`,
+        actionType: "delete",
+        schoolId: req.user.id,
+        createdBy: req.user?.teacherId ? req.user.teacherId : req.user.id,
+        createdAt: new Date(),
+        model_type: req.user?.teacherId ? "Teacher" : "School",
+      });
       res.status(200).json({ message: "Student deleted successfully" });
     } catch (error) {
       res.status(500).json({ message: "Internal server error" });

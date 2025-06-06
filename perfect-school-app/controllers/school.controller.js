@@ -7,6 +7,9 @@ const {
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const mongoose = require("mongoose");
+const studentModel = require("../models/student.model");
+const teacherModel = require("../models/teacher.model");
+const logsModel = require("../models/logs.model");
 
 module.exports = {
   register: async (req, res) => {
@@ -125,6 +128,36 @@ module.exports = {
         message: "Failed to verify OTP. Please try again later",
         error,
       });
+    }
+  },
+
+  dashboard: async (req, res) => {
+    try {
+      const school = await schoolModel.findById(req.user.id);
+      if (!school) {
+        return res.status(401).json({
+          message: "School not found",
+        });
+      }
+      const totalStudents = await studentModel.countDocuments({
+        schoolId: school._id,
+      });
+      const totalTeachers = await teacherModel.countDocuments({
+        schoolId: school._id,
+      });
+      const logs = await logsModel
+        .find({ schoolId: school._id })
+        .populate("createdBy", "name email")
+        .sort({ createdAt: -1 })
+        .limit(10);
+      res.status(200).json({
+        totalStudents,
+        totalTeachers,
+        logs,
+      });
+    } catch (error) {
+      console.log("error", error);
+      res.status(500).json({ message: "Internal server error" });
     }
   },
 };
