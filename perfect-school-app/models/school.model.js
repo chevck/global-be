@@ -15,6 +15,17 @@ const SchoolSchema = new Schema({
   otpExpiry: { type: Date },
   status: { type: String, default: "active" },
   createdAt: { type: Date, default: new Date() },
+  address: { type: String, required: true },
+  currency: { type: String },
+  schoolBankAccounts: [
+    {
+      bankName: String,
+      accountNumber: String,
+      accountName: String,
+      accountType: String,
+      isPrimary: Boolean,
+    },
+  ],
 });
 
 module.exports = mongoose.model("school", SchoolSchema);

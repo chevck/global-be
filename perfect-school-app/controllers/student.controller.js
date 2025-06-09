@@ -32,10 +32,6 @@ module.exports = {
       logsController.create({
         action: `New student ${student.name} has been registered`,
         actionType: "create",
-        schoolId: req.user.id,
-        createdBy: req.user?.teacherId ? req.user.teacherId : req.user.id, // if teacher is creating the student, then the createdBy is the teacher id, otherwise it is the school id
-        createdAt: new Date(),
-        model_type: req.user?.teacherId ? "Teacher" : "School",
       });
       res
         .status(201)
@@ -77,10 +73,6 @@ module.exports = {
       logsController.create({
         action: `Student ${student.name} has been updated`,
         actionType: "update",
-        schoolId: req.user.id,
-        createdBy: req.user?.teacherId ? req.user.teacherId : req.user.id,
-        createdAt: new Date(),
-        model_type: req.user?.teacherId ? "Teacher" : "School",
       });
       res
         .status(200)
@@ -95,10 +87,6 @@ module.exports = {
       logsController.create({
         action: `Student ${student.name} has been deleted`,
         actionType: "delete",
-        schoolId: req.user.id,
-        createdBy: req.user?.teacherId ? req.user.teacherId : req.user.id,
-        createdAt: new Date(),
-        model_type: req.user?.teacherId ? "Teacher" : "School",
       });
       res.status(200).json({ message: "Student deleted successfully" });
     } catch (error) {

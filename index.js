@@ -6,6 +6,7 @@ const mongoose = require("mongoose");
 const schoolRoutes = require("./perfect-school-app/routes/school.route");
 const studentRoutes = require("./perfect-school-app/routes/student.route");
 const teacherRoutes = require("./perfect-school-app/routes/teacher.route");
+const billRoutes = require("./perfect-school-app/routes/bills.route");
 const {
   checkAuthorization,
 } = require("./perfect-school-app/middlewares/checkAuthorization");
@@ -49,6 +50,7 @@ app.listen(process.env.PORT || 5300, () =>
 app.use("/psa", schoolRoutes);
 app.use("/psa", teacherRoutes);
 app.use("/psa", checkAuthorization, studentRoutes);
+app.use("/psa", checkAuthorization, billRoutes);
 
 app.post("/test", async (req, res) => {
   // const result = await sendRegisterEmail({

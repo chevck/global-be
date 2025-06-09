@@ -120,6 +120,7 @@ module.exports = {
         email: school.adminEmail,
         schoolName: school.schoolName,
         logoUrl: school.logoUrl,
+        address: school.address,
         role: "admin",
       });
     } catch (error) {
@@ -157,6 +158,43 @@ module.exports = {
       });
     } catch (error) {
       console.log("error", error);
+      res.status(500).json({ message: "Internal server error" });
+    }
+  },
+
+  update: async (req, res) => {
+    try {
+      const school = await schoolModel.findById(req.user.id);
+      if (!school) {
+        return res.status(401).json({
+          message: "School not found",
+        });
+      }
+      const body = { ...req.body };
+      console.log({ body });
+      const schoolUpdate = await schoolModel.findByIdAndUpdate(
+        school._id,
+        body,
+        { new: true }
+      );
+      res
+        .status(200)
+        .json({ message: "School updated successfully", schoolUpdate });
+    } catch (error) {
+      console.log("error", error);
+      res.status(500).json({ message: "Internal server error" });
+    }
+  },
+
+  getSchool: async (req, res) => {
+    try {
+      const school = await schoolModel.findById(req.user.id);
+      if (!school)
+        return res.status(401).json({
+          message: "School not found",
+        });
+      res.status(200).json({ message: "Fetched school successfully!", school });
+    } catch (error) {
       res.status(500).json({ message: "Internal server error" });
     }
   },
