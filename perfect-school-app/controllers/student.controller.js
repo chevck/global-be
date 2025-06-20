@@ -29,7 +29,7 @@ module.exports = {
       const student = await studentModel.create(body);
       await session.commitTransaction();
       session.endSession();
-      logsController.create({
+      logsController.create(req, {
         action: `New student ${student.name} has been registered`,
         actionType: "create",
       });
@@ -70,7 +70,7 @@ module.exports = {
           new: true,
         })
         .populate("teacherId");
-      logsController.create({
+      logsController.create(req, {
         action: `Student ${student.name} has been updated`,
         actionType: "update",
       });
@@ -84,7 +84,7 @@ module.exports = {
   delete: async (req, res) => {
     try {
       const student = await studentModel.findByIdAndDelete(req.params.id);
-      logsController.create({
+      logsController.create(req, {
         action: `Student ${student.name} has been deleted`,
         actionType: "delete",
       });
