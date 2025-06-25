@@ -2,6 +2,8 @@ const mongoose = require("mongoose");
 const examinationModel = require("../models/examination.model");
 const logsController = require("./logs.controller");
 const studentModel = require("../models/student.model");
+const jwt = require("jsonwebtoken");
+const { nonAuthActionReasons } = require("../utils");
 
 module.exports = {
   create: async (req, res) => {
@@ -97,7 +99,8 @@ module.exports = {
   loginStudent: async (req, res) => {
     try {
       console.log("bodu", req.body);
-      const exam = await examinationModel.findById(req.body.examId);
+      const { examId, studentId } = req.body;
+      const exam = await examinationModel.findById(examId);
       if (!exam)
         return res
           .status(404)
@@ -105,7 +108,7 @@ module.exports = {
       console.log({ exam });
       const student = await studentModel.findOne({
         schoolId: exam.schoolId,
-        studentId: req.body.studentId,
+        studentId,
       });
       console.log({ student });
 
@@ -113,12 +116,65 @@ module.exports = {
         return res.status(404).json({
           message: "Invalid Student Id. We could not find this student",
         });
+      await examinationModel.findOneAndUpdate(
+        { _id: exam._id },
+        {
+          $addToSet: {
+            students: {
+              studentId: student._id,
+              status: "in-progress",
+            },
+          },
+        },
+        { new: true }
+      );
+      const authToken = jwt.sign(
+        {
+          studentId,
+          action: nonAuthActionReasons.STUDENT_EXAM_LOGIN,
+        },
+        process.env.JWT_SECRET,
+        { expiresIn: "3h" }
+      );
       // check if student has signed in to take the exam, if they have not
       //  - log them on the examination body as studentsTakenTheExam:[StudentIds]
       // if they have, check their statuus to see if they have completed the exam or not and return data based on that.
-      return res.status(200).json({ student, exam });
+      return res.status(200).json({ student, exam, authToken });
     } catch (error) {
       return res.status(500).json({ message: "Internal server error" });
+    }
+  },
+  submitExam: async (req, res) => {
+    try {
+      const { examId, studentId, score } = req.body;
+      // Find the exam and ensure the student exists in the array
+      const exam = await examinationModel.findOne({
+        _id: examId,
+        schoolId: req.user.id,
+        "students.studentId": studentId,
+      });
+
+      if (!exam) {
+        return res.status(404).json({ message: "Exam or student not found" });
+      }
+
+      // Update the student's status and score atomically
+      await examinationModel.updateOne(
+        { _id: examId, "students.studentId": studentId },
+        {
+          $set: {
+            "students.$.status": "completed",
+            "students.$.score": score,
+          },
+        }
+      );
+
+      return res.status(200).json({ message: "Exam submitted successfully" });
+    } catch (error) {
+      return res.status(500).json({
+        message:
+          "Failed to submit this exam successfully. Please contact support",
+      });
     }
   },
 };

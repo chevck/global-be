@@ -111,4 +111,8 @@ module.exports = {
   formatNumberToThreeDigits: (num) => {
     return num.toString().padStart(3, "0");
   },
+
+  nonAuthActionReasons: {
+    STUDENT_EXAM_LOGIN: "student-exam-login",
+  },
 };

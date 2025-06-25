@@ -8,6 +8,16 @@ const examQuestionSchema = {
   marks: { type: Number, required: true },
 };
 
+const studentsThatHaveStartedTheExams = {
+  studentId: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Teacher",
+    required: true,
+  },
+  status: { type: String, enum: ["in-progress", "completed"] },
+  score: { type: Number },
+};
+
 const examinationSchema = new mongoose.Schema({
   class: { type: String, required: true },
   createdBy: {
@@ -30,7 +40,7 @@ const examinationSchema = new mongoose.Schema({
   createdAt: { type: Date, default: new Date() },
   examDate: { type: Date, default: new Date() },
   isReviewed: { type: Boolean, default: false },
-  studentsTaken: { type: Number, default: 0 },
+  students: [studentsThatHaveStartedTheExams],
   updatedAt: { type: Date, default: new Date() },
 });
 
