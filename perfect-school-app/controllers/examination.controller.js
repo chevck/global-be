@@ -146,11 +146,13 @@ module.exports = {
   },
   submitExam: async (req, res) => {
     try {
-      const { examId, studentId, score } = req.body;
+      console.log("apsa", req.params);
+      const { examId } = req.params;
+      const { studentId, score, schoolId } = req.body;
       // Find the exam and ensure the student exists in the array
       const exam = await examinationModel.findOne({
         _id: examId,
-        schoolId: req.user.id,
+        schoolId,
         "students.studentId": studentId,
       });
 
@@ -168,9 +170,9 @@ module.exports = {
           },
         }
       );
-
       return res.status(200).json({ message: "Exam submitted successfully" });
     } catch (error) {
+      console.log({ error });
       return res.status(500).json({
         message:
           "Failed to submit this exam successfully. Please contact support",

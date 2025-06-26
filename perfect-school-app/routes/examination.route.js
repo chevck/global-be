@@ -16,7 +16,7 @@ router.post(
   examinationController.saveExaminationQuestions
 );
 router.post(
-  "/submit",
+  "/exam/:examId/submit",
   checkStudentLoginAuthorization,
   examinationController.submitExam
 );
