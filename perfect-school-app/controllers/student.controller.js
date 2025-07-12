@@ -53,6 +53,7 @@ module.exports = {
         { email: { $regex: req.query.searchTerm, $options: "i" } },
       ];
     }
+    console.log({ query });
     try {
       const students = await studentModel
         .find({ schoolId: req.user.id, ...query })

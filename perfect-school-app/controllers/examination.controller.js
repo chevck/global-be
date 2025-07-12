@@ -17,7 +17,8 @@ module.exports = {
         examDate: req.body.examinationDate,
         schoolId: req.user.id,
       };
-      const exam = await examinationModel.create(body);
+      let exam = await examinationModel.create(body);
+      exam = await exam.populate("createdBy");
       await session.commitTransaction();
       session.endSession();
       logsController.create(req, {
@@ -26,18 +27,45 @@ module.exports = {
       });
       res.status(201).json({ message: "Exam created!", exam });
     } catch (error) {
+      console.log("ere", error);
       await session.abortTransaction();
       session.endSession();
       res.status(500).json({ message: "Internal server error" });
     }
   },
+  update: async (req, res) => {
+    try {
+      const { examId } = req.params;
+      const exam = await examinationModel.findOne({ _id: examId });
+      if (!exam)
+        return res.status(400).json({
+          message: "We could not find your exam. Please contact support",
+        });
+      const response = await examinationModel.findByIdAndUpdate(
+        { _id: examId },
+        { ...req.body },
+        { new: true }
+      );
+      return res
+        .status(200)
+        .json({ message: "Examination has been updated", response });
+    } catch (error) {
+      console.log("updating examination", error);
+      res.status(500).json({
+        message:
+          "There was an error updating examination. Please try again later",
+      });
+    }
+  },
   getAll: async (req, res) => {
     try {
+      const { subject, class: schoolClass, status, term } = req.query;
       const query = {};
-      if (req.query.subject) query.subject = req.query.subject;
-      if (req.query.class) query.class = req.query.class;
-      if (req.query.status) query.status = req.query.status;
-      if (req.query.term) query.term = req.query.term;
+      if (subject) query.subject = subject;
+      if (schoolClass) query.class = schoolClass;
+      if (status === "pending") query.isReviewed = false;
+      if (status === "reviewed") query.isReviewed = true;
+      if (term) query.term = term;
 
       const exams = await examinationModel
         .find({
@@ -55,11 +83,12 @@ module.exports = {
     }
   },
   getExam: async (req, res) => {
-    console.log("sds", req.params);
     try {
-      const examDoc = await examinationModel.findOne({
-        _id: req.params.id,
-      });
+      const examDoc = await examinationModel
+        .findOne({
+          _id: req.params.examId,
+        })
+        .populate("createdBy");
       if (!examDoc)
         return res
           .status(404)
@@ -72,7 +101,6 @@ module.exports = {
   },
   saveExaminationQuestions: async (req, res) => {
     try {
-      console.log("sdss", req.body);
       let examDoc = await examinationModel.findOne({
         _id: req.body.examId,
         schoolId: req.user.id,
@@ -82,7 +110,6 @@ module.exports = {
           message:
             "This examination is invalid. It does not exist. Contact support",
         });
-      console.log("updating ex", examDoc);
       await examinationModel.findOneAndUpdate(
         { _id: examDoc._id },
         { examQuestions: req.body.questions },
@@ -98,36 +125,49 @@ module.exports = {
   },
   loginStudent: async (req, res) => {
     try {
-      console.log("bodu", req.body);
       const { examId, studentId } = req.body;
       const exam = await examinationModel.findById(examId);
       if (!exam)
         return res
           .status(404)
           .json({ message: "This exam does not exist in our record" });
-      console.log({ exam });
+
       const student = await studentModel.findOne({
         schoolId: exam.schoolId,
         studentId,
       });
-      console.log({ student });
 
       if (!student)
         return res.status(404).json({
           message: "Invalid Student Id. We could not find this student",
         });
-      await examinationModel.findOneAndUpdate(
-        { _id: exam._id },
-        {
-          $addToSet: {
-            students: {
-              studentId: student._id,
-              status: "in-progress",
+
+      const examStudent = exam.students.find(
+        (eStudent) => eStudent.studentId.toString() === student._id.toString()
+      );
+
+      if (!examStudent) {
+        // create a student only when the student is not found
+        await examinationModel.findOneAndUpdate(
+          { _id: exam._id },
+          {
+            $addToSet: {
+              students: {
+                studentId: student._id,
+                status: "in-progress",
+              },
             },
           },
-        },
-        { new: true }
-      );
+          { new: true }
+        );
+      }
+
+      if (examStudent && examStudent.status === "completed")
+        return res.status(400).json({
+          message:
+            "You have completed your exams! Please inform your teacher if there is an issue",
+        });
+
       const authToken = jwt.sign(
         {
           studentId,
@@ -136,9 +176,6 @@ module.exports = {
         process.env.JWT_SECRET,
         { expiresIn: "3h" }
       );
-      // check if student has signed in to take the exam, if they have not
-      //  - log them on the examination body as studentsTakenTheExam:[StudentIds]
-      // if they have, check their statuus to see if they have completed the exam or not and return data based on that.
       return res.status(200).json({ student, exam, authToken });
     } catch (error) {
       return res.status(500).json({ message: "Internal server error" });
@@ -146,7 +183,6 @@ module.exports = {
   },
   submitExam: async (req, res) => {
     try {
-      console.log("apsa", req.params);
       const { examId } = req.params;
       const { studentId, score, schoolId } = req.body;
       // Find the exam and ensure the student exists in the array
@@ -159,7 +195,6 @@ module.exports = {
       if (!exam) {
         return res.status(404).json({ message: "Exam or student not found" });
       }
-
       // Update the student's status and score atomically
       await examinationModel.updateOne(
         { _id: examId, "students.studentId": studentId },
@@ -176,6 +211,25 @@ module.exports = {
       return res.status(500).json({
         message:
           "Failed to submit this exam successfully. Please contact support",
+      });
+    }
+  },
+  deleteExam: async (req, res) => {
+    try {
+      const examDoc = await examinationModel.findOne({
+        _id: req.params.examId,
+      });
+      if (!examDoc)
+        return res.status(404).json({
+          message:
+            "Examination document does not exist. Please contact support",
+        });
+      await examinationModel.deleteOne({ _id: req.params.examId });
+      return res.status(200).json({ message: "Exam Deleted Successfully!" });
+    } catch (error) {
+      console.log({ error });
+      return res.status(500).json({
+        message: "Failed to delete this exam. Please contact support",
       });
     }
   },

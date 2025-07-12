@@ -26,6 +26,8 @@ const SchoolSchema = new Schema({
       isPrimary: Boolean,
     },
   ],
+  subjects: [{ type: String, _id: false }],
+  classes: [{ type: String, _id: false }],
 });
 
 module.exports = mongoose.model("School", SchoolSchema);

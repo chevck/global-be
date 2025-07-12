@@ -9,7 +9,13 @@ const router = express.Router();
 router.post("/exam-login-student", examinationController.loginStudent);
 router.post("/exam-create", checkAuthorization, examinationController.create);
 router.get("/exams", checkAuthorization, examinationController.getAll);
-router.get("/exam/:id", examinationController.getExam);
+router.delete(
+  "/exam/:examId",
+  checkAuthorization,
+  examinationController.deleteExam
+);
+router.put("/exams/:examId", checkAuthorization, examinationController.update);
+router.get("/exam/:examId", examinationController.getExam);
 router.post(
   "/save-questions",
   checkAuthorization,

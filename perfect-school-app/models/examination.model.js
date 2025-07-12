@@ -6,12 +6,18 @@ const examQuestionSchema = {
   correctOption: { type: String, required: true },
   correctOptionIndex: { type: Number, required: true },
   marks: { type: Number, required: true },
+  reviewNote: { type: String },
+  status: {
+    type: String,
+    default: "pending",
+    enum: ["approved", "needs-revision", "rejected", "pending"],
+  },
 };
 
 const studentsThatHaveStartedTheExams = {
   studentId: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: "Teacher",
+    ref: "Student",
     required: true,
   },
   status: { type: String, enum: ["in-progress", "completed"] },
@@ -25,6 +31,9 @@ const examinationSchema = new mongoose.Schema({
     ref: "Teacher",
     required: true,
   },
+  hasStarted: { type: Boolean, default: false }, // meaning exam has started
+  isOngoing: { type: Boolean, default: false }, // meaning exam is ongoing
+  hasEnded: { type: Boolean, default: false }, // meaning exam has ended
   schoolId: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "School",
