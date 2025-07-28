@@ -1,6 +1,25 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
+const subjectSchema = new Schema(
+  {
+    name: String,
+    description: String,
+  },
+  { _id: false }
+);
+
+const classSchema = new Schema(
+  {
+    className: String,
+    teacher: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Teacher",
+    },
+  },
+  { _id: false }
+);
+
 const SchoolSchema = new Schema({
   adminName: { type: String, required: true },
   schoolEmail: { type: String, unique: true },
@@ -26,8 +45,13 @@ const SchoolSchema = new Schema({
       isPrimary: Boolean,
     },
   ],
-  subjects: [{ type: String, _id: false }],
-  classes: [{ type: String, _id: false }],
+  subjects: {
+    type: [subjectSchema],
+    default: [{ name: "Mathematics" }, { name: "English" }],
+  },
+  classes: {
+    type: [classSchema],
+  },
 });
 
 module.exports = mongoose.model("School", SchoolSchema);

@@ -1,6 +1,7 @@
 const { Resend } = require("resend");
 const fs = require("fs");
 const path = require("path");
+const nodemailer = require("nodemailer");
 const registrationTemplate = fs.readFileSync(
   path.join(__dirname, "../email-templates/registration.html"),
   "utf8"
@@ -16,13 +17,37 @@ const teacherInviteTemplate = fs.readFileSync(
 
 module.exports = {
   sendEmail: async (email, subject, html) => {
-    const resend = new Resend(process.env.RESEND_API_KEY);
-    resend.emails.send({
-      from: "onboarding@resend.dev",
+    const transporter = nodemailer.createTransport({
+      service: "gmail",
+      auth: {
+        user: process.env.GMAIL_MAIL_USER,
+        pass: process.env.GMAIL_APP_PASSWORD, // not your Gmail password
+      },
+    });
+
+    // Define mail options
+    const mailOptions = {
+      from: process.env.GMAIL_MAIL_USER,
       to: email,
       subject,
       html,
+    };
+
+    // Send email
+    transporter.sendMail(mailOptions, (error, info) => {
+      if (error) {
+        return console.log("Error:", error);
+      }
+      console.log("Email sent:", info.response);
     });
+
+    // const resend = new Resend(process.env.RESEND_API_KEY);
+    // resend.emails.send({
+    //   from: "onboarding@resend.dev",
+    //   to: email,
+    //   subject,
+    //   html,
+    // });
   },
 
   sendRegisterEmail: async (body) => {
