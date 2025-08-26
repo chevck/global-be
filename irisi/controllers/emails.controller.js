@@ -25,7 +25,7 @@ module.exports = {
                         </div>
 				${
           item.color
-            ? `<div style='color: #666; font-size: 14px'>Size: ${item.color}</div>`
+            ? `<div style='color: #666; font-size: 14px'>Color: ${item.color}</div>`
             : null
         }
                       </div>
