@@ -61,11 +61,11 @@ module.exports = {
         .replace("{{totalAmount}}", req.body?.totalAmount ?? "")
         .replace(
           "{{trackingUrl}}",
-          `www.irisi.store/tracking?id=${req?.body?.trackingId}`
+          `www.irisi.store/track?id=${req?.body?.trackingId}`
         )
         .replace(
           "{{trackingUrl}}",
-          `www.irisi.store/tracking?id=${req?.body?.trackingId}`
+          `www.irisi.store/track?id=${req?.body?.trackingId}`
         )
         .replace("{{items}}", itemsHtml);
 
