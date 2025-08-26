@@ -126,8 +126,13 @@ module.exports = {
         if (error) return console.log("error sending email", error);
         console.log("email sent successfully", info.response);
       });
+      return res.status(200).json({ message: "Email sent successfully!" });
     } catch (error) {
       console.log("sdsd", error);
+      return res.status(500).json({
+        message: "Failed to send purchase email",
+        error,
+      });
     }
   },
 };
