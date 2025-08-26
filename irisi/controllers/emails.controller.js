@@ -97,11 +97,7 @@ module.exports = {
                 <div style="color: #1a1a1a; line-height: 1.6">
                   ${req.body.customerName}
                   <br />
-			${req.body.shippingAddress.street}
-                  <br />
-                  ${req.body.shippingAddress.city}, ${req.body.shippingAddress.state}
-                  <br />
-                  ${req.body.shippingAddress.country}
+			${req.body.shippingAddress.address}
                 </div>
               </td>
             </tr>
