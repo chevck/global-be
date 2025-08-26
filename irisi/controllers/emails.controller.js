@@ -9,7 +9,6 @@ const successfulPurchaseMailTemplate = fs.readFileSync(
 module.exports = {
   successfulPurchaseMail: async (req, res) => {
     try {
-      console.log("dds", req.body);
       let itemsHtml = (req.body.items ?? []).map(
         (item, index) => `
 	   <tr key=${index}>
@@ -25,8 +24,9 @@ module.exports = {
                          ${item.name}
                         </div>
 				${
-          item.size &&
-          `<div style='color: #666; font-size: 14px'>Size: ${item.size}</div>`
+          item.color
+            ? `<div style='color: #666; font-size: 14px'>Size: ${item.color}</div>`
+            : null
         }
                       </div>
                     </td>
