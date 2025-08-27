@@ -1,348 +1,412 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Order Confirmation - ÌRÍSÍ Shop</title>
+    <title>Order Confirmation - ÌRÍSÍ</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
       href="https://fonts.googleapis.com/css2?family=Nunito+Sans:ital,opsz,wght@0,6..12,200..1000;1,6..12,200..1000&display=swap"
       rel="stylesheet"
     />
+    <style>
+      body {
+        margin: 0;
+        padding: 0;
+        font-family: "Nunito Sans", sans-serif;
+        background-color: #ffffff;
+        color: #1a1a1a;
+      }
+      .email-container {
+        max-width: 600px;
+        margin: 0 auto;
+        background-color: #ffffff;
+      }
+      .header {
+        text-align: center;
+        padding: 40px 20px;
+        padding-bottom: 0;
+      }
+      .logo-circle {
+        width: 64px;
+        height: 64px;
+        background-color: #d4af37;
+        border-radius: 50%;
+        margin: 0 auto 16px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 24px;
+        font-weight: bold;
+        color: #ffffff;
+      }
+      .brand-name {
+        font-size: 32px;
+        font-weight: bold;
+        color: #1a1a1a;
+        margin: 0 0 16px 0;
+        letter-spacing: 2px;
+      }
+      .brand-line {
+        width: 96px;
+        height: 2px;
+        background-color: #d4af37;
+        margin: 0 auto;
+      }
+      .main-content {
+        background-color: #ffffff;
+        border: 1px solid #e5e5e5;
+        border-radius: 8px;
+        margin: 0 20px 32px;
+      }
+      .content-padding {
+        padding: 32px;
+      }
+      .title-section {
+        text-align: center;
+        margin-bottom: 32px;
+      }
+      .main-title {
+        font-size: 24px;
+        font-weight: bold;
+        color: #1a1a1a;
+        margin: 0 0 8px 0;
+      }
+      .subtitle {
+        font-size: 18px;
+        color: #666666;
+        margin: 0 0 8px 0;
+      }
+      .description {
+        font-size: 14px;
+        color: #666666;
+        margin: 0;
+      }
+      .order-details {
+        background-color: #f8f8f8;
+        border-radius: 8px;
+        padding: 24px;
+        margin-bottom: 24px;
+      }
+      .detail-row {
+        margin-bottom: 16px;
+        padding-bottom: 16px;
+      }
+      .detail-row:last-child {
+        margin-bottom: 0;
+      }
+      .detail-label {
+        font-weight: bold;
+        color: #1a1a1a;
+        font-size: 14px;
+        margin-bottom: 4px;
+      }
+      .detail-value {
+        color: #666666;
+        font-size: 14px;
+      }
+      .order-number {
+        color: #d4af37;
+        font-weight: bold;
+      }
+      .section-title {
+        font-weight: bold;
+        color: #1a1a1a;
+        margin-bottom: 16px;
+        font-size: 16px;
+      }
+      .item-row {
+        border-bottom: 1px solid #e5e5e5;
+        padding: 12px 0;
+      }
+      .item-row:last-child {
+        border-bottom: none;
+      }
+      .item-name {
+        font-weight: 500;
+        color: #1a1a1a;
+        margin-bottom: 4px;
+      }
+      .item-quantity {
+        font-size: 14px;
+        color: #666666;
+      }
+      .item-price {
+        font-weight: bold;
+        color: #1a1a1a;
+        text-align: right;
+      }
+      .separator {
+        height: 1px;
+        background-color: #e5e5e5;
+        margin: 24px 0;
+      }
+      .summary-row {
+        margin-bottom: 8px;
+        padding-bottom: 8px;
+      }
+      .summary-label {
+        color: #666666;
+        font-size: 14px;
+        padding-bottom: 8px;
+      }
+      .summary-value {
+        color: #1a1a1a;
+        font-size: 14px;
+        text-align: right;
+        padding-bottom: 8px;
+      }
+      .total-row {
+        font-weight: bold;
+        font-size: 18px;
+        padding-top: 8px;
+        border-top: 1px solid #e5e5e5;
+      }
+      .total-label {
+        color: #1a1a1a;
+      }
+      .total-value {
+        color: #d4af37;
+        text-align: right;
+      }
+      .address-section {
+        background-color: #f8f8f8;
+        border-radius: 8px;
+        padding: 16px;
+        margin-bottom: 24px;
+      }
+      .address-title {
+        font-weight: bold;
+        color: #1a1a1a;
+        margin-bottom: 8px;
+        font-size: 16px;
+        margin-top: 0;
+      }
+      .address-text {
+        font-size: 14px;
+        color: #666666;
+        line-height: 1.4;
+      }
+      .cta-section {
+        text-align: center;
+      }
+      .cta-button {
+        background-color: #d4af37;
+        color: #ffffff;
+        padding: 12px 32px;
+        border-radius: 8px;
+        text-decoration: none;
+        font-weight: bold;
+        display: inline-block;
+        font-size: 16px;
+      }
+      .footer {
+        text-align: center;
+        padding: 0 20px 40px;
+        font-size: 14px;
+        color: #666666;
+      }
+      .footer-text {
+        margin-bottom: 8px;
+      }
+      .social-links {
+        margin: 16px 0;
+      }
+      .social-link {
+        color: #d4af37;
+        text-decoration: none;
+        margin: 0 16px;
+      }
+      .footer-line {
+        width: 64px;
+        height: 2px;
+        background-color: #d4af37;
+        margin: 16px auto 8px;
+      }
+      .copyright {
+        font-size: 12px;
+        margin: 0;
+      }
+    </style>
   </head>
-  <body style="font-family: 'Nunito Sans', sans-serif">
-    <table
-      width="100%"
-      cellpadding="0"
-      cellspacing="0"
-      style="background-color: #f8f9fa"
-    >
+  <body>
+    <table class="email-container" cellpadding="0" cellspacing="0" border="0">
       <tr>
-        <td style="padding: 40px 20px">
+        <td>
           <!-- Header -->
           <table
             width="100%"
             cellpadding="0"
             cellspacing="0"
-            style="
-              background-color: #ffffff;
-              border-radius: 8px;
-              box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-            "
+            border="0"
+            class="header"
           >
             <tr>
-              <td
-                style="
-                  padding: 30px;
-                  text-align: center;
-                  border-bottom: 2px solid #f1f3f4;
-                "
-              >
+              <td align="center">
                 <img
                   src="https://irisi.store/assets/irisi-gold-CHIHiJA9.png"
                   alt="ÌRÍSÍ Shop"
                   style="width: 85px; height: auto"
                 />
-                <p style="color: #666; margin: 0; font-size: 16px">
-                  Jewelry & Accessories
-                </p>
-              </td>
-            </tr>
-
-            <!-- Order Confirmation Header -->
-            <tr>
-              <td style="padding: 30px; text-align: center">
-                <!-- <div
-                  style="
-                    background-color: #4ade80;
-                    border-radius: 50%;
-                    width: 60px;
-                    height: 60px;
-                    display: inline-flex;
-                    align-items: center;
-                    justify-content: center;
-                    margin: 0 auto 20px auto;
-                    text-align: center;
-                  "
-                >
-                  <span
-                    style="
-                      color: #ffffff;
-                      font-size: 28px;
-                      line-height: 1;
-                      font-weight: bold;
-                    "
-                    >&#10004;</span
-                  >
-                </div> -->
-                <h2
-                  style="
-                    color: #1a1a1a;
-                    margin: 0 0 10px 0;
-                    font-size: 24px;
-                    font-weight: bold;
-                  "
-                >
-                  Order Confirmed!
-                </h2>
-                <p
-                  style="
-                    color: #666;
-                    margin: 0;
-                    font-size: 16px;
-                    line-height: 1.5;
-                  "
-                >
-                  Thank you for your purchase, {{customerName}}! Your order has
-                  been successfully placed and is being processed.
-                </p>
+                <!-- <h1 class="brand-name">Jewelry and Accessories</h1> -->
               </td>
             </tr>
           </table>
 
-          <!-- Order Details -->
+          <!-- Main Content -->
           <table
             width="100%"
             cellpadding="0"
             cellspacing="0"
-            style="
-              background-color: #ffffff;
-              border-radius: 8px;
-              margin-top: 20px;
-              box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-            "
+            border="0"
+            class="main-content"
           >
             <tr>
-              <td style="padding: 30px">
-                <h3
-                  style="
-                    color: #1a1a1a;
-                    margin: 0 0 20px 0;
-                    font-size: 20px;
-                    font-weight: bold;
-                  "
-                >
-                  Order Information
-                </h3>
-
-                <table width="100%" cellpadding="0" cellspacing="0">
-                  <tr>
-                    <td
-                      style="padding: 10px 0; border-bottom: 1px solid #f1f3f4"
-                    >
-                      <span
-                        style="
-                          color: #666;
-                          font-weight: bold;
-                          display: inline-block;
-                          width: 120px;
-                        "
-                      >
-                        Order ID:
-                      </span>
-                      <span style="color: #1a1a1a; font-weight: bold">
-                        {{orderId}}
-                      </span>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td
-                      style="padding: 10px 0; border-bottom: 1px solid #f1f3f4"
-                    >
-                      <span
-                        style="
-                          color: #666;
-                          font-weight: bold;
-                          display: inline-block;
-                          width: 120px;
-                        "
-                      >
-                        Tracking ID:
-                      </span>
-                      <span style="color: #1a1a1a; font-weight: bold">
-                        {{trackingId}}
-                      </span>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td
-                      style="padding: 10px 0; border-bottom: 1px solid #f1f3f4"
-                    >
-                      <span
-                        style="
-                          color: #666;
-                          font-weight: bold;
-                          display: inline-block;
-                          width: 120px;
-                        "
-                      >
-                        Order Date:
-                      </span>
-                      <span style="color: #1a1a1a">{{orderDate}}</span>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td
-                      style="padding: 10px 0; border-bottom: 1px solid #f1f3f4"
-                    >
-                      <span
-                        style="
-                          color: #666;
-                          font-weight: bold;
-                          display: inline-block;
-                          width: 120px;
-                        "
-                      >
-                        Total Amount:
-                      </span>
-                      <span
-                        style="
-                          color: #1a1a1a;
-                          font-weight: bold;
-                          font-size: 18px;
-                        "
-                      >
-                        {{totalAmount}}
-                      </span>
-                    </td>
-                  </tr>
-                </table>
-              </td>
-            </tr>
-          </table>
-
-          <!-- Order Items -->
-          <table
-            width="100%"
-            cellpadding="0"
-            cellspacing="0"
-            style="
-              background-color: #ffffff;
-              border-radius: 8px;
-              margin-top: 20px;
-              box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-            "
-          >
-            <tr>
-              <td style="padding: 30px">
-                <h3
-                  style="
-                    color: #1a1a1a;
-                    margin: 0 0 20px 0;
-                    font-size: 20px;
-                    font-weight: bold;
-                  "
-                >
-                  Order Items
-                </h3>
-
+              <td class="content-padding">
+                <!-- Title Section -->
                 <table
                   width="100%"
                   cellpadding="0"
                   cellspacing="0"
-                  style="border: 1px solid #f1f3f4; border-radius: 8px"
+                  border="0"
+                  class="title-section"
                 >
-                  <tr style="background-color: #f8f9fa">
-                    <th
-                      style="
-                        padding: 15px;
-                        text-align: left;
-                        border-bottom: 1px solid #f1f3f4;
-                        color: #1a1a1a;
-                        font-weight: bold;
-                      "
-                    >
-                      Item
-                    </th>
-                    <th
-                      style="
-                        padding: 15px;
-                        text-align: center;
-                        border-bottom: 1px solid #f1f3f4;
-                        color: #1a1a1a;
-                        font-weight: bold;
-                      "
-                    >
-                      Qty
-                    </th>
-                    <th
-                      style="
-                        padding: 15px;
-                        text-align: right;
-                        border-bottom: 1px solid #f1f3f4;
-                        color: #1a1a1a;
-                        font-weight: bold;
-                      "
-                    >
-                      Price
-                    </th>
+                  <tr>
+                    <td align="center">
+                      <h2 class="main-title">Order Confirmed</h2>
+                      <p class="subtitle">
+                        Thank you for your order, {{customerName}}!
+                      </p>
+                      <p class="description">
+                        We're preparing your beautiful jewelry with care.
+                      </p>
+                    </td>
                   </tr>
-                  {{items}}
                 </table>
-              </td>
-            </tr>
-          </table>
 
-          <!-- Shipping Address -->
-          <!-- "{{shippingData}}" -->
+                <!-- Order Details -->
+                <table
+                  width="100%"
+                  cellpadding="0"
+                  cellspacing="0"
+                  border="0"
+                  class="order-details"
+                >
+                  <tr>
+                    <td width="50%" class="detail-row">
+                      <div class="detail-label">Order Number</div>
+                      <div class="detail-value order-number">{{orderId}}</div>
+                    </td>
+                    <td width="50%" class="detail-row">
+                      <div class="detail-label">Order Date</div>
+                      <div class="detail-value">{{orderDate}}</div>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td width="50%" class="detail-row">
+                      <div class="detail-label">Estimated Delivery</div>
+                      <div class="detail-value">1-5 days</div>
+                    </td>
+                    <td width="50%" class="detail-row">
+                      <div class="detail-label">Tracking ID</div>
+                      <div class="detail-value">{{trackingId}}</div>
+                    </td>
+                  </tr>
+                </table>
 
-          <!-- Tracking Section -->
-          <table
-            width="100%"
-            cellpadding="0"
-            cellspacing="0"
-            style="
-              background-color: #ffffff;
-              border-radius: 8px;
-              margin-top: 20px;
-              box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-            "
-          >
-            <tr>
-              <td style="padding: 30px; text-align: center">
-                <h3
-                  style="
-                    color: #1a1a1a;
-                    margin: 0 0 20px 0;
-                    font-size: 20px;
-                    font-weight: bold;
-                  "
+                <!-- Order Items -->
+                <table
+                  width="100%"
+                  cellpadding="0"
+                  cellspacing="0"
+                  border="0"
+                  style="margin-bottom: 24px"
                 >
-                  Track Your Order
-                </h3>
-                <p
-                  style="
-                    color: #666;
-                    margin: 0 0 25px 0;
-                    font-size: 16px;
-                    line-height: 1.5;
-                  "
+                  <tr>
+                    <td>
+                      <h3 class="section-title">Order Items</h3>
+                    </td>
+                  </tr>
+                  <!-- Sample Item Row -->
+                  <tr>
+                    <td class="item-row">
+                      <table
+                        width="100%"
+                        cellpadding="0"
+                        cellspacing="0"
+                        border="0"
+                      >
+                        {{items}}
+                      </table>
+                    </td>
+                  </tr>
+                  <!-- Repeat for additional items -->
+                </table>
+
+                <div class="separator"></div>
+
+                <!-- Order Summary -->
+                <table
+                  width="100%"
+                  cellpadding="0"
+                  cellspacing="0"
+                  border="0"
+                  style="margin-bottom: 24px"
                 >
-                  Click the button below to track your order in real-time
-                </p>
-                <a
-                  href="{{trackingUrl}}"
-                  style="
-                    display: inline-block;
-                    background-color: #1a1a1a;
-                    color: #ffffff;
-                    padding: 15px 30px;
-                    text-decoration: none;
-                    border-radius: 8px;
-                    font-weight: bold;
-                    font-size: 16px;
-                    text-align: center;
-                  "
+                  <tr class="summary-row">
+                    <td class="summary-label">Subtotal</td>
+                    <td class="summary-value">${{subtotal}}</td>
+                  </tr>
+                  <tr class="summary-row">
+                    <td class="summary-label">Shipping</td>
+                    <td class="summary-value">${{shipping}}</td>
+                  </tr>
+                  <tr class="summary-row">
+                    <td class="summary-label">Tax</td>
+                    <td class="summary-value">${{tax}}</td>
+                  </tr>
+                  <tr class="total-row">
+                    <td class="total-label">Total</td>
+                    <td class="total-value">${{total}}</td>
+                  </tr>
+                </table>
+
+                <!-- Shipping Address -->
+                <table
+                  width="100%"
+                  cellpadding="0"
+                  cellspacing="0"
+                  border="0"
+                  class="address-section"
                 >
-                  Track Order
-                </a>
-                <!-- <p style="color: #666; margin: 20px 0 0 0; font-size: 14px">
-                  Or copy this link:
-                  <a href="{{trackingUrl}}" style="color: #1a1a1a">
-                    "{{trackingUrl}}"
-                  </a>
-                </p> -->
+                  <tr>
+                    <td>
+                      <h4 class="address-title">Shipping Address</h4>
+                      <div class="address-text">{{shippingAddress}}</div>
+                    </td>
+                  </tr>
+                </table>
+
+                <!-- CTA Button -->
+                <table
+                  width="100%"
+                  cellpadding="0"
+                  cellspacing="0"
+                  border="0"
+                  class="cta-section"
+                >
+                  <tr>
+                    <td align="center">
+                      <a
+                        href="{{trackingUrl}}"
+                        class="cta-button"
+                        style="text-decoration: none; color: #ffffff"
+                        >Track Your Order</a
+                      >
+                    </td>
+                  </tr>
+                </table>
               </td>
             </tr>
           </table>
@@ -352,44 +416,29 @@
             width="100%"
             cellpadding="0"
             cellspacing="0"
-            style="
-              background-color: #ffffff;
-              border-radius: 8px;
-              margin-top: 20px;
-              box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-            "
+            border="0"
+            class="footer"
           >
             <tr>
-              <td style="padding: 30px; text-align: center">
-                <p style="color: #666; margin: 0 0 15px 0; font-size: 16px">
-                  If you have any questions about your order, please contact us:
-                </p>
-                <p style="color: #1a1a1a; margin: 0 0 10px 0; font-size: 16px">
-                  📧
-                  <a
-                    href="mailto:shopfromirisi@gmail.com"
-                    style="color: #1a1a1a"
+              <td align="center">
+                <p class="footer-text">
+                  Questions about your order? Contact us at
+                  <a href="mailto:shopfromirisi@gmail.com"
+                    >shopfromirisi@gmail.com</a
                   >
-                    shopfromirisi@gmail.com
-                  </a>
                 </p>
-                <p style="color: #1a1a1a; margin: 0 0 20px 0; font-size: 16px">
-                  📞
-                  <a href="tel:+2348074892850" style="color: #1a1a1a">
-                    +234 807 489 2850
-                  </a>
+                <p class="footer-text">
+                  Follow us for the latest collections and exclusive offers
                 </p>
-                <div
-                  style="
-                    border-top: 1px solid #f1f3f4;
-                    padding-top: 20px;
-                    margin-top: 20px;
-                  "
-                >
-                  <p style="color: #666; margin: 0; font-size: 14px">
-                    Thank you for choosing ÌRÍSÍ!
-                  </p>
+                <div class="social-links">
+                  <a
+                    href="https://www.instagram.com/shop_irisi"
+                    class="social-link"
+                    >Instagram</a
+                  >
                 </div>
+                <div class="footer-line"></div>
+                <p class="copyright">© 2025 ÌRÍSÍ. All rights reserved.</p>
               </td>
             </tr>
           </table>
