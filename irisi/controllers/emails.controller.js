@@ -77,15 +77,16 @@ module.exports = {
   },
 
   shippingStatusUpdateMail: async (req, res) => {
+    console.log("sds", req.body);
     try {
       // Define status configurations
       const statusConfigs = {
-        processing: {
+        confirmed: {
           statusColor: "#f59e0b",
           statusIcon: "⚙️",
-          statusTitle: "Order Processing",
+          statusTitle: "Order Confirmed",
           statusMessage:
-            "Your order is being prepared for shipment. We're carefully packaging your items to ensure they arrive in perfect condition.",
+            "Your order is confirmed and being prepared for shipment. We're carefully packaging your items to ensure they arrive in perfect condition.",
           progressPercentage: 25,
         },
         shipped: {
@@ -125,6 +126,8 @@ module.exports = {
       const status = req.body.status?.toLowerCase();
       const config = statusConfigs[status] || statusConfigs["processing"];
 
+      console.log({ config });
+
       let htmlWithData = shippingStatusUpdateTemplate
         .replace(/{{statusColor}}/g, config.statusColor)
         .replace(/{{statusIcon}}/g, config.statusIcon)
@@ -141,7 +144,7 @@ module.exports = {
           `www.irisi.store/track?id=${req?.body?.trackingId}`
         );
 
-      const transporter = nodemailer.createTransporter({
+      const transporter = nodemailer.createTransport({
         service: "gmail",
         auth: {
           user: process.env.IRISI_GMAIL_APP_USER,

@@ -3,562 +3,468 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Shipping Status Update</title>
+    <title>Order Status Update - ÌRÍSÍ</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
       href="https://fonts.googleapis.com/css2?family=Nunito+Sans:ital,opsz,wght@0,6..12,200..1000;1,6..12,200..1000&display=swap"
       rel="stylesheet"
     />
+    <style>
+      body {
+        margin: 0;
+        padding: 0;
+        font-family: "Nunito Sans", sans-serif;
+        background-color: #ffffff;
+        color: #1a1a1a;
+      }
+      .email-container {
+        max-width: 672px;
+        margin: 0 auto;
+        background-color: #ffffff;
+        padding: 32px;
+      }
+      .header {
+        text-align: center;
+        padding-bottom: 32px;
+      }
+      .logo-circle {
+        width: 64px;
+        height: 64px;
+        background-color: #d4af36;
+        border-radius: 50%;
+        margin: 0 auto 16px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 24px;
+        font-weight: bold;
+        color: #ffffff;
+      }
+      .brand-name {
+        font-size: 32px;
+        font-weight: bold;
+        color: #1a1a1a;
+        margin: 0 0 8px 0;
+        letter-spacing: 2px;
+      }
+      .brand-line {
+        width: 96px;
+        height: 2px;
+        background-color: #d4af36;
+        margin: 0 auto;
+      }
+      .main-content {
+        background-color: #ffffff;
+        border: 1px solid #e5e5e5;
+        border-radius: 8px;
+        margin-bottom: 32px;
+      }
+      .content-padding {
+        padding: 32px;
+      }
+      .title-section {
+        text-align: center;
+        margin-bottom: 32px;
+      }
+      .status-icon {
+        width: 80px;
+        height: 80px;
+        border-radius: 50%;
+        display: table;
+        font-size: 32px;
+      }
+      .main-title {
+        font-size: 24px;
+        font-weight: bold;
+        color: #1a1a1a;
+        margin: 0 0 8px 0;
+      }
+      .subtitle {
+        font-size: 18px;
+        color: #666666;
+        margin: 0;
+      }
+      .status-badge {
+        display: inline-block;
+        padding: 8px 16px;
+        border-radius: 20px;
+        font-size: 14px;
+        font-weight: 600;
+        margin-bottom: 24px;
+      }
+      .status-processing {
+        background-color: #fef3c7;
+        color: #92400e;
+        border: 1px solid #fde68a;
+      }
+      .status-shipped {
+        background-color: #dbeafe;
+        color: #1e40af;
+        border: 1px solid #93c5fd;
+      }
+      .status-delivered {
+        background-color: #dcfce7;
+        color: #166534;
+        border: 1px solid #86efac;
+      }
+      .status-cancelled {
+        background-color: #fee2e2;
+        color: #991b1b;
+        border: 1px solid #fca5a5;
+      }
+      .order-details {
+        background-color: rgba(248, 248, 248, 0.3);
+        border-radius: 8px;
+        padding: 24px;
+        margin-bottom: 24px;
+      }
+      .detail-row {
+        margin-bottom: 16px;
+      }
+      .detail-row:last-child {
+        margin-bottom: 0;
+      }
+      .detail-label {
+        font-weight: 600;
+        color: #1a1a1a;
+        font-size: 14px;
+        margin-bottom: 4px;
+      }
+      .detail-value {
+        color: #666666;
+        font-size: 14px;
+      }
+      .order-number {
+        color: #d4af36;
+        font-weight: bold;
+      }
+      .tracking-number {
+        font-family: monospace;
+      }
+      .status-description {
+        background-color: #ffffff;
+        border: 1px solid #e5e5e5;
+        border-radius: 8px;
+        padding: 24px;
+        margin-bottom: 32px;
+        line-height: 1.6;
+        color: #1a1a1a;
+      }
+      .progress-section {
+        margin-bottom: 32px;
+      }
+      .progress-labels {
+        margin-bottom: 8px;
+        display: flex;
+        justify-content: space-between;
+      }
+      .progress-label {
+        font-size: 12px;
+        font-weight: 500;
+        color: #666666;
+        flex: 1;
+        text-align: center;
+      }
+      .progress-container {
+        display: flex;
+        align-items: center;
+        gap: 0;
+      }
+      .progress-segment {
+        flex: 1;
+        height: 8px;
+        border-radius: 4px;
+      }
+      .progress-active {
+        background-color: #d4af36;
+      }
+      .progress-inactive {
+        background-color: #f8f8f8;
+      }
+      .cta-section {
+        text-align: center;
+      }
+      .cta-button {
+        background-color: #d4af36;
+        color: #ffffff;
+        padding: 12px 24px;
+        border-radius: 8px;
+        text-decoration: none;
+        font-weight: 600;
+        display: inline-block;
+        font-size: 16px;
+        margin: 0 6px 12px 6px;
+      }
+      .cta-button-outline {
+        background-color: transparent;
+        color: #d4af36;
+        border: 1px solid #d4af36;
+        padding: 12px 24px;
+        border-radius: 8px;
+        text-decoration: none;
+        font-weight: 600;
+        display: inline-block;
+        font-size: 16px;
+        margin: 0 6px 12px 6px;
+      }
+      .footer {
+        text-align: center;
+        font-size: 14px;
+        color: #666666;
+      }
+      .footer-text {
+        margin-bottom: 8px;
+      }
+      .social-links {
+        margin: 16px 0;
+      }
+      .social-link {
+        color: #d4af36;
+        text-decoration: none;
+        margin: 0 16px;
+      }
+      .footer-line {
+        width: 64px;
+        height: 2px;
+        background-color: #d4af36;
+        margin: 16px auto 8px;
+      }
+      .copyright {
+        font-size: 12px;
+        margin: 0;
+      }
+
+      /* Added responsive styles for mobile compatibility */
+      @media only screen and (max-width: 600px) {
+        .email-container {
+          padding: 16px;
+        }
+        .content-padding {
+          padding: 24px;
+        }
+        .brand-name {
+          font-size: 28px;
+        }
+        .main-title {
+          font-size: 20px;
+        }
+        .cta-button,
+        .cta-button-outline {
+          display: block;
+          margin: 8px auto;
+          width: 200px;
+        }
+        .progress-labels {
+          flex-direction: column;
+          gap: 4px;
+        }
+        .progress-label {
+          font-size: 10px;
+        }
+      }
+    </style>
   </head>
-  <body
-    style="
-      font-family: 'Nunito Sans', sans-serif;
-      margin: 0;
-      padding: 0;
-      min-height: 100vh;
-    "
-  >
-    <!-- Main Container -->
+  <body>
+    <!-- Updated table structure to match React component layout more closely -->
     <table
       width="100%"
       cellpadding="0"
       cellspacing="0"
-      style="min-height: 100vh"
+      border="0"
+      style="background-color: #ffffff"
     >
       <tr>
-        <td align="center" style="padding: 40px 20px">
-          <!-- Email Card -->
+        <td align="center">
           <table
-            width="100%"
-            max-width="600"
+            class="email-container"
             cellpadding="0"
             cellspacing="0"
-            style="
-              background: #ffffff;
-              border-radius: 20px;
-              box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
-              overflow: hidden;
-            "
+            border="0"
           >
-            <!-- Top Banner -->
             <tr>
-              <td
-                style="
-                  padding: 40px 30px;
-                  text-align: center;
-                  position: relative;
-                "
-              >
-                <!-- Background Pattern -->
-                <img
-                  src="https://irisi.store/assets/irisi-gold-CHIHiJA9.png"
-                  alt="ÌRÍSÍ Shop"
-                  style="width: 85px; height: auto"
-                />
-                <p
-                  style="
-                    color: #1a1a1a;
-                    margin: 0 0 10px 0;
-                    font-size: 16px;
-                    font-weight: bold;
-                  "
+              <td>
+                <!-- Header -->
+                <table
+                  width="100%"
+                  cellpadding="0"
+                  cellspacing="0"
+                  border="0"
+                  class="header"
                 >
-                  Dear Excellence, we're glad to inform you that your order has
-                  just been packed and should arrive in 2-5 days
-                </p>
+                  <tr>
+                    <td align="center">
+                      <img
+                        src="https://irisi.store/assets/irisi-gold-CHIHiJA9.png"
+                        alt="ÌRÍSÍ Shop"
+                        style="width: 85px; height: auto"
+                      />
+                    </td>
+                  </tr>
+                </table>
 
-                <!-- Status Icon -->
-                <div style="position: relative; z-index: 2">
-                  <div
-                    style="
-                      background: rgba(255, 255, 255, 0.2);
-                      border-radius: 50%;
-                      width: 100px;
-                      height: 100px;
-                      display: inline-flex;
-                      align-items: center;
-                      justify-content: center;
-                      margin-bottom: 20px;
-                      backdrop-filter: blur(10px);
-                      border: 2px solid rgba(255, 255, 255, 0.3);
-                    "
-                  >
-                    <span
-                      style="color: #ffffff; font-size: 40px; line-height: 1"
-                      >{{statusIcon}}</span
-                    >
-                  </div>
-
-                  <h1
-                    style="
-                      color: #ffffff;
-                      margin: 0 0 10px 0;
-                      font-size: 32px;
-                      font-weight: 800;
-                      text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-                    "
-                  >
-                    {{statusTitle}}
-                  </h1>
-
-                  <p
-                    style="
-                      color: #ffffff;
-                      margin: 0;
-                      font-size: 18px;
-                      opacity: 0.9;
-                      font-weight: 500;
-                    "
-                  >
-                    {{statusMessage}}
-                  </p>
-                </div>
-              </td>
-            </tr>
-
-            <!-- Order Info Card -->
-            <tr>
-              <td style="padding: 40px 30px">
-                <div
-                  style="
-                    background: linear-gradient(
-                      135deg,
-                      #f8fafc 0%,
-                      #f1f5f9 100%
-                    );
-                    border-radius: 16px;
-                    padding: 30px;
-                    border: 1px solid #e2e8f0;
-                  "
+                <!-- Main Content Card -->
+                <table
+                  width="100%"
+                  cellpadding="0"
+                  cellspacing="0"
+                  border="0"
+                  class="main-content"
                 >
-                  <!-- Order Header -->
-                  <div
-                    style="
-                      display: flex;
-                      align-items: center;
-                      margin-bottom: 25px;
-                    "
-                  >
-                    <div
-                      style="background: {{statusColor}}; border-radius: 50%; width: 50px; height: 50px; display: flex; align-items: center; justify-content: center; margin-right: 15px;"
-                    >
-                      <span style="color: #ffffff; font-size: 20px">📋</span>
-                    </div>
-                    <div>
-                      <h2
-                        style="
-                          color: #1e293b;
-                          margin: 0;
-                          font-size: 24px;
-                          font-weight: 700;
-                        "
+                  <tr>
+                    <td class="content-padding">
+                      <!-- Title Section -->
+                      <table
+                        width="100%"
+                        cellpadding="0"
+                        cellspacing="0"
+                        border="0"
+                        class="title-section"
                       >
-                        Order Information
-                      </h2>
-                      <p
-                        style="
-                          color: #64748b;
-                          margin: 5px 0 0 0;
-                          font-size: 14px;
-                        "
+                        <tr>
+                          <td align="center">
+                            <div class="status-icon">{{statusIcon}}</div>
+                            <h2 class="main-title">{{statusTitle}}</h2>
+                            <p class="subtitle">Hello {{customerName}},</p>
+                          </td>
+                        </tr>
+                      </table>
+
+                      <!-- Status Badge -->
+                      <table
+                        width="100%"
+                        cellpadding="0"
+                        cellspacing="0"
+                        border="0"
+                        style="margin-bottom: 24px"
                       >
-                        Track your order progress
+                        <tr>
+                          <td align="center">
+                            <span class="status-badge {{statusClass}}"
+                              >{{statusMessage}}</span
+                            >
+                          </td>
+                        </tr>
+                      </table>
+
+                      <!-- Order Details -->
+                      <table
+                        width="100%"
+                        cellpadding="0"
+                        cellspacing="0"
+                        border="0"
+                        class="order-details"
+                      >
+                        <tr>
+                          <td width="50%" style="vertical-align: top">
+                            <div class="detail-row">
+                              <div class="detail-label">Order Number</div>
+                              <div class="detail-value order-number">
+                                {{orderId}}
+                              </div>
+                            </div>
+                          </td>
+                          <td width="50%" style="vertical-align: top">
+                            <div class="detail-row">
+                              <div class="detail-label">Tracking Number</div>
+                              <div class="detail-value tracking-number">
+                                {{trackingId}}
+                              </div>
+                            </div>
+                          </td>
+                        </tr>
+                        <tr>
+                          <td colspan="2">
+                            <div class="detail-row">
+                              <div class="detail-label">Estimated Delivery</div>
+                              <div class="detail-value">2-4 days</div>
+                            </div>
+                          </td>
+                        </tr>
+                      </table>
+
+                      <!-- CTA Buttons -->
+                      <table
+                        width="100%"
+                        cellpadding="0"
+                        cellspacing="0"
+                        border="0"
+                        class="cta-section"
+                      >
+                        <tr>
+                          <td align="center">
+                            <a href="{{trackingUrl}}" class="cta-button"
+                              >Track Package</a
+                            >
+                            <!-- <a
+                              href="{{orderDetailsUrl}}"
+                              class="cta-button-outline"
+                              >View Order Details</a
+                            > -->
+                          </td>
+                        </tr>
+                      </table>
+                    </td>
+                  </tr>
+                </table>
+
+                <!-- Footer -->
+                <table
+                  width="100%"
+                  cellpadding="0"
+                  cellspacing="0"
+                  border="0"
+                  class="footer"
+                >
+                  <tr>
+                    <td align="center">
+                      <p class="footer-text">
+                        Questions about your order? Contact us at
+                        shopfromirisi@gmail.com
                       </p>
-                    </div>
-                  </div>
-
-                  <!-- Order Details Grid -->
-                  <div
-                    style="
-                      display: grid;
-                      grid-template-columns: 1fr 1fr;
-                      gap: 20px;
-                      margin-bottom: 25px;
-                    "
-                  >
-                    <div
-                      style="
-                        background: #ffffff;
-                        border-radius: 12px;
-                        padding: 20px;
-                        border: 1px solid #e2e8f0;
-                      "
-                    >
-                      <div
-                        style="
-                          color: #64748b;
-                          font-size: 12px;
-                          font-weight: 600;
-                          text-transform: uppercase;
-                          letter-spacing: 0.5px;
-                          margin-bottom: 8px;
-                        "
-                      >
-                        Order ID
+                      <p class="footer-text">
+                        Follow us for the latest collections and exclusive
+                        offers
+                      </p>
+                      <div class="social-links">
+                        <a
+                          href="https://www.instagram.com/shop_irisi"
+                          class="social-link"
+                          >Instagram</a
+                        >
                       </div>
-                      <div
-                        style="
-                          color: #1e293b;
-                          font-size: 16px;
-                          font-weight: 700;
-                        "
-                      >
-                        {{orderId}}
-                      </div>
-                    </div>
-
-                    <div
-                      style="
-                        background: #ffffff;
-                        border-radius: 12px;
-                        padding: 20px;
-                        border: 1px solid #e2e8f0;
-                      "
-                    >
-                      <div
-                        style="
-                          color: #64748b;
-                          font-size: 12px;
-                          font-weight: 600;
-                          text-transform: uppercase;
-                          letter-spacing: 0.5px;
-                          margin-bottom: 8px;
-                        "
-                      >
-                        Tracking ID
-                      </div>
-                      <div
-                        style="
-                          color: #1e293b;
-                          font-size: 16px;
-                          font-weight: 700;
-                        "
-                      >
-                        {{trackingId}}
-                      </div>
-                    </div>
-
-                    <div
-                      style="
-                        background: #ffffff;
-                        border-radius: 12px;
-                        padding: 20px;
-                        border: 1px solid #e2e8f0;
-                      "
-                    >
-                      <div
-                        style="
-                          color: #64748b;
-                          font-size: 12px;
-                          font-weight: 600;
-                          text-transform: uppercase;
-                          letter-spacing: 0.5px;
-                          margin-bottom: 8px;
-                        "
-                      >
-                        Order Date
-                      </div>
-                      <div
-                        style="
-                          color: #1e293b;
-                          font-size: 16px;
-                          font-weight: 600;
-                        "
-                      >
-                        {{orderDate}}
-                      </div>
-                    </div>
-
-                    <div
-                      style="
-                        background: #ffffff;
-                        border-radius: 12px;
-                        padding: 20px;
-                        border: 1px solid #e2e8f0;
-                      "
-                    >
-                      <div
-                        style="
-                          color: #64748b;
-                          font-size: 12px;
-                          font-weight: 600;
-                          text-transform: uppercase;
-                          letter-spacing: 0.5px;
-                          margin-bottom: 8px;
-                        "
-                      >
-                        Current Status
-                      </div>
-                      <div
-                        style="color: {{statusColor}}; font-size: 16px; font-weight: 700; background: {{statusColor}}15; padding: 6px 12px; border-radius: 20px; display: inline-block;"
-                      >
-                        {{currentStatus}}
-                      </div>
-                    </div>
-                  </div>
-
-                  <!-- Progress Bar -->
-                  <div style="margin-bottom: 25px">
-                    <div
-                      style="
-                        display: flex;
-                        justify-content: space-between;
-                        margin-bottom: 10px;
-                      "
-                    >
-                      <span
-                        style="
-                          color: #64748b;
-                          font-size: 14px;
-                          font-weight: 600;
-                        "
-                        >Order Progress</span
-                      >
-                      <span
-                        style="color: {{statusColor}}; font-size: 14px; font-weight: 700;"
-                        >{{progressPercentage}}%</span
-                      >
-                    </div>
-                    <div
-                      style="
-                        background: #e2e8f0;
-                        border-radius: 10px;
-                        height: 8px;
-                        overflow: hidden;
-                      "
-                    >
-                      <div
-                        style="background: linear-gradient(90deg, {{statusColor}} 0%, {{statusColor}}dd 100%); height: 100%; width: {{progressPercentage}}%; border-radius: 10px; transition: width 0.3s ease;"
-                      ></div>
-                    </div>
-                  </div>
-
-                  <!-- Action Button -->
-                  <div style="text-align: center">
-                    <a
-                      href="{{trackingUrl}}"
-                      style="display: inline-block; background: linear-gradient(135deg, {{statusColor}} 0%, {{statusColor}}dd 100%); color: #ffffff; text-decoration: none; padding: 16px 32px; border-radius: 12px; font-weight: 700; font-size: 16px; box-shadow: 0 4px 15px {{statusColor}}40; transition: all 0.3s ease;"
-                    >
-                      🚀 Track Your Order
-                    </a>
-                  </div>
-                </div>
-              </td>
-            </tr>
-
-            <!-- Brand Section -->
-            <tr>
-              <td style="padding: 0 30px 30px 30px">
-                <div
-                  style="
-                    background: linear-gradient(
-                      135deg,
-                      #1e293b 0%,
-                      #334155 100%
-                    );
-                    border-radius: 16px;
-                    padding: 30px;
-                    text-align: center;
-                    color: #ffffff;
-                  "
-                >
-                  <h2
-                    style="
-                      color: #ffffff;
-                      margin: 0 0 10px 0;
-                      font-size: 28px;
-                      font-weight: 800;
-                    "
-                  >
-                    ÌRÍSÍ
-                  </h2>
-                  <p
-                    style="
-                      color: #cbd5e1;
-                      margin: 0 0 20px 0;
-                      font-size: 16px;
-                      font-weight: 500;
-                    "
-                  >
-                    Your Style, Your Story
-                  </p>
-                  <div
-                    style="display: flex; justify-content: center; gap: 20px"
-                  >
-                    <div
-                      style="
-                        background: rgba(255, 255, 255, 0.1);
-                        border-radius: 50%;
-                        width: 40px;
-                        height: 40px;
-                        display: flex;
-                        align-items: center;
-                        justify-content: center;
-                      "
-                    >
-                      <span style="font-size: 18px">👗</span>
-                    </div>
-                    <div
-                      style="
-                        background: rgba(255, 255, 255, 0.1);
-                        border-radius: 50%;
-                        width: 40px;
-                        height: 40px;
-                        display: flex;
-                        align-items: center;
-                        justify-content: center;
-                      "
-                    >
-                      <span style="font-size: 18px">✨</span>
-                    </div>
-                    <div
-                      style="
-                        background: rgba(255, 255, 255, 0.1);
-                        border-radius: 50%;
-                        width: 40px;
-                        height: 40px;
-                        display: flex;
-                        align-items: center;
-                        justify-content: center;
-                      "
-                    >
-                      <span style="font-size: 18px">💎</span>
-                    </div>
-                  </div>
-                </div>
-              </td>
-            </tr>
-
-            <!-- Support Section -->
-            <tr>
-              <td style="padding: 0 30px 40px 30px">
-                <div
-                  style="
-                    background: #f8fafc;
-                    border-radius: 16px;
-                    padding: 30px;
-                    border: 1px solid #e2e8f0;
-                  "
-                >
-                  <h3
-                    style="
-                      color: #1e293b;
-                      margin: 0 0 20px 0;
-                      font-size: 20px;
-                      font-weight: 700;
-                      text-align: center;
-                    "
-                  >
-                    Need Help?
-                  </h3>
-
-                  <div
-                    style="
-                      display: grid;
-                      grid-template-columns: 1fr 1fr;
-                      gap: 20px;
-                    "
-                  >
-                    <div style="text-align: center">
-                      <div
-                        style="
-                          background: #3b82f6;
-                          border-radius: 50%;
-                          width: 50px;
-                          height: 50px;
-                          display: inline-flex;
-                          align-items: center;
-                          justify-content: center;
-                          margin-bottom: 10px;
-                        "
-                      >
-                        <span style="color: #ffffff; font-size: 20px">📧</span>
-                      </div>
-                      <div
-                        style="
-                          color: #1e293b;
-                          font-weight: 600;
-                          margin-bottom: 5px;
-                        "
-                      >
-                        Email Support
-                      </div>
-                      <a
-                        href="mailto:support@irisi.store"
-                        style="
-                          color: #3b82f6;
-                          text-decoration: none;
-                          font-size: 14px;
-                        "
-                        >support@irisi.store</a
-                      >
-                    </div>
-
-                    <div style="text-align: center">
-                      <div
-                        style="
-                          background: #10b981;
-                          border-radius: 50%;
-                          width: 50px;
-                          height: 50px;
-                          display: inline-flex;
-                          align-items: center;
-                          justify-content: center;
-                          margin-bottom: 10px;
-                        "
-                      >
-                        <span style="color: #ffffff; font-size: 20px">📞</span>
-                      </div>
-                      <div
-                        style="
-                          color: #1e293b;
-                          font-weight: 600;
-                          margin-bottom: 5px;
-                        "
-                      >
-                        Call Us
-                      </div>
-                      <a
-                        href="tel:+2348074892850"
-                        style="
-                          color: #10b981;
-                          text-decoration: none;
-                          font-size: 14px;
-                        "
-                        >+234 807 489 2850</a
-                      >
-                    </div>
-                  </div>
-                </div>
-              </td>
-            </tr>
-
-            <!-- Footer -->
-            <tr>
-              <td
-                style="background: #1e293b; padding: 30px; text-align: center"
-              >
-                <p
-                  style="
-                    color: #cbd5e1;
-                    margin: 0;
-                    font-size: 14px;
-                    font-weight: 500;
-                  "
-                >
-                  Thank you for choosing ÌRÍSÍ! ❤️
-                </p>
-                <div style="margin-top: 15px">
-                  <span style="color: #64748b; font-size: 12px"
-                    >© 2024 ÌRÍSÍ. All rights reserved.</span
-                  >
-                </div>
+                      <div class="footer-line"></div>
+                      <p class="copyright">
+                        © 2025 ÌRÍSÍ. All rights reserved.
+                      </p>
+                    </td>
+                  </tr>
+                </table>
               </td>
             </tr>
           </table>
         </td>
       </tr>
     </table>
+
+    <!-- Template Variables Guide -->
+    <!--
+    Replace these variables with actual data:
+    
+    [STATUS_ICON] - Emoji based on status: ⚡ (processing), 🚚 (shipped), ✅ (delivered), ❌ (cancelled)
+    [STATUS_TITLE] - Title based on status: "Order Processing", "Order Shipped", "Order Delivered", "Order Cancelled"
+    [CUSTOMER_NAME] - Customer's first name
+    [STATUS_MESSAGE] - Brief status message
+    [STATUS_CLASS] - CSS class: status-processing, status-shipped, status-delivered, status-cancelled
+    [ORDER_NUMBER] - Order number
+    [TRACKING_NUMBER] - Tracking number (hide row if not available)
+    [ESTIMATED_DELIVERY] - Estimated delivery date (hide row if not available)
+    [STATUS_DESCRIPTION] - Detailed status description
+    [PROGRESS_STEP_2] - "progress-active" if processing/shipped/delivered, "progress-inactive" otherwise
+    [PROGRESS_STEP_3] - "progress-active" if shipped/delivered, "progress-inactive" otherwise
+    [PROGRESS_STEP_4] - "progress-active" if delivered, "progress-inactive" otherwise
+    [TRACKING_URL] - URL to tracking page
+    [ORDER_DETAILS_URL] - URL to order details page
+    -->
   </body>
 </html>
