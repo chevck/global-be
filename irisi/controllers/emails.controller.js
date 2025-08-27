@@ -89,7 +89,7 @@ module.exports = {
             "Your order is confirmed and being prepared for shipment. We're carefully packaging your items to ensure they arrive in perfect condition.",
           progressPercentage: 25,
         },
-        shipped: {
+        dispatched: {
           statusColor: "#3b82f6",
           statusIcon: "📦",
           statusTitle: "Order Shipped!",
@@ -125,8 +125,6 @@ module.exports = {
 
       const status = req.body.status?.toLowerCase();
       const config = statusConfigs[status] || statusConfigs["processing"];
-
-      console.log({ config });
 
       let htmlWithData = shippingStatusUpdateTemplate
         .replace(/{{statusColor}}/g, config.statusColor)
