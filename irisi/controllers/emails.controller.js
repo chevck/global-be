@@ -13,26 +13,35 @@ const shippingStatusUpdateTemplate = fs.readFileSync(
 module.exports = {
   successfulPurchaseMail: async (req, res) => {
     try {
-      let itemsHtml = (req.body.items ?? []).map(
-        (item, index) => `
-	            <tr key={${index}}>
-                          <td width="70%">
-                            <div class="item-name">${item.name}</div>
-                            <div class="item-quantity">
-                              Quantity: ${item.quantity}
-                            </div>
-                            ${
-                              item.color &&
-                              `(
-                                <div class='item-quantity'>
-                                  Color: ${item.quantity}
-                                </div>
-                              )`
-                            }
+      let itemsHtml = (req.body.items ?? [])
+        .map(
+          (item, index) => `
+                        <tr>
+                          <td class="item-row">
+                            <table width="100%" cellpadding="0" cellspacing="0" border="0">
+                              <tr>
+                                <td width="70%" style="padding: 12px 0;">
+                                  <div class="item-name">${item.name}</div>
+                                  <div class="item-quantity">
+                                    Quantity: ${item.quantity}
+                                  </div>
+                                  ${
+                                    item.color
+                                      ? `<div class="item-quantity">
+                                          Color: ${item.color}
+                                        </div>`
+                                      : ""
+                                  }
+                                </td>
+                                <td width="30%" class="item-price">${
+                                  item.price
+                                }</td>
+                              </tr>
+                            </table>
                           </td>
-                          <td width="30%" class="item-price">${item.price}</td>
                         </tr>`
-      );
+        )
+        .join("");
       let htmlWithData = successfulPurchaseMailTemplate
         .replace("{{customerName}}", req.body?.customerName ?? "")
         .replace("{{orderId}}", req.body?.orderId ?? "")

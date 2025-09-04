@@ -228,6 +228,142 @@
         font-size: 12px;
         margin: 0;
       }
+
+      /* Mobile Responsive Styles */
+      @media only screen and (max-width: 600px) {
+        .email-container {
+          width: 100% !important;
+          max-width: 100% !important;
+        }
+
+        .main-content {
+          margin: 0 10px 20px !important;
+          border-radius: 0 !important;
+        }
+
+        .content-padding {
+          padding: 20px !important;
+        }
+
+        .header {
+          padding: 20px 10px 0 !important;
+        }
+
+        .brand-name {
+          font-size: 24px !important;
+        }
+
+        .main-title {
+          font-size: 20px !important;
+        }
+
+        .subtitle {
+          font-size: 16px !important;
+        }
+
+        .order-details {
+          padding: 16px !important;
+        }
+
+        .detail-row {
+          display: block !important;
+          width: 100% !important;
+          margin-bottom: 12px !important;
+        }
+
+        .detail-row td {
+          display: block !important;
+          width: 100% !important;
+          padding: 0 !important;
+        }
+
+        .item-row table {
+          width: 100% !important;
+        }
+
+        .item-row td {
+          display: block !important;
+          width: 100% !important;
+          padding: 8px 0 !important;
+          text-align: left !important;
+        }
+
+        .item-price {
+          text-align: left !important;
+          font-weight: bold !important;
+          margin-top: 8px !important;
+        }
+
+        .summary-row td {
+          display: block !important;
+          width: 100% !important;
+          text-align: left !important;
+          padding: 4px 0 !important;
+        }
+
+        .summary-value {
+          text-align: left !important;
+          font-weight: bold !important;
+        }
+
+        .total-row td {
+          display: block !important;
+          width: 100% !important;
+          text-align: left !important;
+          padding: 8px 0 !important;
+        }
+
+        .total-value {
+          text-align: left !important;
+        }
+
+        .address-section {
+          padding: 12px !important;
+        }
+
+        .cta-button {
+          padding: 14px 24px !important;
+          font-size: 16px !important;
+          width: 100% !important;
+          box-sizing: border-box !important;
+        }
+
+        .footer {
+          padding: 0 10px 20px !important;
+        }
+
+        .social-links {
+          margin: 12px 0 !important;
+        }
+
+        .social-link {
+          display: block !important;
+          margin: 8px 0 !important;
+        }
+      }
+
+      /* Additional mobile optimizations */
+      @media only screen and (max-width: 480px) {
+        .content-padding {
+          padding: 16px !important;
+        }
+
+        .order-details {
+          padding: 12px !important;
+        }
+
+        .main-title {
+          font-size: 18px !important;
+        }
+
+        .subtitle {
+          font-size: 14px !important;
+        }
+
+        .brand-name {
+          font-size: 20px !important;
+        }
+      }
     </style>
   </head>
   <body>
@@ -296,7 +432,12 @@
                   <tr>
                     <td width="50%" class="detail-row">
                       <div class="detail-label">Order Number</div>
-                      <div class="detail-value order-number">{{orderId}}</div>
+                      <div
+                        class="detail-value order-number"
+                        style="text-transform: uppercase"
+                      >
+                        {{orderId}}
+                      </div>
                     </td>
                     <td width="50%" class="detail-row">
                       <div class="detail-label">Order Date</div>
@@ -356,19 +497,19 @@
                 >
                   <tr class="summary-row">
                     <td class="summary-label">Subtotal</td>
-                    <td class="summary-value">${{subtotal}}</td>
+                    <td class="summary-value">{{subtotal}}</td>
                   </tr>
                   <tr class="summary-row">
                     <td class="summary-label">Shipping</td>
-                    <td class="summary-value">${{shipping}}</td>
+                    <td class="summary-value">{{shipping}}</td>
                   </tr>
                   <tr class="summary-row">
                     <td class="summary-label">Tax</td>
-                    <td class="summary-value">${{tax}}</td>
+                    <td class="summary-value">{{tax}}</td>
                   </tr>
                   <tr class="total-row">
                     <td class="total-label">Total</td>
-                    <td class="total-value">${{total}}</td>
+                    <td class="total-value">{{total}}</td>
                   </tr>
                 </table>
 
