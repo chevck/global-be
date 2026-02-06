@@ -3,7 +3,7 @@ const Schema = mongoose.Schema;
 
 const subjectSchema = new Schema(
   {
-    name: String,
+    name: { type: String, unique: false },
     description: String,
   },
   { _id: false }
@@ -11,7 +11,7 @@ const subjectSchema = new Schema(
 
 const classSchema = new Schema(
   {
-    className: String,
+    className: { type: String, unique: false },
     teacher: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "Teacher",
