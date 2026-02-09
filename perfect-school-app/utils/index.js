@@ -16,18 +16,27 @@ const teacherInviteTemplate = fs.readFileSync(
 );
 
 module.exports = {
-  sendEmail: async (email, subject, html) => {
+  sendEmail: async (email, subject, html, user) => {
+    let credentials =
+      user === "foundation"
+        ? {
+            user: process.env.FOUNDATION_GMAIL_MAIL_USER,
+            pass: process.env.FOUNDATION_GMAIL_APP_PASSWORD,
+          }
+        : {
+            user: process.env.GMAIL_MAIL_USER,
+            pass: process.env.GMAIL_APP_PASSWORD,
+          };
     const transporter = nodemailer.createTransport({
       service: "gmail",
       auth: {
-        user: process.env.GMAIL_MAIL_USER,
-        pass: process.env.GMAIL_APP_PASSWORD, // not your Gmail password
+        ...credentials,
       },
     });
 
     // Define mail options
     const mailOptions = {
-      from: process.env.GMAIL_MAIL_USER,
+      from: credentials.user,
       to: email,
       subject,
       html,

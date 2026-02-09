@@ -11,6 +11,7 @@ const examinationRoutes = require("./perfect-school-app/routes/examination.route
 const {
   checkAuthorization,
 } = require("./perfect-school-app/middlewares/checkAuthorization");
+const utilRoutes = require("./perfect-school-app/routes/utils.route");
 
 const app = express();
 app.use(cors());
@@ -51,6 +52,7 @@ app.listen(process.env.PORT || 5300, () =>
 app.use("/psa", schoolRoutes);
 app.use("/psa", teacherRoutes);
 app.use("/psa", examinationRoutes);
+app.use("/utils", utilRoutes);
 app.use("/psa", checkAuthorization, studentRoutes);
 app.use("/psa", checkAuthorization, billRoutes);
 

@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Task assigned to you</title>
+    <!--[if mso]>
+      <noscript>
+        <xml>
+          <o:OfficeDocumentSettings>
+            <o:PixelsPerInch>96</o:PixelsPerInch>
+          </o:OfficeDocumentSettings>
+        </xml>
+      </noscript>
+    <![endif]-->
+    <style>
+      body {
+        margin: 0;
+        padding: 0;
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+          "Helvetica Neue", Arial, sans-serif;
+        background-color: #f1f5f9;
+        color: #334155;
+        line-height: 1.5;
+      }
+      .wrapper {
+        max-width: 600px;
+        margin: 0 auto;
+        padding: 24px 16px;
+      }
+      .card {
+        background-color: #ffffff;
+        border-radius: 16px;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+        overflow: hidden;
+      }
+      .header {
+        background: linear-gradient(135deg, #059669 0%, #0d9488 100%);
+        padding: 28px 24px;
+        text-align: center;
+      }
+      .header h1 {
+        margin: 0;
+        font-size: 22px;
+        font-weight: 700;
+        color: #ffffff;
+        letter-spacing: -0.02em;
+      }
+      .header p {
+        margin: 8px 0 0;
+        font-size: 14px;
+        color: rgba(255, 255, 255, 0.9);
+      }
+      .body {
+        padding: 28px 24px;
+      }
+      .greeting {
+        font-size: 16px;
+        color: #334155;
+        margin-bottom: 20px;
+      }
+      .task-box {
+        background-color: #f8fafc;
+        border-radius: 12px;
+        border-left: 4px solid #059669;
+        padding: 20px;
+        margin: 20px 0;
+      }
+      .task-title {
+        font-size: 18px;
+        font-weight: 600;
+        color: #0f172a;
+        margin: 0 0 12px;
+      }
+      .task-meta {
+        font-size: 13px;
+        color: #64748b;
+        margin-bottom: 8px;
+      }
+      .task-meta strong {
+        color: #475569;
+      }
+      .task-description {
+        font-size: 14px;
+        color: #475569;
+        margin-top: 12px;
+        padding-top: 12px;
+        border-top: 1px solid #e2e8f0;
+        white-space: pre-wrap;
+      }
+      .task-description.empty {
+        font-style: italic;
+        color: #94a3b8;
+      }
+      .btn {
+        display: inline-block;
+        padding: 14px 28px;
+        margin: 24px 0 0;
+        font-size: 15px;
+        font-weight: 600;
+        text-decoration: none;
+        text-align: center;
+        color: #ffffff !important;
+        background: linear-gradient(135deg, #059669 0%, #0d9488 100%);
+        border-radius: 10px;
+        box-shadow: 0 2px 8px rgba(5, 150, 105, 0.35);
+      }
+      .btn:hover {
+        opacity: 0.95;
+      }
+      .footer {
+        padding: 20px 24px;
+        font-size: 12px;
+        color: #94a3b8;
+        text-align: center;
+        border-top: 1px solid #f1f5f9;
+      }
+      .footer a {
+        color: #059669;
+        text-decoration: none;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="wrapper">
+      <div class="card">
+        <div class="header">
+          <h1>New task assigned to you</h1>
+          <p>{{foundation_name}} – Foundation OS</p>
+        </div>
+
+        <div class="body">
+          <p class="greeting">Hi {{assignee_name}},</p>
+
+          <p>
+            You've been assigned to a task{{#if assigner_name}} by
+            {{assigner_name}}{{/if}}.
+          </p>
+
+          <div class="task-box">
+            <h2 class="task-title">{{task_title}}</h2>
+            <p class="task-meta">
+              <strong>Project:</strong> {{"project_name"}}
+            </p>
+            <p class="task-meta">
+              <strong>Due date:</strong> {{task_due_date}}
+            </p>
+            <p class="task-meta"><strong>Status:</strong> {{task_status}}</p>
+            {{#if task_description}}
+            <div class="task-description">{{task_description}}</div>
+            {{else}}
+            <div class="task-description empty">No description provided.</div>
+            {{/if}}
+          </div>
+
+          <p>
+            Open the project in Foundation OS to view details, update status, or
+            add comments.
+          </p>
+
+          <a href="{{task_url}}" class="btn">Go to Task</a>
+        </div>
+
+        <div class="footer">
+          This email was sent by Foundation OS. You received it because you're a
+          member of {{foundation_name}}.
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
