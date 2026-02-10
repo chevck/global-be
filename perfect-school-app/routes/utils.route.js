@@ -7,4 +7,19 @@ router.post(
   emailController.sendFoundationMemberInviteMail
 );
 
+router.post(
+  "/email/sendTaskNotificationMail",
+  emailController.sendTaskNotificationMail
+);
+
+router.post(
+  "/email/sendTaskDueReminderMail",
+  emailController.sendTaskDueReminderMail
+);
+
+router.post(
+  "/email/sendFoundationWelcomeMail",
+  emailController.sendFoundationWelcomeMail
+);
+
 module.exports = router;

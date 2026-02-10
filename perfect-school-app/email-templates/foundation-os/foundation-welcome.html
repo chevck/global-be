@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Task assigned to you</title>
+    <title>Welcome to Foundation OS</title>
     <!--[if mso]>
       <noscript>
         <xml>
@@ -78,7 +78,7 @@
                           letter-spacing: -0.5px;
                         "
                       >
-                        You have a new task
+                        Welcome to Foundation OS
                       </h1>
                       <p
                         style="
@@ -87,7 +87,7 @@
                           color: rgba(255, 255, 255, 0.9);
                         "
                       >
-                        {{ foundation_name }} – Foundation OS
+                        Your foundation is ready
                       </p>
                     </td>
                   </tr>
@@ -110,7 +110,7 @@
                           line-height: 1.6;
                         "
                       >
-                        Hi {{ assignee_name }},
+                        Hi {{ owner_name }},
                       </p>
                     </td>
                   </tr>
@@ -125,16 +125,14 @@
                           line-height: 1.6;
                         "
                       >
-                        {{#if assigner_name}}{{ assigner_name }} has assigned
-                        you a task on <strong>{{ foundation_name }}</strong
-                        >.{{else}}You've been assigned a new task on
-                        <strong>{{ foundation_name }}</strong>.{{/if}} Here are
-                        the details.
+                        Your foundation <strong>{{ foundation_name }}</strong> has
+                        been successfully registered on Foundation OS. You can
+                        now manage projects, tasks, and your team in one place.
                       </p>
                     </td>
                   </tr>
 
-                  <!-- Task details box -->
+                  <!-- Foundation info box -->
                   <tr>
                     <td style="padding-bottom: 24px">
                       <table
@@ -143,7 +141,7 @@
                         border="0"
                         width="100%"
                         style="
-                          background-color: #f8fafc;
+                          background-color: #f0fdf4;
                           border-radius: 12px;
                           border-left: 4px solid #059669;
                           box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
@@ -153,94 +151,54 @@
                           <td style="padding: 20px">
                             <p
                               style="
-                                font-size: 18px;
+                                font-size: 14px;
                                 font-weight: 600;
                                 color: #0f172a;
-                                margin: 0 0 16px 0;
+                                margin: 0 0 12px 0;
                               "
                             >
-                              {{ task_title }}
+                              What you can do with Foundation OS
                             </p>
-                            <table
-                              cellpadding="0"
-                              cellspacing="0"
-                              border="0"
-                              width="100%"
-                              style="font-size: 14px; color: #475569"
-                            >
-                              <tr>
-                                <td
-                                  style="
-                                    padding: 6px 0;
-                                    color: #64748b;
-                                    font-weight: 500;
-                                    width: 100px;
-                                  "
-                                >
-                                  Project
-                                </td>
-                                <td style="padding: 6px 0; color: #0f172a">
-                                  {{ project_name }}
-                                </td>
-                              </tr>
-                              <tr>
-                                <td
-                                  style="
-                                    padding: 6px 0;
-                                    color: #64748b;
-                                    font-weight: 500;
-                                  "
-                                >
-                                  Due date
-                                </td>
-                                <td style="padding: 6px 0; color: #0f172a">
-                                  {{ task_due_date }}
-                                </td>
-                              </tr>
-                              <tr>
-                                <td
-                                  style="
-                                    padding: 6px 0;
-                                    color: #64748b;
-                                    font-weight: 500;
-                                  "
-                                >
-                                  Status
-                                </td>
-                                <td style="padding: 6px 0; color: #0f172a">
-                                  {{ task_status }}
-                                </td>
-                              </tr>
-                            </table>
-                            {{#if task_description}}
                             <p
                               style="
                                 font-size: 14px;
                                 color: #475569;
-                                margin: 16px 0 0 0;
-                                padding-top: 16px;
-                                border-top: 1px solid #e2e8f0;
+                                margin: 0 0 8px 0;
                                 line-height: 1.5;
-                                white-space: pre-wrap;
                               "
                             >
-                              {{ task_description }}
+                              • Create and manage projects
                             </p>
-                            {{else}}
                             <p
                               style="
                                 font-size: 14px;
-                                color: #94a3b8;
-                                font-style: italic;
-                                margin: 16px 0 0 0;
-                                padding-top: 16px;
-                                border-top: 1px solid #e2e8f0;
+                                color: #475569;
+                                margin: 0 0 8px 0;
                                 line-height: 1.5;
                               "
                             >
-                              No description provided.
+                              • Assign tasks and track progress
                             </p>
-                            {{/if}}
+                            <p
+                              style="
+                                font-size: 14px;
+                                color: #475569;
+                                margin: 0 0 8px 0;
+                                line-height: 1.5;
+                              "
+                            >
+                              • Invite team members and collaborate
+                            </p>
+                            <p
+                              style="
+                                font-size: 14px;
+                                color: #475569;
+                                margin: 0;
+                                line-height: 1.5;
+                              "
+                            >
+                              • Keep everything organized in one workspace
+                            </p>
                           </td>
                         </tr>
                       </table>
@@ -257,8 +215,8 @@
                           line-height: 1.6;
                         "
                       >
-                        Open the task in Foundation OS to view full details,
-                        update the status, or add comments for your team.
+                        Sign in to your account to set up your first project and
+                        start inviting your team.
                       </p>
                     </td>
                   </tr>
@@ -267,7 +225,7 @@
                   <tr>
                     <td style="padding-bottom: 24px; text-align: center">
                       <a
-                        href="{{ task_url }}"
+                        href="{{ login_url }}"
                         style="
                           display: inline-block;
                           padding: 14px 28px;
@@ -284,7 +242,7 @@
                           border-radius: 10px;
                           box-shadow: 0 2px 8px rgba(5, 150, 105, 0.35);
                         "
-                        >View task</a
+                        >Access your account</a
                       >
                     </td>
                   </tr>
@@ -301,12 +259,12 @@
                           line-height: 1.5;
                         "
                       >
-                        If the button doesn't work, copy and paste this link into
-                        your browser:<br />
+                        If the button doesn't work, copy and paste this link
+                        into your browser:<br />
                         <a
-                          href="{{ task_url }}"
+                          href="{{ login_url }}"
                           style="color: #059669; text-decoration: none"
-                          >{{ task_url }}</a
+                          >{{ login_url }}</a
                         >
                       </p>
                     </td>
@@ -326,8 +284,8 @@
                   border-top: 1px solid #f1f5f9;
                 "
               >
-                This email was sent by Foundation OS. You received it because
-                you're a member of {{ foundation_name }}.
+                Welcome to Foundation OS. If you didn't create this foundation,
+                please contact support.
               </td>
             </tr>
           </table>
