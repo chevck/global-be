@@ -4,25 +4,25 @@ const path = require("path");
 const nodemailer = require("nodemailer");
 const memberInviteMailTemplate = fs.readFileSync(
   path.join(__dirname, "../email-templates/foundation-os/team-invite.html"),
-  "utf8"
+  "utf8",
 );
 const taskNotificatitonTemplate = fs.readFileSync(
   path.join(__dirname, "../email-templates/foundation-os/task-assigned.html"),
-  "utf8"
+  "utf8",
 );
 const taskDueReminderTemplate = fs.readFileSync(
   path.join(
     __dirname,
-    "../email-templates/foundation-os/task-due-reminder.html"
+    "../email-templates/foundation-os/task-due-reminder.html",
   ),
-  "utf8"
+  "utf8",
 );
 const foundationWelcomeTemplate = fs.readFileSync(
   path.join(
     __dirname,
-    "../email-templates/foundation-os/foundation-welcome.html"
+    "../email-templates/foundation-os/foundation-welcome.html",
   ),
-  "utf8"
+  "utf8",
 );
 
 module.exports = {
@@ -37,18 +37,18 @@ module.exports = {
         .replace("{{ foundation_name }}", foundationName)
         .replace(
           "{{ invite_url }}",
-          `${process.env.FOUNDATION_OS_FRONTEND_BASE_URL}/invite/${inviteToken}`
+          `${process.env.FOUNDATION_OS_FRONTEND_BASE_URL}/invite/${inviteToken}`,
         )
         .replace(
           "{{ invite_url_link }}",
-          `${process.env.FOUNDATION_OS_FRONTEND_BASE_URL}/invite/${inviteToken}`
+          `${process.env.FOUNDATION_OS_FRONTEND_BASE_URL}/invite/${inviteToken}`,
         )
         .replace("{{ role }}", role);
       await sendEmail(
         email,
         `You have been invited to join ${foundationName}`,
         htmlWithData,
-        "foundation"
+        "foundation",
       );
       return res.status(200).send("Email sent successfully");
     } catch (error) {
@@ -59,28 +59,35 @@ module.exports = {
   sendTaskNotificationMail: async (req, res) => {
     console.log("body", req.body);
     try {
-      const { foundationName, firstName, role, inviteToken, email } = req.body;
+      const {
+        foundationName,
+        assignees,
+        taskTitle,
+        projectTitle,
+        taskDueDate,
+        taskStatus,
+        taskUrl,
+      } = req.body;
       // req.body should contain emailTemplateTitle
-      const htmlWithData = memberInviteMailTemplate
-        .replace("{{ first_name }}", firstName)
-        .replace("{{ foundation_name }}", foundationName)
-        .replace("{{ foundation_name }}", foundationName)
-        .replace("{{ foundation_name }}", foundationName)
-        .replace(
-          "{{ invite_url }}",
-          `${process.env.FOUNDATION_OS_FRONTEND_BASE_URL}/invite/${inviteToken}`
-        )
-        .replace(
-          "{{ invite_url_link }}",
-          `${process.env.FOUNDATION_OS_FRONTEND_BASE_URL}/invite/${inviteToken}`
-        )
-        .replace("{{ role }}", role);
-      await sendEmail(
-        email,
-        `You have been invited to join ${foundationName}`,
-        htmlWithData,
-        "foundation"
-      );
+      await assignees.map(async (assignee) => {
+        const htmlWithData = taskNotificatitonTemplate
+          .replace("{{ foundation_name }}", foundationName)
+          .replace("{{ assignee_name }}", assignee.label)
+          .replace("{{ project_name }}", projectTitle)
+          .replace("{{ task_title }}", taskTitle)
+          .replace("{{ task_due_date }}", taskDueDate)
+          .replace("{{ task_status }}", taskStatus)
+          .replace("{{ task_url }}", taskUrl)
+          .replace("{{ task_url_link }}", taskUrl)
+          .replace("{{ task_url_link }}", taskUrl)
+          .replace("{{ foundation_name }}", foundationName);
+        await sendEmail(
+          assignee.email,
+          `You have been asked a task by ${foundationName}`,
+          htmlWithData,
+          "foundation",
+        );
+      });
       return res.status(200).send("Email sent successfully");
     } catch (error) {
       console.log({ error });
@@ -109,11 +116,11 @@ module.exports = {
         .replace(/\{\{\s*foundation_name\s\}\}/g, foundationName ?? "")
         .replace(
           /\{\{\s*reminder_heading\s\}\}/g,
-          reminderHeading ?? "Task due reminder"
+          reminderHeading ?? "Task due reminder",
         )
         .replace(
           /\{\{\s*reminder_intro\s\}\}/g,
-          reminderIntro ?? "You have a task that needs your attention."
+          reminderIntro ?? "You have a task that needs your attention.",
         )
         .replace(/\{\{\s*task_title\s\}\}/g, taskTitle ?? "")
         .replace(/\{\{\s*project_name\s\}\}/g, projectName ?? "")
@@ -126,7 +133,7 @@ module.exports = {
         (_, block) =>
           urgencyText != null && urgencyText !== ""
             ? block.replace(/\{\{\s*urgency_text\s\}\}/g, urgencyText)
-            : ""
+            : "",
       );
 
       // Optional: task_status block
@@ -135,7 +142,7 @@ module.exports = {
         (_, block) =>
           taskStatus != null && taskStatus !== ""
             ? block.replace(/\{\{\s*task_status\s\}\}/g, taskStatus)
-            : ""
+            : "",
       );
 
       // Optional: task_description block
@@ -144,14 +151,14 @@ module.exports = {
         (_, block) =>
           taskDescription != null && taskDescription !== ""
             ? block.replace(/\{\{\s*task_description\s\}\}/g, taskDescription)
-            : ""
+            : "",
       );
 
       await sendEmail(
         email,
         reminderHeading ?? "Task due reminder",
         htmlWithData,
-        "foundation"
+        "foundation",
       );
       return res.status(200).send("Email sent successfully");
     } catch (error) {
@@ -174,7 +181,7 @@ module.exports = {
         email,
         `Welcome to Foundation OS – ${foundationName} is ready`,
         htmlWithData,
-        "foundation"
+        "foundation",
       );
       return res.status(200).send("Email sent successfully");
     } catch (error) {

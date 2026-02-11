@@ -4,22 +4,22 @@ const emailController = require("../controllers/email.controller");
 
 router.post(
   "/email/sendMemberInviteMail",
-  emailController.sendFoundationMemberInviteMail
+  emailController.sendFoundationMemberInviteMail,
 );
 
 router.post(
   "/email/sendTaskNotificationMail",
-  emailController.sendTaskNotificationMail
+  emailController.sendTaskNotificationMail,
 );
 
 router.post(
   "/email/sendTaskDueReminderMail",
-  emailController.sendTaskDueReminderMail
+  emailController.sendTaskDueReminderMail,
 );
 
 router.post(
   "/email/sendFoundationWelcomeMail",
-  emailController.sendFoundationWelcomeMail
+  emailController.sendFoundationWelcomeMail,
 );
 
 module.exports = router;

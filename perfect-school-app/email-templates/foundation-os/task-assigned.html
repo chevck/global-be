@@ -125,11 +125,9 @@
                           line-height: 1.6;
                         "
                       >
-                        {{#if assigner_name}}{{ assigner_name }} has assigned
-                        you a task on <strong>{{ foundation_name }}</strong
-                        >.{{else}}You've been assigned a new task on
-                        <strong>{{ foundation_name }}</strong>.{{/if}} Here are
-                        the details.
+                        You've been assigned a new task on
+                        <strong>{{ foundation_name }}</strong>. Here are the
+                        details of the task.
                       </p>
                     </td>
                   </tr>
@@ -212,35 +210,6 @@
                                 </td>
                               </tr>
                             </table>
-                            {{#if task_description}}
-                            <p
-                              style="
-                                font-size: 14px;
-                                color: #475569;
-                                margin: 16px 0 0 0;
-                                padding-top: 16px;
-                                border-top: 1px solid #e2e8f0;
-                                line-height: 1.5;
-                                white-space: pre-wrap;
-                              "
-                            >
-                              {{ task_description }}
-                            </p>
-                            {{else}}
-                            <p
-                              style="
-                                font-size: 14px;
-                                color: #94a3b8;
-                                font-style: italic;
-                                margin: 16px 0 0 0;
-                                padding-top: 16px;
-                                border-top: 1px solid #e2e8f0;
-                                line-height: 1.5;
-                              "
-                            >
-                              No description provided.
-                            </p>
-                            {{/if}}
                           </td>
                         </tr>
                       </table>
@@ -301,12 +270,12 @@
                           line-height: 1.5;
                         "
                       >
-                        If the button doesn't work, copy and paste this link into
-                        your browser:<br />
+                        If the button doesn't work, copy and paste this link
+                        into your browser:<br />
                         <a
-                          href="{{ task_url }}"
+                          href="{{ task_url_link }}"
                           style="color: #059669; text-decoration: none"
-                          >{{ task_url }}</a
+                          >{{ task_url_link }}</a
                         >
                       </p>
                     </td>
