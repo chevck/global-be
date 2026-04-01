@@ -37,5 +37,5 @@ app.use((req, res, next) => {
 app.use(cors({ origin: "*", credentials: true }));
 
 app.listen(process.env.PORT || 6300, () =>
-  console.log("Server ready on port 5300."),
+  console.log("Server ready on port 6300."),
 );
