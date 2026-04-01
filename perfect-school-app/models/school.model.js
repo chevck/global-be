@@ -6,7 +6,7 @@ const subjectSchema = new Schema(
     name: { type: String, unique: false },
     description: String,
   },
-  { _id: false }
+  { _id: false },
 );
 
 const classSchema = new Schema(
@@ -17,7 +17,7 @@ const classSchema = new Schema(
       ref: "Teacher",
     },
   },
-  { _id: false }
+  { _id: false },
 );
 
 const SchoolSchema = new Schema({
@@ -45,10 +45,10 @@ const SchoolSchema = new Schema({
       isPrimary: Boolean,
     },
   ],
-  subjects: {
-    type: [subjectSchema],
-    default: [{ name: "Mathematics" }, { name: "English" }],
-  },
+  // subjects: {
+  //   type: [subjectSchema],
+  //   default: [{ name: "Mathematics" }, { name: "English" }],
+  // },
   classes: {
     type: [classSchema],
   },
