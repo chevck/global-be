@@ -29,11 +29,11 @@ const register = async (req, res) => {
       name,
     });
 
-    const token = signToken({ userId: user._id, project: "tasks" });
+    // const token = signToken({ userId: user._id, project: "tasks" });
 
     return res.status(201).json({
-      message: "Task user registered successfully.",
-      token,
+      message: "Task user registered successfully. Login to continue",
+      // token,
       user: {
         id: user._id,
         email: user.email,
