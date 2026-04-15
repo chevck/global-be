@@ -24,6 +24,7 @@ const studentSchema = new mongoose.Schema({
     required: true,
   },
   parents: [{ type: mongoose.Schema.ObjectId, ref: "Parents" }],
+  bills: [{ type: mongoose.Schema.Types.ObjectId, ref: "Bill" }],
   createdAt: { type: Date, default: new Date() },
 });
 

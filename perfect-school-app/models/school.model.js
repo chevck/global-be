@@ -38,20 +38,36 @@ const SchoolSchema = new Schema({
   currency: { type: String },
   schoolBankAccounts: [
     {
-      bankName: String,
-      accountNumber: String,
+      bankName: { type: String, trim: true, lowercase: true },
+      accountNumber: { type: String, trim: true },
       accountName: String,
       accountType: String,
       isPrimary: Boolean,
     },
   ],
-  // subjects: {
-  //   type: [subjectSchema],
-  //   default: [{ name: "Mathematics" }, { name: "English" }],
-  // },
+  subjects: {
+    type: [subjectSchema],
+    // NOTE: Keep empty by default to avoid duplicate-key errors if a stale
+    // unique index on `subjects.name` exists in the database.
+    default: [],
+  },
   classes: {
     type: [classSchema],
   },
 });
+
+// Enforce: no two schools can share the same (bankName, accountNumber) pair,
+// and a single school can't add the same pair twice.
+SchoolSchema.index(
+  { "schoolBankAccounts.bankName": 1, "schoolBankAccounts.accountNumber": 1 },
+  {
+    unique: true,
+    name: "uniq_school_bank_account_pair",
+    partialFilterExpression: {
+      "schoolBankAccounts.bankName": { $type: "string", $ne: "" },
+      "schoolBankAccounts.accountNumber": { $type: "string", $ne: "" },
+    },
+  },
+);
 
 module.exports = mongoose.model("School", SchoolSchema);

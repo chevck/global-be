@@ -8,11 +8,7 @@ const BillingSchema = new Schema({
     ref: "School",
     required: true,
   },
-  studentId: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "Student",
-    required: true,
-  },
+  sharedWithStudents: [{ type: mongoose.Schema.Types.ObjectId, ref: "Student" }],
   billItems: [
     {
       item: { type: String, required: true },
@@ -44,7 +40,7 @@ const BillingSchema = new Schema({
   isDraft: { type: Boolean, default: false },
   billLayoutType: {
     type: String,
-    enum: ["standard", "modern", "minimal"],
+    enum: ["standard", "modern", "minimalist"],
     default: "standard",
   },
   totalAmount: { type: Number, min: 0 },

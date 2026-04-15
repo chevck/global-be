@@ -3,6 +3,7 @@ const router = express.Router();
 const billsController = require("../controllers/bills.controller");
 
 router.post("/bill", billsController.create);
+router.post("/bill/:id/share", billsController.share);
 router.get("/bills", billsController.fetchAll);
 router.get("/bill/:id", billsController.fetchBill);
 router.get("/bills/stats", billsController.stats);
