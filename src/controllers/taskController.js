@@ -1,18 +1,21 @@
 const TaskUser = require("../models/taskUserModel");
 const Task = require("../models/taskModel");
-const {
-  hashPassword,
-  comparePassword,
-  signToken,
-} = require("../utils/auth");
+const { hashPassword, comparePassword, signToken } = require("../utils/auth");
 
 const register = async (req, res) => {
   try {
     const { email, password, name } = req.body;
 
     if (!email || !password) {
-      return res.status(400).json({ message: "Email and password are required." });
+      return res
+        .status(400)
+        .json({ message: "Email and password are required." });
     }
+
+    if (!name)
+      return res
+        .status(400)
+        .json({ message: "Name is required to create account" });
 
     const existingUser = await TaskUser.findOne({ email: email.toLowerCase() });
 
@@ -47,7 +50,9 @@ const login = async (req, res) => {
     const { email, password } = req.body;
 
     if (!email || !password) {
-      return res.status(400).json({ message: "Email and password are required." });
+      return res
+        .status(400)
+        .json({ message: "Email and password are required." });
     }
 
     const user = await TaskUser.findOne({ email: email.toLowerCase() });
@@ -154,7 +159,10 @@ const updateTask = async (req, res) => {
 const deleteTask = async (req, res) => {
   try {
     const { taskId } = req.params;
-    const task = await Task.findOneAndDelete({ _id: taskId, user: req.user._id });
+    const task = await Task.findOneAndDelete({
+      _id: taskId,
+      user: req.user._id,
+    });
 
     if (!task) {
       return res.status(404).json({ message: "Task not found." });
