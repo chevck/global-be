@@ -87,6 +87,14 @@ const createTask = async (req, res) => {
   try {
     const { title, description, dueDate } = req.body;
 
+    if (!title || !description || !dueDate) {
+      return res
+        .status(200)
+        .json({
+          message: "You need to supply the title, description and due date",
+        });
+    }
+
     if (!title) {
       return res.status(400).json({ message: "Task title is required." });
     }
