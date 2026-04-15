@@ -11,10 +11,36 @@ const app = express();
 const port = process.env.PORT || 6300;
 const mongoURI = process.env.MONGOURI;
 
-app.use(cors({ origin: "*", credentials: true }));
+console.log({ port });
+
 app.use(morgan("dev"));
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
+app.use((req, res, next) => {
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header(
+    "Access-Control-Allow-Headers",
+    "Origin, X-Requested, Content-Type, Accept Authorization",
+  );
+  if (req.method === "OPTIONS") {
+    res.header("Access-Control-Allow-Methods", "POST, PUT, PATCH, GET, DELETE");
+    return res.status(200).json({});
+  }
+  next();
+});
+app.use(cors({ origin: "*", credentials: true }));
+
+mongoose
+  .connect(mongoURI)
+  .then(() => {
+    console.log("Connected to MongoDB");
+    app.listen(port, () => {
+      console.log(`Server ready on port ${port}.`);
+    });
+  })
+  .catch((error) => {
+    console.error("MongoDB connection error:", error.message);
+  });
 
 app.get("/", (_req, res) => {
   res.json({
@@ -37,14 +63,4 @@ app.use((err, _req, res, _next) => {
   });
 });
 
-mongoose
-  .connect(mongoURI)
-  .then(() => {
-    console.log("Connected to MongoDB");
-    app.listen(port, () => {
-      console.log(`Server ready on port ${port}.`);
-    });
-  })
-  .catch((error) => {
-    console.error("MongoDB connection error:", error.message);
-  });
+module.exports = app;
