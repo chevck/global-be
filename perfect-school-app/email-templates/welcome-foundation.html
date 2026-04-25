@@ -1,0 +1,541 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Welcome to Foundation OS</title>
+    <!--[if mso]>
+      <noscript>
+        <xml>
+          <o:OfficeDocumentSettings>
+            <o:PixelsPerInch>96</o:PixelsPerInch>
+          </o:OfficeDocumentSettings>
+        </xml>
+      </noscript>
+    <![endif]-->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      body {
+        margin: 0;
+        padding: 0;
+        font-family:
+          "Plus Jakarta Sans",
+          -apple-system,
+          BlinkMacSystemFont,
+          "Segoe UI",
+          Roboto,
+          "Helvetica Neue",
+          Arial,
+          sans-serif;
+        background-color: #faf7f2;
+        color: #475569;
+        line-height: 1.55;
+        -webkit-font-smoothing: antialiased;
+      }
+      .wrapper {
+        max-width: 560px;
+        margin: 0 auto;
+        padding: 32px 16px 0;
+      }
+      .card {
+        background-color: #ffffff;
+        border: 1px solid #e7e5e4;
+        border-radius: 16px;
+        box-shadow: 0 1px 2px rgba(15, 23, 42, 0.04);
+        overflow: hidden;
+      }
+
+      /* ---------- Top: centered logo + title + subtitle ---------- */
+      .hero {
+        padding: 40px 32px 24px;
+        text-align: center;
+      }
+      .logo {
+        display: inline-block;
+        line-height: 0;
+        margin-bottom: 20px;
+      }
+      .title {
+        margin: 0;
+        font-size: 22px;
+        font-weight: 700;
+        color: #0f172a;
+        letter-spacing: -0.015em;
+      }
+      .subtitle {
+        margin: 8px 0 0;
+        font-size: 14px;
+        color: #64748b;
+      }
+
+      /* ---------- Body ---------- */
+      .body {
+        padding: 8px 32px 28px;
+      }
+      .greeting {
+        font-size: 15px;
+        color: #0f172a;
+        margin: 0 0 14px;
+        font-weight: 500;
+      }
+      .lede {
+        font-size: 14px;
+        color: #475569;
+        margin: 0;
+      }
+      .lede strong {
+        color: #0f172a;
+        font-weight: 600;
+      }
+
+      /* ---------- CTA ---------- */
+      .cta-wrap {
+        text-align: center;
+        margin: 28px 0 14px;
+      }
+      .btn {
+        display: inline-block;
+        padding: 13px 28px;
+        font-size: 14px;
+        font-weight: 600;
+        text-decoration: none;
+        color: #ffffff !important;
+        background-color: #059669;
+        border-radius: 10px;
+        box-shadow: 0 1px 2px rgba(5, 150, 105, 0.25);
+        letter-spacing: -0.005em;
+      }
+      .btn:hover {
+        background-color: #047857;
+      }
+      .fallback {
+        text-align: center;
+        font-size: 12px;
+        color: #94a3b8;
+        margin: 0 0 4px;
+      }
+      .fallback-url {
+        text-align: center;
+        font-size: 12px;
+        color: #059669;
+        word-break: break-all;
+        margin: 0 0 4px;
+      }
+      .fallback-url a {
+        color: #059669;
+        text-decoration: none;
+      }
+
+      /* ---------- Notice box (plan details) ---------- */
+      .notice {
+        margin: 20px 0 0;
+        padding: 14px 16px;
+        background-color: #f5f5f4;
+        border: 1px solid #e7e5e4;
+        border-radius: 10px;
+      }
+      .notice-row {
+        display: table;
+        width: 100%;
+      }
+      .notice-icon {
+        display: table-cell;
+        width: 22px;
+        vertical-align: top;
+        padding-top: 2px;
+      }
+      .notice-content {
+        display: table-cell;
+        vertical-align: top;
+        padding-left: 10px;
+      }
+      .notice-title {
+        font-size: 13px;
+        font-weight: 700;
+        color: #0f172a;
+        margin: 0 0 2px;
+      }
+      .notice-title .pill {
+        display: inline-block;
+        margin-left: 6px;
+        padding: 1px 8px;
+        font-size: 10px;
+        font-weight: 600;
+        letter-spacing: 0.04em;
+        color: #047857;
+        background-color: #ecfdf5;
+        border: 1px solid #a7f3d0;
+        border-radius: 999px;
+        vertical-align: middle;
+      }
+      .notice-desc {
+        font-size: 13px;
+        color: #475569;
+        margin: 0;
+      }
+      .notice-features {
+        margin: 10px 0 0;
+        padding: 0;
+        list-style: none;
+      }
+      .notice-features li {
+        font-size: 12.5px;
+        color: #475569;
+        padding: 3px 0 3px 20px;
+        position: relative;
+      }
+      .notice-features li::before {
+        content: "✓";
+        position: absolute;
+        left: 0;
+        top: 3px;
+        width: 14px;
+        height: 14px;
+        line-height: 14px;
+        font-size: 9px;
+        text-align: center;
+        color: #047857;
+        background-color: #d1fae5;
+        border-radius: 999px;
+        font-weight: 700;
+      }
+      .notice-meta {
+        font-size: 12px;
+        color: #64748b;
+        margin: 8px 0 0;
+      }
+
+      /* ---------- Divider ---------- */
+      .divider {
+        border: 0;
+        border-top: 1px solid #e7e5e4;
+        margin: 28px 0 22px;
+      }
+
+      /* ---------- Help/Getting started ---------- */
+      .help-title {
+        font-size: 15px;
+        font-weight: 700;
+        color: #0f172a;
+        margin: 0 0 6px;
+      }
+      .help-desc {
+        font-size: 13px;
+        color: #64748b;
+        margin: 0 0 14px;
+      }
+      .help-row {
+        display: table;
+        width: 100%;
+        padding: 6px 0;
+      }
+      .help-row-icon {
+        display: table-cell;
+        width: 26px;
+        vertical-align: top;
+        padding-top: 1px;
+      }
+      .help-row-icon .step {
+        display: inline-block;
+        width: 20px;
+        height: 20px;
+        line-height: 20px;
+        text-align: center;
+        font-size: 11px;
+        font-weight: 700;
+        color: #047857;
+        background-color: #d1fae5;
+        border-radius: 999px;
+      }
+      .help-row-content {
+        display: table-cell;
+        vertical-align: top;
+        font-size: 13.5px;
+        color: #334155;
+      }
+      .help-row-content strong {
+        color: #0f172a;
+        font-weight: 600;
+      }
+      .support-line {
+        font-size: 13px;
+        color: #64748b;
+        margin: 18px 0 0;
+      }
+      .support-line a {
+        color: #047857;
+        text-decoration: none;
+        font-weight: 500;
+      }
+
+      /* ---------- Footer ---------- */
+      .footer {
+        max-width: 560px;
+        margin: 16px auto 0;
+        background-color: #0f172a;
+        border-radius: 16px;
+        padding: 22px 28px 24px;
+        text-align: center;
+      }
+      .footer-brand {
+        display: inline-block;
+        line-height: 0;
+        margin-bottom: 10px;
+      }
+      .footer-name {
+        font-size: 13px;
+        font-weight: 700;
+        color: #ffffff;
+        letter-spacing: -0.005em;
+        margin: 0 0 2px;
+      }
+      .footer-meta {
+        font-size: 11.5px;
+        color: #94a3b8;
+        margin: 0 0 12px;
+        line-height: 1.5;
+      }
+      .footer-links {
+        font-size: 11.5px;
+        color: #cbd5e1;
+        margin: 0;
+      }
+      .footer-links a {
+        color: #cbd5e1;
+        text-decoration: none;
+        padding: 0 6px;
+      }
+      .footer-links a:hover {
+        color: #ffffff;
+      }
+      .footer-sep {
+        color: #334155;
+      }
+      .footer-bottom {
+        max-width: 560px;
+        margin: 12px auto 32px;
+        padding: 0 28px;
+        text-align: center;
+        font-size: 11px;
+        color: #94a3b8;
+      }
+
+      @media (max-width: 520px) {
+        .hero,
+        .body {
+          padding-left: 22px;
+          padding-right: 22px;
+        }
+        .title {
+          font-size: 20px;
+        }
+        .footer {
+          border-radius: 0;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="wrapper">
+      <div class="card">
+        <!-- Hero: centered logo, title, subtitle -->
+        <div class="hero">
+          <div class="logo">
+            <!-- Inline Foundation OS mark — mirrors public/foundation-os-icon.svg. -->
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="44"
+              height="44"
+              viewBox="0 0 64 64"
+              fill="none"
+            >
+              <rect
+                x="8"
+                y="8"
+                width="16"
+                height="48"
+                rx="3.5"
+                fill="#059669"
+              ></rect>
+              <rect
+                x="28"
+                y="8"
+                width="28"
+                height="16"
+                rx="3.5"
+                fill="#059669"
+              ></rect>
+              <rect
+                x="28"
+                y="28"
+                width="22"
+                height="14"
+                rx="3.5"
+                fill="#059669"
+              ></rect>
+            </svg>
+          </div>
+          <h1 class="title">Welcome to Foundation OS</h1>
+          <p class="subtitle">Thanks for registering {{foundation_name}}</p>
+        </div>
+
+        <!-- Body -->
+        <div class="body">
+          <p class="greeting">Hello {{first_name}},</p>
+
+          <p class="lede">
+            <strong>{{foundation_name}}</strong> is now set up on Foundation OS.
+            Everything you need to run your programs &mdash; projects, team,
+            finances and impact &mdash; lives in one calm, organised place from
+            here. Sign in below to start exploring your new workspace.
+          </p>
+
+          <!-- CTA -->
+          <div class="cta-wrap">
+            <a href="{{login_url}}" class="btn">Sign in to your dashboard</a>
+          </div>
+
+          <p class="fallback">Or copy and paste this link into your browser:</p>
+          <p class="fallback-url">
+            <a href="{{login_url}}">{{login_url}}</a>
+          </p>
+
+          <!-- Plan notice box (styled like the "Security Notice" pattern) -->
+          <div class="notice">
+            <div class="notice-row">
+              <div class="notice-icon">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="16"
+                  height="16"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="#047857"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
+                  <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+                </svg>
+              </div>
+              <div class="notice-content">
+                <p class="notice-title">
+                  Your plan <span class="pill">{{plan_name}}</span>
+                </p>
+                <p class="notice-desc">
+                  You&rsquo;re on the <strong>{{plan_name}}</strong> plan
+                  &mdash; {{plan_price}}.
+                </p>
+                {{#if next_charge_date}}
+                <p class="notice-meta">
+                  Next billing date:
+                  <strong>{{next_charge_date}}</strong>. Manage or cancel
+                  anytime from Settings &rsaquo; Billing.
+                </p>
+                {{else}}
+                <p class="notice-meta">
+                  No card on file &mdash; upgrade whenever you&rsquo;re ready
+                  from Settings &rsaquo; Billing.
+                </p>
+                {{/if}}
+              </div>
+            </div>
+          </div>
+
+          <hr class="divider" />
+
+          <!-- Getting started (Help-style) -->
+          <p class="help-title">Getting Started</p>
+          <p class="help-desc">
+            Three quick wins to get the most out of Foundation OS:
+          </p>
+
+          <div class="help-row">
+            <div class="help-row-icon"><span class="step">1</span></div>
+            <div class="help-row-content">
+              <strong>Create your first project</strong> and set a milestone.
+            </div>
+          </div>
+          <div class="help-row">
+            <div class="help-row-icon"><span class="step">2</span></div>
+            <div class="help-row-content">
+              <strong>Invite your team</strong> &mdash; staff and volunteers.
+            </div>
+          </div>
+          <div class="help-row">
+            <div class="help-row-icon"><span class="step">3</span></div>
+            <div class="help-row-content">
+              <strong>Record a transaction</strong> to unlock finance reports.
+            </div>
+          </div>
+
+          <p class="support-line">
+            Need a hand? Reply to this email or write to
+            <a href="mailto:{{support_email}}">{{support_email}}</a>
+            &mdash; we read every message.
+          </p>
+        </div>
+      </div>
+
+      <!-- Dark footer -->
+      <div class="footer">
+        <div class="footer-brand">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="22"
+            height="22"
+            viewBox="0 0 64 64"
+            fill="none"
+          >
+            <rect
+              x="8"
+              y="8"
+              width="16"
+              height="48"
+              rx="3.5"
+              fill="#10b981"
+            ></rect>
+            <rect
+              x="28"
+              y="8"
+              width="28"
+              height="16"
+              rx="3.5"
+              fill="#10b981"
+            ></rect>
+            <rect
+              x="28"
+              y="28"
+              width="22"
+              height="14"
+              rx="3.5"
+              fill="#10b981"
+            ></rect>
+          </svg>
+        </div>
+        <p class="footer-name">Foundation OS</p>
+        <p class="footer-meta">
+          &copy; 2026 Foundation OS. Built for foundations doing meaningful
+          work.
+        </p>
+        <p class="footer-links">
+          <a href="{{login_url}}">Sign in</a>
+          <span class="footer-sep">&middot;</span>
+          <a href="mailto:{{support_email}}">Contact</a>
+          <span class="footer-sep">&middot;</span>
+          <a href="#">Privacy</a>
+          <span class="footer-sep">&middot;</span>
+          <a href="#">Terms</a>
+        </p>
+      </div>
+
+      <div class="footer-bottom">
+        You&rsquo;re receiving this because you created a Foundation OS account
+        for {{foundation_name}}.
+      </div>
+    </div>
+  </body>
+</html>
