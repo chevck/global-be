@@ -2,30 +2,26 @@ require("dotenv").config();
 const express = require("express");
 const morgan = require("morgan");
 const cors = require("cors");
-const mongoose = require("mongoose");
-const schoolRoutes = require("./perfect-school-app/routes/school.route");
-const studentRoutes = require("./perfect-school-app/routes/student.route");
-const teacherRoutes = require("./perfect-school-app/routes/teacher.route");
-const billRoutes = require("./perfect-school-app/routes/bills.route");
-const examinationRoutes = require("./perfect-school-app/routes/examination.route");
-const {
-  checkAuthorization,
-} = require("./perfect-school-app/middlewares/checkAuthorization");
-const utilRoutes = require("./perfect-school-app/routes/utils.route");
+// const mongoose = require("mongoose");
+// const schoolRoutes = require("./perfect-school-app/routes/school.route");
+// const {
+//   checkAuthorization,
+// } = require("./foundation-os/middlewares/checkAuthorization");
+const mailRoutes = require("./foundation-os/controllers/mails.controller");
 
 const app = express();
 app.use(cors());
 
-const mongoURI = process.env.MONGOURI;
-mongoose.connect(mongoURI);
+// const mongoURI = process.env.MONGOURI;
+// mongoose.connect(mongoURI);
 
-mongoose.connection.on("connected", async () => {
-  console.log("Connected to MongoDB");
-});
+// mongoose.connection.on("connected", async () => {
+//   console.log("Connected to MongoDB");
+// });
 
-mongoose.connection.on("error", (err) => {
-  // console.log("Error connecting to MongoDB:", err);
-});
+// mongoose.connection.on("error", (err) => {
+//   // console.log("Error connecting to MongoDB:", err);
+// });
 
 app.use(morgan("dev"));
 app.use(express.urlencoded({ extended: true }));
@@ -34,7 +30,7 @@ app.use((req, res, next) => {
   res.header("Access-Control-Allow-Origin", "*");
   res.header(
     "Access-Control-Allow-Headers",
-    "Origin, X-Requested, Content-Type, Accept Authorization"
+    "Origin, X-Requested, Content-Type, Accept Authorization",
   );
   if (req.method === "OPTIONS") {
     res.header("Access-Control-Allow-Methods", "POST, PUT, PATCH, GET, DELETE");
@@ -45,37 +41,21 @@ app.use((req, res, next) => {
 
 app.use(cors({ origin: "*", credentials: true }));
 
-app.listen(process.env.PORT || 5300, () =>
-  console.log("Server ready on port 5300.")
+app.listen(process.env.PORT || 4200, () =>
+  console.log("Server ready on port 4200."),
 );
 
-app.use("/psa", schoolRoutes);
-app.use("/psa", teacherRoutes);
-app.use("/psa", examinationRoutes);
-app.use("/utils", utilRoutes);
-app.use("/psa", checkAuthorization, studentRoutes);
-app.use("/psa", checkAuthorization, billRoutes);
+// app.use("/psa", schoolRoutes);
+// app.use("/psa", teacherRoutes);
+// app.use("/psa", examinationRoutes);
+// app.use("/utils", utilRoutes);
+// app.use("/psa", checkAuthorization, studentRoutes);
+// app.use("/psa", checkAuthorization, billRoutes);
 
-app.post("/test", async (req, res) => {
-  // const result = await sendRegisterEmail({
-  //   email: "oyeniranexcellenced@gmail.com",
-  //   schoolName: "Perfect School App",
-  //   password: "password123",
-  // });
-  // res.status(200).send(result);
-  //   const password = "password123";
-  //   const hashedPassword = await bcrypt.hash(password, 10);
-  //   console.log({ hashedPassword });
-  //   const isPasswordValid = await bcrypt.compare(password, hashedPassword);
-  //   console.log({ isPasswordValid });
-  //   // const resend = new Resend(process.env.RESEND_API_KEY);
-  //   // resend.emails.send({
-  //   //   from: "onboarding@resend.dev",
-  //   //   to: "oyeniranexcellenced@gmail.com",
-  //   //   subject: "Hello, welcome to Perfect School App",
-  //   //   html: "<p>Congrats on sending your <strong>first email</strong>!</p><p>This is a test email</p>",
-  //   // });
-  //   // res.send("Email sent");
-});
+// NB: if it crashes again, deploy to render
+
+app.use("/os-be/emails", mailRoutes);
+
+app.post("/test", async (req, res) => {});
 
 module.exports = app;
