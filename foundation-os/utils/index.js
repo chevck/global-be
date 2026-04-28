@@ -11,16 +11,18 @@ const FOUNDATION_OS_SUPPORT_EMAIL = "thefoundationoscompany@gmail.com";
 module.exports = {
   emailConfig: async (email, subject, html, user) => {
     const transporter = nodemailer.createTransport({
-      service: "gmail",
+      host: "smtp.gmail.com",
+      port: 587, // or 465 for SSL
+      secure: false,
       auth: {
-        user: process.env.FOUNDATION_GMAIL_MAIL_USER,
-        pass: process.env.FOUNDATION_GMAIL_APP_PASSWORD,
+        user: process.env.FOUNDATION_OS_SUPPORT_EMAIL,
+        pass: process.env.FOUNDATION_GMAIL_MAIL_PASSWORD,
       },
     });
 
     // Define mail options
     const mailOptions = {
-      from: credentials.user,
+      from: process.env.FOUNDATION_OS_SUPPORT_EMAIL,
       to: email,
       subject,
       html,
@@ -33,39 +35,31 @@ module.exports = {
       }
       console.log("Email sent:", info.response);
     });
-
-    // const resend = new Resend(process.env.RESEND_API_KEY);
-    // resend.emails.send({
-    //   from: "onboarding@resend.dev",
-    //   to: email,
-    //   subject,
-    //   html,
-    // });
   },
 
   sendWelcomeEmail: async (body) => {
     console.log("sending welcome mail", body);
     try {
       const htmlWithData = foundationWelcomeEmailTemplate
-        .replace("{{ foundation_name }}", body.ngoName)
-        .replace("{{ first_name }}", body.firstName)
-        .replace("{{ foundation_name }}", body.ngoName)
-        .replace("{{ login_url }}", body.loginUrl)
-        .replace("{{ login_url }}", body.loginUrl)
-        .replace("{{ plan_name }}", body.planName)
-        .replace("{{ plan_name }}", body.planName)
-        .replace("{{ plan_price }}", body.planPrice)
+        .replace("{{foundation_name}}", body.ngoName)
+        .replace("{{first_name}}", body.firstName)
+        .replace("{{foundation_name}}", body.ngoName)
+        .replace("{{login_url}}", body.loginUrl)
+        .replace("{{login_url}}", body.loginUrl)
+        .replace("{{plan_name}}", body.planName)
+        .replace("{{plan_name}}", body.planName)
+        .replace("{{plan_price}}", body.planPrice)
         .replace(
-          "{{ next_charge_date }}",
+          "{{next_charge_date}}",
           new Date(body.nextChargeDate).toLocaleDateString(),
         )
-        .replace("{{ support_email }}", FOUNDATION_OS_SUPPORT_EMAIL)
-        .replace("{{ support_email }}", FOUNDATION_OS_SUPPORT_EMAIL)
-        .replace("{{ login_url }}", body.loginUrl)
-        .replace("{{ support_email }}", FOUNDATION_OS_SUPPORT_EMAIL)
-        .replace("{{ foundation_name }}", body.ngoName);
+        .replace("{{support_email}}", FOUNDATION_OS_SUPPORT_EMAIL)
+        .replace("{{support_email}}", FOUNDATION_OS_SUPPORT_EMAIL)
+        .replace("{{login_url}}", body.loginUrl)
+        .replace("{{support_email}}", FOUNDATION_OS_SUPPORT_EMAIL)
+        .replace("{{foundation_name}}", body.ngoName);
       await module.exports.emailConfig(
-        body.adminEmail,
+        body.email,
         `${body.ngoName} - Welcome to The Foundation OS`,
         htmlWithData,
       );

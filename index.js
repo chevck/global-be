@@ -2,26 +2,14 @@ require("dotenv").config();
 const express = require("express");
 const morgan = require("morgan");
 const cors = require("cors");
-// const mongoose = require("mongoose");
-// const schoolRoutes = require("./perfect-school-app/routes/school.route");
 // const {
 //   checkAuthorization,
 // } = require("./foundation-os/middlewares/checkAuthorization");
-const mailRoutes = require("./foundation-os/controllers/mails.controller");
+const mailRoutes = require("./foundation-os/routes/mails.route");
+const paymentRoutes = require("./foundation-os/routes/payment.route");
 
 const app = express();
 app.use(cors());
-
-// const mongoURI = process.env.MONGOURI;
-// mongoose.connect(mongoURI);
-
-// mongoose.connection.on("connected", async () => {
-//   console.log("Connected to MongoDB");
-// });
-
-// mongoose.connection.on("error", (err) => {
-//   // console.log("Error connecting to MongoDB:", err);
-// });
 
 app.use(morgan("dev"));
 app.use(express.urlencoded({ extended: true }));
@@ -45,16 +33,9 @@ app.listen(process.env.PORT || 4200, () =>
   console.log("Server ready on port 4200."),
 );
 
-// app.use("/psa", schoolRoutes);
-// app.use("/psa", teacherRoutes);
-// app.use("/psa", examinationRoutes);
-// app.use("/utils", utilRoutes);
-// app.use("/psa", checkAuthorization, studentRoutes);
-// app.use("/psa", checkAuthorization, billRoutes);
-
 // NB: if it crashes again, deploy to render
-
-app.use("/os-be/emails", mailRoutes);
+app.use("/api/emails", mailRoutes);
+app.use("/api/payment", paymentRoutes);
 
 app.post("/test", async (req, res) => {});
 
