@@ -5,6 +5,18 @@ const foundationWelcomeEmailTemplate = fs.readFileSync(
   path.join(__dirname, "../email-templates/welcome-message.html"),
   "utf8",
 );
+const newWaitlistUserSignupEmailTemplate = fs.readFileSync(
+  path.join(__dirname, "../email-templates/waitlist-signup.html"),
+  "utf8",
+);
+const newTeamMemberInviteMessage = fs.readFileSync(
+  path.join(__dirname, "../email-templates/team-invite.html"),
+  "utf8",
+);
+const newUserNotificationMessage = fs.readFileSync(
+  path.join(__dirname, "../email-templates/new-user-signup.html"),
+  "utf8",
+);
 
 const FOUNDATION_OS_SUPPORT_EMAIL = "thefoundationoscompany@gmail.com";
 
@@ -37,33 +49,60 @@ module.exports = {
     });
   },
 
-  sendWelcomeEmail: async (body) => {
-    console.log("sending welcome mail", body);
+  sendWelcomeEmail: (body) => {
     try {
-      const htmlWithData = foundationWelcomeEmailTemplate
-        .replace("{{foundation_name}}", body.ngoName)
-        .replace("{{first_name}}", body.firstName)
-        .replace("{{foundation_name}}", body.ngoName)
-        .replace("{{login_url}}", body.loginUrl)
-        .replace("{{login_url}}", body.loginUrl)
-        .replace("{{plan_name}}", body.planName)
-        .replace("{{plan_name}}", body.planName)
-        .replace("{{plan_price}}", body.planPrice)
-        .replace(
+      return foundationWelcomeEmailTemplate
+        .replaceAll("{{foundation_name}}", body.ngoName)
+        .replaceAll("{{first_name}}", body.firstName)
+        .replaceAll("{{login_url}}", body.loginUrl)
+        .replaceAll("{{plan_name}}", body.planName)
+        .replaceAll("{{plan_price}}", body.planPrice)
+        .replaceAll(
           "{{next_charge_date}}",
           new Date(body.nextChargeDate).toLocaleDateString(),
         )
-        .replace("{{support_email}}", FOUNDATION_OS_SUPPORT_EMAIL)
-        .replace("{{support_email}}", FOUNDATION_OS_SUPPORT_EMAIL)
-        .replace("{{login_url}}", body.loginUrl)
-        .replace("{{support_email}}", FOUNDATION_OS_SUPPORT_EMAIL)
-        .replace("{{foundation_name}}", body.ngoName);
-      await module.exports.emailConfig(
-        body.email,
-        `${body.ngoName} - Welcome to The Foundation OS`,
-        htmlWithData,
-      );
-      return { message: "Email sent" };
+        .replaceAll("{{support_email}}", FOUNDATION_OS_SUPPORT_EMAIL);
+    } catch (error) {
+      console.log("error", error);
+      return { message: "Failed to send email" };
+    }
+  },
+
+  sendWaitlistSignupMessage: (body) => {
+    try {
+      return newWaitlistUserSignupEmailTemplate
+        .replaceAll("{{foundation_name}}", body.ngoName)
+        .replaceAll("{{contact_person}}", body.contactPerson)
+        .replaceAll("{{email}}", body.email)
+        .replaceAll("{{country}}", body.country)
+        .replaceAll("{{message}}", body.message)
+        .replaceAll("{{admin_url}}", body.adminUrl);
+    } catch (error) {
+      console.log("error", error);
+      return { message: "Failed to send email" };
+    }
+  },
+
+  sendTeamInviteEmail: (body) => {
+    try {
+      return newTeamMemberInviteMessage
+        .replaceAll("{{foundation_name}}", body.ngoName)
+        .replaceAll("{{inviter_name}}", body.invitedBy ?? "Admin")
+        .replaceAll("{{first_name}}", body.firstName)
+        .replaceAll("{{role}}", body.role)
+        .replaceAll("{{role_description}}", body.roleDescription ?? "-")
+        .replaceAll("{{invite_url}}", body.inviteUrl);
+    } catch (error) {
+      console.log("error", error);
+      return { message: "Failed to send email" };
+    }
+  },
+
+  sendNewUserMessage: (body) => {
+    try {
+      return newUserNotificationMessage
+        .replaceAll("{{foundation_name}}", body.ngoName)
+        .replaceAll("{{first_name}}", body.firstName);
     } catch (error) {
       console.log("error", error);
       return { message: "Failed to send email" };

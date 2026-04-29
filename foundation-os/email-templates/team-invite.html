@@ -1,0 +1,412 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="color-scheme" content="light" />
+    <meta name="supported-color-schemes" content="light" />
+    <title>You're invited to join {{foundation_name}}</title>
+    <!--[if mso]>
+      <noscript>
+        <xml>
+          <o:OfficeDocumentSettings>
+            <o:PixelsPerInch>96</o:PixelsPerInch>
+          </o:OfficeDocumentSettings>
+        </xml>
+      </noscript>
+    <![endif]-->
+    <style>
+      body,
+      table,
+      td,
+      a {
+        -webkit-text-size-adjust: 100%;
+        -ms-text-size-adjust: 100%;
+      }
+      table,
+      td {
+        mso-table-lspace: 0pt;
+        mso-table-rspace: 0pt;
+        border-collapse: collapse;
+      }
+      img,
+      svg {
+        -ms-interpolation-mode: bicubic;
+        border: 0;
+        outline: none;
+        text-decoration: none;
+        display: block;
+      }
+      a {
+        color: #047857;
+      }
+
+      body {
+        margin: 0;
+        padding: 0;
+        width: 100% !important;
+        background-color: #faf7f2;
+        color: #334155;
+        font-family:
+          "Plus Jakarta Sans",
+          -apple-system,
+          BlinkMacSystemFont,
+          "Segoe UI",
+          Roboto,
+          "Helvetica Neue",
+          Arial,
+          sans-serif;
+        line-height: 1.5;
+        -webkit-font-smoothing: antialiased;
+      }
+      .preheader {
+        display: none !important;
+        visibility: hidden;
+        opacity: 0;
+        color: transparent;
+        height: 0;
+        width: 0;
+        overflow: hidden;
+        mso-hide: all;
+      }
+
+      .wrapper {
+        width: 100%;
+        background-color: #faf7f2;
+        padding: 32px 16px;
+      }
+      .container {
+        max-width: 560px;
+        margin: 0 auto;
+      }
+      .card {
+        background-color: #ffffff;
+        border: 1px solid #eadfd0;
+        border-radius: 20px;
+        box-shadow:
+          0 1px 2px rgba(15, 23, 42, 0.04),
+          0 12px 32px -16px rgba(15, 23, 42, 0.08);
+        overflow: hidden;
+      }
+
+      .brand {
+        padding: 24px 32px 0;
+      }
+      .brand-name {
+        font-size: 15px;
+        font-weight: 700;
+        color: #0f172a;
+        letter-spacing: -0.01em;
+        line-height: 28px;
+      }
+
+      .hero {
+        padding: 28px 32px 8px;
+      }
+      .eyebrow {
+        display: inline-block;
+        padding: 5px 10px;
+        margin: 0 0 16px;
+        font-size: 11px;
+        font-weight: 600;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+        color: #047857;
+        background-color: #ecfdf5;
+        border: 1px solid #a7f3d0;
+        border-radius: 999px;
+      }
+      .hero-title {
+        margin: 0;
+        font-size: 26px;
+        line-height: 1.25;
+        font-weight: 700;
+        color: #0f172a;
+        letter-spacing: -0.02em;
+      }
+      .hero-title .accent {
+        color: #047857;
+      }
+      .hero-sub {
+        margin: 12px 0 0;
+        font-size: 15px;
+        line-height: 1.55;
+        color: #475569;
+      }
+      .hero-sub strong {
+        color: #0f172a;
+        font-weight: 600;
+      }
+
+      .body {
+        padding: 24px 32px 8px;
+      }
+      .inviter {
+        margin: 8px 0 0;
+        padding: 18px;
+        background-color: #faf7f2;
+        border: 1px solid #eadfd0;
+        border-radius: 14px;
+      }
+      .inviter-row {
+        width: 100%;
+        border-collapse: collapse;
+      }
+      .avatar-cell {
+        width: 58px;
+        vertical-align: middle;
+      }
+      .avatar-circle {
+        width: 44px;
+        height: 44px;
+        line-height: 44px;
+        border-radius: 999px;
+        background-color: #059669;
+        background-image: linear-gradient(135deg, #059669 0%, #047857 100%);
+        color: #ffffff;
+        font-size: 16px;
+        font-weight: 700;
+        text-align: center;
+        text-transform: uppercase;
+        box-shadow: 0 2px 8px rgba(5, 150, 105, 0.25);
+      }
+      .inviter-meta {
+        vertical-align: middle;
+      }
+      .inviter-name {
+        margin: 0;
+        font-size: 15px;
+        font-weight: 600;
+        color: #0f172a;
+        letter-spacing: -0.005em;
+        line-height: 1.3;
+      }
+      .inviter-context {
+        margin: 2px 0 0;
+        font-size: 13px;
+        color: #64748b;
+        line-height: 1.4;
+      }
+      .role-pill {
+        display: inline-block;
+        margin-top: 14px;
+        padding: 4px 10px;
+        font-size: 12px;
+        font-weight: 600;
+        color: #047857;
+        background-color: #ecfdf5;
+        border: 1px solid #a7f3d0;
+        border-radius: 999px;
+        letter-spacing: 0.01em;
+      }
+      .role-description {
+        margin: 10px 0 0;
+        font-size: 13px;
+        line-height: 1.5;
+        color: #64748b;
+      }
+
+      .lead {
+        margin: 22px 0 0;
+        font-size: 15px;
+        line-height: 1.6;
+        color: #475569;
+      }
+
+      .cta-wrap {
+        padding: 24px 32px 8px;
+        text-align: center;
+      }
+      .btn {
+        display: inline-block;
+        padding: 14px 32px;
+        font-size: 15px;
+        font-weight: 600;
+        line-height: 1;
+        text-decoration: none;
+        text-align: center;
+        color: #ffffff !important;
+        background-color: #059669;
+        border: 1px solid #047857;
+        border-radius: 12px;
+        box-shadow: 0 6px 16px -4px rgba(5, 150, 105, 0.4);
+        letter-spacing: -0.005em;
+      }
+      .fallback {
+        padding: 16px 32px 28px;
+        text-align: center;
+        font-size: 12px;
+        line-height: 1.55;
+        color: #94a3b8;
+      }
+      .fallback a {
+        color: #475569;
+        text-decoration: underline;
+        word-break: break-all;
+      }
+
+      .footer {
+        padding: 22px 32px;
+        border-top: 1px solid #f1eee6;
+        background-color: #fdfbf7;
+      }
+      .footer-row {
+        width: 100%;
+        border-collapse: collapse;
+      }
+      .footer-mark-cell {
+        vertical-align: middle;
+        width: 28px;
+      }
+      .footer-text {
+        vertical-align: middle;
+        font-size: 12px;
+        line-height: 1.5;
+        color: #94a3b8;
+      }
+      .footer-text strong {
+        color: #475569;
+        font-weight: 600;
+      }
+      .footer-disclaimer {
+        margin: 10px 0 0;
+        font-size: 11px;
+        line-height: 1.55;
+        color: #b3a795;
+      }
+
+      @media only screen and (max-width: 600px) {
+        .wrapper {
+          padding: 16px 12px;
+        }
+        .brand,
+        .hero,
+        .body,
+        .cta-wrap,
+        .fallback,
+        .footer {
+          padding-left: 22px;
+          padding-right: 22px;
+        }
+        .hero-title {
+          font-size: 22px;
+        }
+        .btn {
+          display: block;
+          width: 100%;
+          box-sizing: border-box;
+          padding: 14px 20px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <span class="preheader">
+      You're invited to join {{foundation_name}} on Foundation OS. Invited to
+      role: {{role}} Role description: {{role_description}} Accept your
+      invitation to get started.</span
+    >
+
+    <div class="wrapper">
+      <div class="container">
+        <div class="card">
+          <!-- Brand bar -->
+          <div class="brand">
+            <table
+              role="presentation"
+              cellpadding="0"
+              cellspacing="0"
+              border="0"
+            >
+              <tr>
+                <td
+                  style="
+                    vertical-align: middle;
+                    width: 38px;
+                    padding-right: 10px;
+                  "
+                >
+                  <img
+                    src="https://foundationos-dev.netlify.app/foundation-os-icon.svg"
+                    alt="Foundation OS Icon"
+                    width="28"
+                    height="28"
+                  />
+                </td>
+                <td style="vertical-align: middle">
+                  <span class="brand-name">Foundation OS</span>
+                </td>
+              </tr>
+            </table>
+          </div>
+
+          <!-- Hero -->
+          <div class="hero">
+            <span class="eyebrow">Team invitation</span>
+            <h1 class="hero-title">
+              You're invited to join
+              <span class="accent">{{foundation_name}}</span>
+            </h1>
+            <p class="hero-sub">
+              Hi {{first_name}}, <strong>{{inviter_name}}</strong> has added you
+              to <strong>{{foundation_name}}</strong> as an
+              <strong>{{role}}</strong> on Foundation OS — the calm workspace
+              where the team runs programs, tracks tasks, and shows impact in
+              one place.
+            </p>
+          </div>
+
+          <!-- Inviter card -->
+          <div class="body">
+            <hr />
+            <p class="lead">
+              Accept your invitation to get access to projects, tasks, and team
+              collaboration. You can sign in with an existing account or create
+              one when you accept.
+            </p>
+          </div>
+
+          <!-- CTA -->
+          <div class="cta-wrap">
+            <a href="{{invite_url}}" class="btn">Accept invitation</a>
+          </div>
+
+          <!-- Fallback link -->
+          <div class="fallback">
+            Button not working? Paste this link into your browser:<br />
+            <a href="{{invite_url}}">{{invite_url}}</a>
+          </div>
+
+          <!-- Footer -->
+          <div class="footer">
+            <table
+              role="presentation"
+              cellpadding="0"
+              cellspacing="0"
+              border="0"
+              class="footer-row"
+            >
+              <tr>
+                <td class="footer-mark-cell">
+                  <img
+                    src="https://foundationos-dev.netlify.app/foundation-os-icon.svg"
+                    alt="Foundation OS Icon"
+                    width="28"
+                    height="28"
+                  />
+                </td>
+                <td class="footer-text">
+                  <strong>Foundation OS</strong> · made for non-profits
+                </td>
+              </tr>
+            </table>
+            <p class="footer-disclaimer">
+              This invitation was sent by {{foundation_name}} via Foundation OS.
+              If you weren't expecting it, you can safely ignore this email.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
