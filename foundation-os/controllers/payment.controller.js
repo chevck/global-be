@@ -43,6 +43,29 @@ module.exports = {
     }
   },
 
+  getAllBanks: async (req, res) => {
+    // fetch banks from paystack
+    try {
+      const response = await axios.get(
+        `${PAYSTACK_API_URL}/bank?pay_with_bank_transfer=true`,
+        {
+          headers: {
+            Authorization: `Bearer ${process.env.PAYSTACK_SECRET_KEY}`,
+          },
+        },
+      );
+      return res
+        .status(200)
+        .send({ banks: response?.data?.data, message: "Banks retrieved" });
+    } catch (error) {
+      console.log("errorrr - we couldnt get banks from paystack");
+      res.status(400).send({
+        message:
+          "Error, unable to get banks at the moment. Please try again later",
+      });
+    }
+  },
+
   autoChargeCard: async () => {
     // TODO: Get the customer ID, confirm that their subscription is finished and recharge using the authorization code (that will be decrypted)
 
