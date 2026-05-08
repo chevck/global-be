@@ -11,6 +11,7 @@ router.post("/auth/register", taskController.register);
 router.post("/auth/login", taskController.login);
 router.post("/", taskAuth, taskController.createTask);
 router.get("/", taskAuth, taskController.fetchTasks);
+router.patch("/:taskId/complete", taskAuth, taskController.completeTask);
 router.patch("/:taskId", taskAuth, taskController.updateTask);
 router.delete("/:taskId", taskAuth, taskController.deleteTask);
 

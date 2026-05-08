@@ -133,6 +133,29 @@ const fetchTasks = async (req, res) => {
   }
 };
 
+const completeTask = async (req, res) => {
+  try {
+    const { taskId } = req.params;
+
+    const task = await Task.findOneAndUpdate(
+      { _id: taskId, user: req.user._id },
+      { isCompleted: true },
+      { new: true, runValidators: true },
+    );
+
+    if (!task) {
+      return res.status(404).json({ message: "Task not found." });
+    }
+
+    return res.json({
+      message: "Task marked as completed.",
+      task,
+    });
+  } catch (error) {
+    return res.status(500).json({ message: error.message });
+  }
+};
+
 const updateTask = async (req, res) => {
   try {
     const { taskId } = req.params;
@@ -190,6 +213,7 @@ module.exports = {
   login,
   createTask,
   fetchTasks,
+  completeTask,
   updateTask,
   deleteTask,
 };

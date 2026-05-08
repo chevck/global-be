@@ -4,6 +4,7 @@ const cors = require("cors");
 const morgan = require("morgan");
 const mongoose = require("mongoose");
 
+const authRoutes = require("./src/routes/authRoutes");
 const taskRoutes = require("./src/routes/taskRoutes");
 const budgetRoutes = require("./src/routes/budgetRoutes");
 
@@ -49,6 +50,7 @@ app.get("/", (_req, res) => {
   });
 });
 
+app.use("/api/auth", authRoutes);
 app.use("/api/tasks", taskRoutes);
 app.use("/api/budgets", budgetRoutes);
 
