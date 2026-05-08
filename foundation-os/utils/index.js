@@ -17,6 +17,10 @@ const newUserNotificationMessage = fs.readFileSync(
   path.join(__dirname, "../email-templates/new-user-signup.html"),
   "utf8",
 );
+const taskAssignmentNotification = fs.readFileSync(
+  path.join(__dirname, "../email-templates/task-assigned.html"),
+  "utf8",
+);
 
 const FOUNDATION_OS_SUPPORT_EMAIL = "thefoundationoscompany@gmail.com";
 
@@ -103,6 +107,22 @@ module.exports = {
       return newUserNotificationMessage
         .replaceAll("{{foundation_name}}", body.ngoName)
         .replaceAll("{{first_name}}", body.firstName);
+    } catch (error) {
+      console.log("error", error);
+      return { message: "Failed to send email" };
+    }
+  },
+
+  sendTaskAssignmentNotificationMessage: (body) => {
+    try {
+      const assignerIconLetters = body.assignerName.split(0, 1);
+      return taskAssignmentNotification
+        .replaceAll("{{foundation_name}}", body.ngoName)
+        .replaceAll("{{assignee_name}}", body.invitedBy ?? "Admin")
+        .replaceAll("{{assigner_name}}", body.firstName)
+        .replaceAll("{{task_title}}", body.role)
+        .replaceAll("{{project_name}}", body.roleDescription ?? "-")
+        .replaceAll("{{invite_url}}", body.inviteUrl);
     } catch (error) {
       console.log("error", error);
       return { message: "Failed to send email" };
