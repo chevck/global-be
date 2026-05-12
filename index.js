@@ -53,6 +53,7 @@ app.use("/psa", teacherRoutes);
 app.use("/psa", examinationRoutes);
 app.use("/psa", checkAuthorization, studentRoutes);
 app.use("/psa", checkAuthorization, billRoutes);
+app.use('/email', )
 
 app.post("/test", async (req, res) => {
   // const result = await sendRegisterEmail({
