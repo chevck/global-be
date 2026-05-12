@@ -6,6 +6,7 @@ const cors = require("cors");
 const mailRoutes = require("./foundation-os/routes/mails.route");
 const paymentRoutes = require("./foundation-os/routes/payment.route");
 const webhookRoutes = require("./foundation-os/routes/webhook.route");
+const documentRoutes = require("./foundation-os/routes/document.route");
 const {
   rechargeNgosSubscriptionFees,
 } = require("./foundation-os/jobs/ngosPaidSubscriptionRenewal.job");
@@ -38,6 +39,7 @@ const port = process.env.PORT || 4200;
 app.use("/api/emails", mailRoutes);
 app.use("/api/payment", paymentRoutes);
 app.use("/api/webhooks", webhookRoutes);
+app.use("/api/documents", documentRoutes);
 
 app.post("/test", async (req, res) => {});
 
