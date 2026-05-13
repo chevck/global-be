@@ -43,6 +43,61 @@ module.exports = {
     }
   },
 
+  getAllBanks: async (req, res) => {
+    // fetch banks from paystack
+    try {
+      const response = await axios.get(
+        `${PAYSTACK_API_URL}/dedicated_account/available_providers`,
+        {
+          headers: {
+            Authorization: `Bearer ${process.env.PAYSTACK_SECRET_KEY}`,
+          },
+        },
+      );
+      return res
+        .status(200)
+        .send({ banks: response?.data?.data, message: "Banks retrieved" });
+    } catch (error) {
+      console.log({ error });
+      console.log("errorrr - we couldnt get banks from paystack");
+      res.status(400).send({
+        message:
+          "Error, unable to get banks at the moment. Please try again later",
+      });
+    }
+  },
+
+  createVirtualAccount: async (req, res) => {
+    // console.log("req user", req.user);
+    try {
+      const { businessName, bankCode, accountNumber } = req.body;
+      const response = await axios.post(
+        `${PAYSTACK_API_URL}/subaccount`,
+        {
+          business_name: businessName,
+          percentage_charge: 100,
+          account_number: accountNumber,
+          settlement_bank: bankCode,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${process.env.PAYSTACK_SECRET_KEY}`,
+          },
+        },
+      );
+      console.log("sds", response.data);
+      return res.status(200).json({ data: response.data });
+    } catch (error) {
+      console.log("error creating sub account for ngo", error);
+      res.status(400).send({
+        message:
+          error?.data?.message ??
+          "There was a problem creating your account. Please try again later",
+        error,
+      });
+    }
+  },
+
   autoChargeCard: async () => {
     // TODO: Get the customer ID, confirm that their subscription is finished and recharge using the authorization code (that will be decrypted)
 
