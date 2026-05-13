@@ -18,11 +18,14 @@ module.exports = {
         return res
           .status(404)
           .json({ message: "Project not found. Contact Admin for support" });
-      const data = {
+      const project = {
         id: projectSnapshot.id,
         ...serializeFirestoreValue(projectSnapshot.data()),
       };
-      console.log({ data });
+      const ngo = await firebaseUtils.db
+        .collection("ngos")
+        .where("userId", "==", project.userId)
+        .get();
 
       const [
         transactions,
@@ -33,13 +36,13 @@ module.exports = {
         budgetEntries,
         financeSnapshots,
       ] = await Promise.all([
-        fetchSubcollection(projectRef, "transactions"),
-        fetchSubcollection(projectRef, "donors"),
-        fetchSubcollection(projectRef, "donations"),
-        fetchSubcollection(projectRef, "volunteers"),
-        fetchSubcollection(projectRef, "budgetItems"),
-        fetchSubcollection(projectRef, "budget"),
-        fetchSubcollection(projectRef, "finance"),
+        fetchSubcollection("transactions"),
+        fetchSubcollection("donors"),
+        fetchSubcollection("donations"),
+        fetchSubcollection("volunteers"),
+        fetchSubcollection("budgetItems"),
+        fetchSubcollection("budget"),
+        fetchSubcollection("finance"),
       ]);
 
       const donorById = new Map();
@@ -60,32 +63,34 @@ module.exports = {
         volunteers,
       };
       const message = await client.messages.create({
-        model: REPORT_MODEL,
-        max_tokens: 8192,
+        model: "claude-opus-4-6",
+        max_tokens: 3000,
         messages: [
           {
             role: "user",
-            content: `You are writing an impact and accountability report for stakeholders.
-    
-    Organization: ${ngoName}
-    Project id: ${projectId}
-    
-    Use ONLY the JSON data below. If a section has no data, say so briefly rather than inventing figures or names.
-    
-    Data:
-    ${JSON.stringify(projectData, null, 2)}
-    
-    Produce a professional report with these sections:
-    1. Executive summary
-    2. Project overview (goals, timeline, location if present in data)
-    3. Financial overview (budget line items, totals if computable from the data, transactions summary)
-    4. Donors and funding (aggregate counts/amounts where possible; do not fabricate donor identities beyond what is in the data)
-    5. Volunteers and participation
-    6. Impact and outcomes (only what can be inferred from provided fields)
-    7. Risks, gaps, or data limitations
-    8. Recommendations for next steps
-    
-    Use clear headings and bullet points where helpful.`,
+            content: `Generate a professional impact report for ${ngo.ngoName}'s project. Return ONLY valid HTML (no markdown, no code fences). Use semantic HTML5 tags and inline CSS styling.
+  IMPORTANT: Include this in the <head>:
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,200..800;1,200..800&display=swap" rel="stylesheet">
+
+Use these fonts:
+- Body text: font-family: 'Plus Jakarta Sans', sans-serif;
+- paragraphs: font-family: 'Plus Jakarta Sans', sans-serif;
+- b tags: font-family: 'Plus Jakarta Sans', sans-serif;
+- Headings: font-family: 'Plus Jakarta Sans', serif;
+  Project Data:
+  ${JSON.stringify(projectData, null, 2)}
+  
+  Structure it with:
+  - Header with NGO name and date
+  - Executive Summary
+  - Key Metrics (use a table)
+  - List the budgets (use a table)
+  - List the transaction keys - incomes (1), expenses list (grouped) - (use a table)
+  - Impact Areas
+  - Challenges & Solutions
+  - Recommendations
+  
+  Make it print-friendly and professional.`,
           },
         ],
       });
@@ -94,18 +99,6 @@ module.exports = {
       return res.status(200).json({
         message: "Report generated",
         report: reportText,
-        //   meta: {
-        //     model: REPORT_MODEL,
-        //     projectId,
-        //     counts: {
-        //       transactions: transactions.length,
-        //       donors: donors.length,
-        //       volunteers: volunteers.length,
-        //       budgetItems: budgetItems.length,
-        //       budgetDocuments: budgetEntries.length,
-        //       financeRecords: financeSnapshots.length,
-        //     },
-        //   },
       });
     } catch (error) {
       console.error("error generating report", error);
@@ -117,11 +110,6 @@ module.exports = {
   },
 };
 
-const PROJECTS_COLLECTION =
-  process.env.FIRESTORE_PROJECTS_COLLECTION || "projects";
-const NGOS_COLLECTION = process.env.FIRESTORE_NGOS_COLLECTION || "ngos";
-const REPORT_MODEL =
-  process.env.ANTHROPIC_REPORT_MODEL || "claude-sonnet-4-20250514";
 const SUBCOLLECTION_LIMIT = Number(
   process.env.FIRESTORE_REPORT_SUBCOLLECTION_LIMIT || 300,
 );
@@ -150,13 +138,8 @@ function serializeFirestoreValue(value) {
   return value;
 }
 
-function docToPlain(docSnap) {
-  if (!docSnap.exists) return null;
-  return { id: docSnap.id, ...serializeFirestoreValue(docSnap.data()) };
-}
-
-async function fetchSubcollection(projectRef, name) {
-  const snap = await projectRef
+async function fetchSubcollection(name) {
+  const snap = await firebaseUtils.db
     .collection(name)
     .limit(SUBCOLLECTION_LIMIT)
     .get();
@@ -167,144 +150,5 @@ async function fetchSubcollection(projectRef, name) {
 }
 
 function extractMessageText(message) {
-  if (!message?.content?.length) return "";
-  return message.content
-    .filter((block) => block.type === "text")
-    .map((block) => block.text)
-    .join("\n");
+  return message.content[0].text;
 }
-
-// module.exports = {
-//   handleGenerateImpactReport: async (req, res) => {
-//     const { projectId, ngoId: ngoIdFromBody } = req.body || {};
-//     if (!projectId || typeof projectId !== "string") {
-//       return res.status(400).json({
-//         message: "projectId is required in the request body",
-//       });
-//     }
-
-//     try {
-//       const db = firebaseUtils.db;
-//       const projectRef = db.collection(PROJECTS_COLLECTION).doc(projectId);
-//       const projectSnap = await projectRef.get();
-
-//       if (!projectSnap.exists) {
-//         return res.status(404).json({ message: "Project not found" });
-//       }
-
-//       const project = docToPlain(projectSnap);
-//       const ngoId =
-//         ngoIdFromBody ||
-//         project?.ngoId ||
-//         project?.organizationId ||
-//         project?.ngo_id;
-
-//       let ngoName = "the organization";
-//       if (ngoId) {
-//         const ngoSnap = await db.collection(NGOS_COLLECTION).doc(ngoId).get();
-//         if (ngoSnap.exists) {
-//           const ngo = ngoSnap.data();
-//           ngoName =
-//             ngo?.name ||
-//             ngo?.organizationName ||
-//             ngo?.businessName ||
-//             ngo?.displayName ||
-//             ngoName;
-//         }
-//       }
-
-//       const [
-//         transactions,
-//         donorsRaw,
-//         donationsRaw,
-//         volunteers,
-//         budgetItems,
-//         budgetEntries,
-//         financeSnapshots,
-//       ] = await Promise.all([
-//         fetchSubcollection(projectRef, "transactions"),
-//         fetchSubcollection(projectRef, "donors"),
-//         fetchSubcollection(projectRef, "donations"),
-//         fetchSubcollection(projectRef, "volunteers"),
-//         fetchSubcollection(projectRef, "budgetItems"),
-//         fetchSubcollection(projectRef, "budget"),
-//         fetchSubcollection(projectRef, "finance"),
-//       ]);
-
-//       const donorById = new Map();
-//       for (const d of [...donorsRaw, ...donationsRaw]) {
-//         donorById.set(d.id, d);
-//       }
-//       const donors = [...donorById.values()];
-
-//       const projectData = {
-//         project,
-//         finance: {
-//           lineItems: financeSnapshots,
-//           budgetItems,
-//           budgetDocuments: budgetEntries,
-//           summary: project?.budgetSummary || project?.financialSummary || null,
-//         },
-//         transactions,
-//         donors,
-//         volunteers,
-//       };
-
-//       const message = await client.messages.create({
-//         model: REPORT_MODEL,
-//         max_tokens: 8192,
-//         messages: [
-//           {
-//             role: "user",
-//             content: `You are writing an impact and accountability report for stakeholders.
-
-// Organization: ${ngoName}
-// Project id: ${projectId}
-
-// Use ONLY the JSON data below. If a section has no data, say so briefly rather than inventing figures or names.
-
-// Data:
-// ${JSON.stringify(projectData, null, 2)}
-
-// Produce a professional report with these sections:
-// 1. Executive summary
-// 2. Project overview (goals, timeline, location if present in data)
-// 3. Financial overview (budget line items, totals if computable from the data, transactions summary)
-// 4. Donors and funding (aggregate counts/amounts where possible; do not fabricate donor identities beyond what is in the data)
-// 5. Volunteers and participation
-// 6. Impact and outcomes (only what can be inferred from provided fields)
-// 7. Risks, gaps, or data limitations
-// 8. Recommendations for next steps
-
-// Use clear headings and bullet points where helpful.`,
-//           },
-//         ],
-//       });
-
-//       const reportText = extractMessageText(message);
-
-//       return res.status(200).json({
-//         message: "Report generated",
-//         report: reportText,
-//         meta: {
-//           model: REPORT_MODEL,
-//           projectId,
-//           counts: {
-//             transactions: transactions.length,
-//             donors: donors.length,
-//             volunteers: volunteers.length,
-//             budgetItems: budgetItems.length,
-//             budgetDocuments: budgetEntries.length,
-//             financeRecords: financeSnapshots.length,
-//           },
-//         },
-//       });
-//     } catch (error) {
-//       console.error("error generating report", error);
-//       return res.status(500).json({
-//         message: "Could not generate report",
-//         detail: error?.message || String(error),
-//       });
-//     }
-//   },
-// };

@@ -50,6 +50,9 @@ const rechargeNgosSubscriptionFees = async () => {
       console.log(
         `we could not charge ${ngoData.ngoName} because they do not have a chargeAuthCode`,
       );
+      const ref = db.collection("ngos").doc(ngoData.id);
+      batch.update(ref, { plan: "free", "subscription.plan": "free" }); // reverts to free plan
+      // this could happen because the user had not put their card details in yet
       continue;
     }
 

@@ -14,5 +14,10 @@ router.post(
   checkAuthorization,
   mailController.inviteTeamMembersMail,
 );
+router.post(
+  "/assign-task",
+  checkAuthorization,
+  mailController.sendTaskNotification,
+);
 
 module.exports = router;

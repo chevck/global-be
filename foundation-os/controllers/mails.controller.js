@@ -3,6 +3,7 @@ const {
   sendWaitlistSignupMessage,
   sendTeamInviteEmail,
   sendNewUserMessage,
+  sendTaskAssignmentNotificationMessage,
 } = require("../utils");
 const { Resend } = require("resend");
 const resend = new Resend(process.env.RESEND_MAIL_API_KEY);
@@ -91,5 +92,31 @@ module.exports = {
     }
   },
 
-  sendTaskNotification: async (req, res) => {},
+  sendTaskNotification: async (req, res) => {
+    try {
+      const dataIds = [];
+      for (const assignee of req.body.assignees) {
+        const { data, error } = await resend.emails.send({
+          from: `${req.body.ngoName} - Foundation OS <noreply@usefoundationos.com>`,
+          to: [assignee.email],
+          subject: `${req.body.assignerName} assigned a new task to you`,
+          html: sendTaskAssignmentNotificationMessage({
+            ...req.body,
+            assignee,
+          }),
+        });
+        if (error) throw error;
+        dataIds.push(data.id);
+      }
+      return res.status(200).json({
+        message: "Task assignment email sent successfully!",
+        ids: dataIds,
+      });
+    } catch (error) {
+      console.log("error sending task assignment email", error);
+      res.status(400).send({
+        message: "There was an error sending task assignment email",
+      });
+    }
+  },
 };

@@ -116,13 +116,17 @@ module.exports = {
   sendTaskAssignmentNotificationMessage: (body) => {
     try {
       const assignerIconLetters = body.assignerName.split(0, 1);
+      console.log({ assignerIconLetters });
       return taskAssignmentNotification
         .replaceAll("{{foundation_name}}", body.ngoName)
-        .replaceAll("{{assignee_name}}", body.invitedBy ?? "Admin")
-        .replaceAll("{{assigner_name}}", body.firstName)
-        .replaceAll("{{task_title}}", body.role)
-        .replaceAll("{{project_name}}", body.roleDescription ?? "-")
-        .replaceAll("{{invite_url}}", body.inviteUrl);
+        .replaceAll("{{assignee_name}}", body.assignee.label)
+        .replaceAll("{{assigner_name}}", body.assignerName ?? "Admin")
+        .replaceAll("{{task_title}}", body.title)
+        .replaceAll("{{project_name}}", body.projectTitle)
+        .replaceAll("{{task_due_date}}", body.endDate)
+        .replaceAll("{{task_status}}", body.status)
+        .replaceAll("{{task_url}}", body.taskUrl)
+        .replaceAll("{{task_description}}", body.description);
     } catch (error) {
       console.log("error", error);
       return { message: "Failed to send email" };
