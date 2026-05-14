@@ -125,8 +125,7 @@ module.exports = {
     try {
       const { data, error } = await resend.emails.send({
         from: `Foundation OS <noreply@usefoundationos.com>`,
-        to: ["oyeniranexcellenced@gmail.com"],
-        // to: [req.body.ngoEmail],
+        to: [req.body.ngoEmail],
         subject: `You have upgraded to ${req.body.newPlan} Plan`,
         html: sendSubscriptionUpgradeMessage(req.body),
       });
