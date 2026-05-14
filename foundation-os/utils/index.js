@@ -139,14 +139,14 @@ module.exports = {
     try {
       return subscriptionUpgradeMessage
         .replaceAll("{{foundation_name}}", body.ngoName)
-        .replaceAll("{{assignee_name}}", body.assignee.label)
-        .replaceAll("{{assigner_name}}", body.assignerName ?? "Admin")
-        .replaceAll("{{task_title}}", body.title)
-        .replaceAll("{{project_name}}", body.projectTitle)
-        .replaceAll("{{task_due_date}}", body.endDate)
-        .replaceAll("{{task_status}}", body.status)
-        .replaceAll("{{task_url}}", body.taskUrl)
-        .replaceAll("{{task_description}}", body.description);
+        .replaceAll("{{new_plan_display}}", body.newPlan)
+        .replaceAll("{{subscriber_name}}", body.userName)
+        .replaceAll("{{previous_plan_display}}", body.previousPlan)
+        .replaceAll("{{price_summary}}", body.price)
+        .replaceAll("{{charged_today_summary}}", body.chargedAt)
+        .replaceAll("{{next_billing_date}}", body.nextChargeAt)
+        .replaceAll("{{support_email}}", FOUNDATION_OS_SUPPORT_EMAIL)
+        .replaceAll("{{manage_subscription_url}}", body.manageSubscriptionUrl);
     } catch (error) {
       console.log("error", error);
       return { message: "Failed to send email" };
