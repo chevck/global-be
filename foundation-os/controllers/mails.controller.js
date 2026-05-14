@@ -4,6 +4,7 @@ const {
   sendTeamInviteEmail,
   sendNewUserMessage,
   sendTaskAssignmentNotificationMessage,
+  sendSubscriptionUpgradeMessage,
 } = require("../utils");
 const { Resend } = require("resend");
 const resend = new Resend(process.env.RESEND_MAIL_API_KEY);
@@ -116,6 +117,28 @@ module.exports = {
       console.log("error sending task assignment email", error);
       res.status(400).send({
         message: "There was an error sending task assignment email",
+      });
+    }
+  },
+
+  sendSubscriptionUpgradeNotification: async (req, res) => {
+    try {
+      const { data, error } = await resend.emails.send({
+        from: `Foundation OS <noreply@usefoundationos.com>`,
+        to: ["oyeniranexcellenced@gmail.com"],
+        // to: [req.body.ngoEmail],
+        subject: `You have upgraded to ${req.body.newPlan} Plan`,
+        html: sendSubscriptionUpgradeMessage(req.body),
+      });
+      if (error) throw error;
+      return res.status(200).json({
+        message: "Subscription upgrade email sent",
+        id: data?.id,
+      });
+    } catch (error) {
+      console.log("error sending subscription upgrade email", error);
+      res.status(400).send({
+        message: "There was an error sending subscription upgrade email",
       });
     }
   },

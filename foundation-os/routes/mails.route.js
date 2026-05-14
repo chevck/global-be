@@ -19,5 +19,10 @@ router.post(
   checkAuthorization,
   mailController.sendTaskNotification,
 );
+router.post(
+  "/subscription-upgrade",
+  checkAuthorization,
+  mailController.sendSubscriptionUpgradeNotification,
+);
 
 module.exports = router;
