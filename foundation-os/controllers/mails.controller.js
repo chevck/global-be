@@ -5,6 +5,7 @@ const {
   sendNewUserMessage,
   sendTaskAssignmentNotificationMessage,
   sendSubscriptionUpgradeMessage,
+  sendVolunteerInviteMessage,
 } = require("../utils");
 const { Resend } = require("resend");
 const resend = new Resend(process.env.RESEND_MAIL_API_KEY);
@@ -138,6 +139,28 @@ module.exports = {
       console.log("error sending subscription upgrade email", error);
       res.status(400).send({
         message: "There was an error sending subscription upgrade email",
+      });
+    }
+  },
+
+  sendVolunteerInviteNotification: async (req, res) => {
+    try {
+      const { data, error } = await resend.emails.send({
+        from: `${req.body.ngoName} - Foundation OS <noreply@usefoundationos.com>`,
+        to: [req.body.email],
+        subject: `You have invited to join ${req.body.ngoName} on ${req.body.projectTitle} project`,
+        html: sendVolunteerInviteMessage(req.body),
+      });
+      if (error) throw error;
+      return res.status(200).json({
+        message: "Volunteer Invite email sent",
+        id: data?.id,
+      });
+    } catch (error) {
+      console.log("error sending volunteer invite email", error);
+      res.status(400).send({
+        message:
+          "There was an error sending volunteer invitemm mm knfe kfkfr email",
       });
     }
   },

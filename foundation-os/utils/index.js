@@ -25,6 +25,10 @@ const subscriptionUpgradeMessage = fs.readFileSync(
   path.join(__dirname, "../email-templates/subscription-upgrade.html"),
   "utf8",
 );
+const volunteerInviteMessage = fs.readFileSync(
+  path.join(__dirname, "../email-templates/volunteer-invite.html"),
+  "utf8",
+);
 
 const FOUNDATION_OS_SUPPORT_EMAIL = "thefoundationoscompany@gmail.com";
 
@@ -147,6 +151,22 @@ module.exports = {
         .replaceAll("{{next_billing_date}}", body.nextChargeAt)
         .replaceAll("{{support_email}}", FOUNDATION_OS_SUPPORT_EMAIL)
         .replaceAll("{{manage_subscription_url}}", body.manageSubscriptionUrl);
+    } catch (error) {
+      console.log("error", error);
+      return { message: "Failed to send email" };
+    }
+  },
+
+  sendVolunteerInviteMessage: (body) => {
+    try {
+      return volunteerInviteMessage
+        .replaceAll("{{project_name}}", body.projectTitle)
+        .replaceAll("{{first_name}}", body.firstName)
+        .replaceAll("{{inviter_name}}", body.invitedBy)
+        .replaceAll("{{foundation_name}}", body.ngoName)
+        .replaceAll("{{role}}", body.roleLabel)
+        .replaceAll("{{role_description}}", "")
+        .replaceAll("{{invite_url}}", body.inviteUrl);
     } catch (error) {
       console.log("error", error);
       return { message: "Failed to send email" };
