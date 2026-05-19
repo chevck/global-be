@@ -24,5 +24,10 @@ router.post(
   checkAuthorization,
   mailController.sendSubscriptionUpgradeNotification,
 );
+router.post(
+  "/volunteer-invite",
+  checkAuthorization,
+  mailController.sendVolunteerInviteNotification,
+);
 
 module.exports = router;
