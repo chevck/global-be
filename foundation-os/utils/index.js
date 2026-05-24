@@ -21,6 +21,10 @@ const taskAssignmentNotification = fs.readFileSync(
   path.join(__dirname, "../email-templates/task-assigned.html"),
   "utf8",
 );
+const milestoneStepAssignmentNotification = fs.readFileSync(
+  path.join(__dirname, "../email-templates/milestone-step.html"),
+  "utf8",
+);
 const subscriptionUpgradeMessage = fs.readFileSync(
   path.join(__dirname, "../email-templates/subscription-upgrade.html"),
   "utf8",
@@ -133,6 +137,25 @@ module.exports = {
         .replaceAll("{{task_status}}", body.status)
         .replaceAll("{{task_url}}", body.taskUrl)
         .replaceAll("{{task_description}}", body.description);
+    } catch (error) {
+      console.log("error", error);
+      return { message: "Failed to send email" };
+    }
+  },
+
+  sendMilestoneStepAssignmentNotificationMessage: (body) => {
+    try {
+      return milestoneStepAssignmentNotification
+        .replaceAll("{{foundation_name}}", body.ngoName)
+        .replaceAll("{{assignee_name}}", body.assignee.label)
+        .replaceAll("{{assigner_name}}", body.assignerName ?? "Admin")
+        .replaceAll("{{step_title}}", body.stepTitle ?? body.title)
+        .replaceAll("{{milestone_name}}", body.milestoneTitle)
+        .replaceAll("{{project_name}}", body.projectTitle)
+        .replaceAll("{{step_due_date}}", body.endDate)
+        .replaceAll("{{step_status}}", body.status)
+        .replaceAll("{{step_url}}", body.stepUrl)
+        .replaceAll("{{step_description}}", body.description ?? "");
     } catch (error) {
       console.log("error", error);
       return { message: "Failed to send email" };

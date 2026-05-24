@@ -4,6 +4,7 @@ const {
   sendTeamInviteEmail,
   sendNewUserMessage,
   sendTaskAssignmentNotificationMessage,
+  sendMilestoneStepAssignmentNotificationMessage,
   sendSubscriptionUpgradeMessage,
   sendVolunteerInviteMessage,
 } = require("../utils");
@@ -161,6 +162,35 @@ module.exports = {
       res.status(400).send({
         message:
           "There was an error sending volunteer invitemm mm knfe kfkfr email",
+      });
+    }
+  },
+
+  sendMileStoneAssignmentNotification: async (req, res) => {
+    try {
+      const dataIds = [];
+      for (const assignee of req.body.assignees) {
+        const { data, error } = await resend.emails.send({
+          from: `${req.body.ngoName} - Foundation OS <noreply@usefoundationos.com>`,
+          to: [assignee.email],
+          subject: `${req.body.assignerName} assigned you a milestone step on ${req.body.milestoneTitle}`,
+          html: sendMilestoneStepAssignmentNotificationMessage({
+            ...req.body,
+            assignee,
+          }),
+        });
+        if (error) throw error;
+        dataIds.push(data.id);
+      }
+      return res.status(200).json({
+        message: "Milestone step assignment email sent successfully!",
+        ids: dataIds,
+      });
+    } catch (error) {
+      console.log("error sending milestone assignment notification", error);
+      res.status(400).send({
+        message:
+          "There was an error sending milestone step assignment email",
       });
     }
   },

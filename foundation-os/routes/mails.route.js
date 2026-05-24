@@ -20,6 +20,11 @@ router.post(
   mailController.sendTaskNotification,
 );
 router.post(
+  "/assign-milestone-step",
+  checkAuthorization,
+  mailController.sendMileStoneAssignmentNotification,
+);
+router.post(
   "/subscription-upgrade",
   checkAuthorization,
   mailController.sendSubscriptionUpgradeNotification,
