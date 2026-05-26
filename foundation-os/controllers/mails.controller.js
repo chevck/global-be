@@ -295,7 +295,7 @@ module.exports = {
           html: sendMilestoneStepAssignmentNotificationMessage({
             ngoName: ngo.ngoName,
             projectTitle: projectData.title,
-            stepUrl: `${req.headers.origin}/projects/${project.id}`,
+            stepUrl: `${req.headers.origin}/projects/${project.id}?tab=steps&step=${req.body.mileStoneId}`,
             assigneeName: assigneeData.name ?? assigneeData?.displayName ?? "",
             ...req.body,
           }),
