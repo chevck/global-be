@@ -33,6 +33,10 @@ const volunteerInviteMessage = fs.readFileSync(
   path.join(__dirname, "../email-templates/volunteer-invite.html"),
   "utf8",
 );
+const passwordResetMessage = fs.readFileSync(
+  path.join(__dirname, "../email-templates/password-reset.html"),
+  "utf8",
+);
 
 const FOUNDATION_OS_SUPPORT_EMAIL = "thefoundationoscompany@gmail.com";
 
@@ -190,6 +194,19 @@ module.exports = {
         .replaceAll("{{role}}", body.roleLabel)
         .replaceAll("{{role_description}}", "")
         .replaceAll("{{invite_url}}", body.inviteUrl);
+    } catch (error) {
+      console.log("error", error);
+      return { message: "Failed to send email" };
+    }
+  },
+
+  sendPasswordResetMessage: (body) => {
+    try {
+      return passwordResetMessage
+        .replaceAll("{{first_name}}", body.firstName)
+        .replaceAll("{{expiry_hours}}", body.expiryHours ?? "1")
+        .replaceAll("{{reset_url}}", body.resetUrl)
+        .replaceAll("{{support_email}}", FOUNDATION_OS_SUPPORT_EMAIL);
     } catch (error) {
       console.log("error", error);
       return { message: "Failed to send email" };

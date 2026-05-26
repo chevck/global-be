@@ -7,8 +7,10 @@ const {
   sendMilestoneStepAssignmentNotificationMessage,
   sendSubscriptionUpgradeMessage,
   sendVolunteerInviteMessage,
+  sendPasswordResetMessage,
 } = require("../utils");
 const { Resend } = require("resend");
+const { db } = require("../utils/firebase");
 const resend = new Resend(process.env.RESEND_MAIL_API_KEY);
 
 module.exports = {
@@ -166,6 +168,48 @@ module.exports = {
     }
   },
 
+  sendPasswordResetEmail: async (email, resetLink) => {
+    try {
+      // console.log("headers", req.headers);
+      const ngoSnapshot = await db
+        .collection("ngos")
+        .where("email", "==", email)
+        .limit(1)
+        .get();
+
+      if (ngoSnapshot.empty) {
+        return {
+          message: "No account found for this email address",
+        };
+      }
+
+      const ngoDoc = ngoSnapshot.docs[0];
+      const ngo = { id: ngoDoc.id, ...ngoDoc.data() };
+
+      const { data, error } = await resend.emails.send({
+        from: `Foundation OS <noreply@usefoundationos.com>`,
+        to: [email],
+        cc: [ngo.ngoEmail],
+        subject: `You have requested to reset your password`,
+        html: sendPasswordResetMessage({
+          firstName: ngo.firstName,
+          resetUrl: resetLink,
+          expiry_hours: "1 hour",
+        }),
+      });
+      if (error) throw error;
+      return {
+        message: "Password reset email sent",
+        id: data?.id,
+      };
+    } catch (error) {
+      console.log("error sending password reset email", error);
+      return {
+        message: "There was an error sending password reset email",
+      };
+    }
+  },
+
   sendMileStoneAssignmentNotification: async (req, res) => {
     try {
       const dataIds = [];
@@ -189,8 +233,7 @@ module.exports = {
     } catch (error) {
       console.log("error sending milestone assignment notification", error);
       res.status(400).send({
-        message:
-          "There was an error sending milestone step assignment email",
+        message: "There was an error sending milestone step assignment email",
       });
     }
   },
