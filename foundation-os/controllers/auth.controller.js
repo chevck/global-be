@@ -1,7 +1,10 @@
 const { randomBytes } = require("crypto");
 const { getAuth } = require("firebase-admin/auth");
 const { getFirestore, Timestamp } = require("firebase-admin/firestore");
-const { sendPasswordResetEmail } = require("./mails.controller");
+const {
+  sendPasswordResetEmail,
+  sendConfirmPasswordResetMail,
+} = require("./mails.controller");
 const { db } = require("../utils/firebase");
 
 module.exports = {
@@ -81,6 +84,7 @@ module.exports = {
       }
       const auth = getAuth();
       await auth.updateUser(data.uid, { password: req.body.newPassword });
+      await sendConfirmPasswordResetMail(data.email);
       await ref.update({ used: true, usedAt: Timestamp.now() });
       res.status(200).json({ message: "Password updated successfully." });
     } catch (error) {

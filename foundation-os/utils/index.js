@@ -151,15 +151,15 @@ module.exports = {
     try {
       return milestoneStepAssignmentNotification
         .replaceAll("{{foundation_name}}", body.ngoName)
-        .replaceAll("{{assignee_name}}", body.assignee.label)
-        .replaceAll("{{assigner_name}}", body.assignerName ?? "Admin")
-        .replaceAll("{{step_title}}", body.stepTitle ?? body.title)
-        .replaceAll("{{milestone_name}}", body.milestoneTitle)
+        .replaceAll("{{assignee_name}}", body.assigneeName)
+        .replaceAll("{{assigner_name}}", body.assigner ?? "Admin")
+        .replaceAll("{{step_title}}", body.mileStoneTitle)
+        .replaceAll("{{milestone_name}}", body.mileStoneTitle)
         .replaceAll("{{project_name}}", body.projectTitle)
-        .replaceAll("{{step_due_date}}", body.endDate)
+        .replaceAll("{{step_due_date}}", body.dueDate)
         .replaceAll("{{step_status}}", body.status)
         .replaceAll("{{step_url}}", body.stepUrl)
-        .replaceAll("{{step_description}}", body.description ?? "");
+        .replaceAll("{{step_description}}", body.mileStoneDescription ?? "");
     } catch (error) {
       console.log("error", error);
       return { message: "Failed to send email" };
@@ -206,6 +206,18 @@ module.exports = {
         .replaceAll("{{first_name}}", body.firstName)
         .replaceAll("{{expiry_hours}}", body.expiryHours ?? "1")
         .replaceAll("{{reset_url}}", body.resetUrl)
+        .replaceAll("{{support_email}}", FOUNDATION_OS_SUPPORT_EMAIL);
+    } catch (error) {
+      console.log("error", error);
+      return { message: "Failed to send email" };
+    }
+  },
+
+  sendConfirmPasswordReset: (body) => {
+    try {
+      return passwordResetMessage
+        .replaceAll("{{first_name}}", body.firstName)
+        .replaceAll("{{account_email}}", body.firstName)
         .replaceAll("{{support_email}}", FOUNDATION_OS_SUPPORT_EMAIL);
     } catch (error) {
       console.log("error", error);
