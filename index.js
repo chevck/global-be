@@ -6,6 +6,7 @@ const cors = require("cors");
 const mailRoutes = require("./foundation-os/routes/mails.route");
 const paymentRoutes = require("./foundation-os/routes/payment.route");
 const webhookRoutes = require("./foundation-os/routes/webhook.route");
+const authRoutes = require("./foundation-os/routes/auth.route");
 const documentRoutes = require("./foundation-os/routes/document.route");
 const {
   rechargeNgosSubscriptionFees,
@@ -37,6 +38,7 @@ app.use(cors({ origin: "*", credentials: true }));
 const port = process.env.PORT || 4200;
 
 app.use("/api/emails", mailRoutes);
+app.use("/api/auth", authRoutes);
 app.use("/api/payment", paymentRoutes);
 app.use("/api/webhooks", webhookRoutes);
 app.use("/api/documents", documentRoutes);

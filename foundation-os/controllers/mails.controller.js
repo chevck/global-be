@@ -4,10 +4,14 @@ const {
   sendTeamInviteEmail,
   sendNewUserMessage,
   sendTaskAssignmentNotificationMessage,
+  sendMilestoneStepAssignmentNotificationMessage,
   sendSubscriptionUpgradeMessage,
   sendVolunteerInviteMessage,
+  sendPasswordResetMessage,
+  sendConfirmPasswordReset,
 } = require("../utils");
 const { Resend } = require("resend");
+const { db } = require("../utils/firebase");
 const resend = new Resend(process.env.RESEND_MAIL_API_KEY);
 
 module.exports = {
@@ -161,6 +165,152 @@ module.exports = {
       res.status(400).send({
         message:
           "There was an error sending volunteer invitemm mm knfe kfkfr email",
+      });
+    }
+  },
+
+  sendPasswordResetEmail: async (email, resetLink) => {
+    try {
+      const ngoSnapshot = await db
+        .collection("ngos")
+        .where("email", "==", email)
+        .limit(1)
+        .get();
+      if (ngoSnapshot.empty) {
+        return {
+          message: "No account found for this email address",
+        };
+      }
+      const ngoDoc = ngoSnapshot.docs[0];
+      const ngo = { id: ngoDoc.id, ...ngoDoc.data() };
+      const { data, error } = await resend.emails.send({
+        from: `Foundation OS <noreply@usefoundationos.com>`,
+        to: [email],
+        cc: [ngo.ngoEmail],
+        subject: `You have requested to reset your password`,
+        html: sendPasswordResetMessage({
+          firstName: ngo.firstName,
+          resetUrl: resetLink,
+          expiry_hours: "1 hour",
+        }),
+      });
+      if (error) throw error;
+      return {
+        message: "Password reset email sent",
+        id: data?.id,
+      };
+    } catch (error) {
+      console.log("error sending password reset email", error);
+      return {
+        message: "There was an error sending password reset email",
+      };
+    }
+  },
+
+  sendConfirmPasswordResetMail: async (email) => {
+    try {
+      const ngoSnapshot = await db
+        .collection("ngos")
+        .where("email", "==", email)
+        .limit(1)
+        .get();
+      if (ngoSnapshot.empty) {
+        return {
+          message: "No account found for this email address",
+        };
+      }
+      const ngoDoc = ngoSnapshot.docs[0];
+      const ngo = { id: ngoDoc.id, ...ngoDoc.data() };
+      const { data, error } = await resend.emails.send({
+        from: `Foundation OS <noreply@usefoundationos.com>`,
+        to: [email],
+        cc: [ngo.ngoEmail],
+        subject: `You password has been reset`,
+        html: sendConfirmPasswordReset({
+          firstName: ngo.firstName,
+        }),
+      });
+      if (error) throw error;
+      return {
+        message: "Password confirm reset email sent",
+        id: data?.id,
+      };
+    } catch (error) {
+      console.log("error sending password confirm reset email", error);
+      return {
+        message: "There was an error sending password reset email",
+      };
+    }
+  },
+
+  sendMileStoneAssignmentNotification: async (req, res) => {
+    try {
+      if (!req.body.projectId)
+        return res.status(400).send({
+          json: "ProjectId is not found. Please send ProjectId to try again",
+        });
+      const project = await db
+        .collection("projects")
+        .doc(req.body.projectId)
+        .get();
+      if (!project)
+        return res.status(400).send({
+          json: "Invalid Project. Use a valid projectId and try again",
+        });
+      const projectData = project.data();
+      const ngoSnapshot = await db
+        .collection("ngos")
+        .where("userId", "==", projectData.userId)
+        .limit(1)
+        .get();
+      if (ngoSnapshot.empty) {
+        return {
+          message: "No account found for this email address",
+        };
+      }
+      const ngoDoc = ngoSnapshot.docs[0];
+      const ngo = { id: ngoDoc.id, ...ngoDoc.data() };
+      const dataIds = [];
+      for (const assignee of req.body.assignees) {
+        let assigneeData;
+        if (assignee.type === "member") {
+          const assigneeeSnapshot = await db
+            .collection("foundationMembers")
+            .where("userId", "==", assignee.id)
+            .limit(1)
+            .get();
+          assigneeData = assigneeeSnapshot.docs[0].data();
+        }
+        if (assignee.type === "volunteer") {
+          const volunteerSnapshot = await db
+            .collection("volunteers")
+            .doc(assignee.id)
+            .get();
+          assigneeData = volunteerSnapshot.data();
+        }
+        const { data, error } = await resend.emails.send({
+          from: `${ngo.ngoName} - Foundation OS <noreply@usefoundationos.com>`,
+          to: [assigneeData.email],
+          subject: `${req.body.assigner} assigned you a milestone step on ${req.body.milestoneTitle}`,
+          html: sendMilestoneStepAssignmentNotificationMessage({
+            ngoName: ngo.ngoName,
+            projectTitle: projectData.title,
+            stepUrl: `${req.headers.origin}/projects/${project.id}?tab=steps&step=${req.body.mileStoneId}`,
+            assigneeName: assigneeData.name ?? assigneeData?.displayName ?? "",
+            ...req.body,
+          }),
+        });
+        if (error) throw error;
+        dataIds.push(data.id);
+      }
+      return res.status(200).json({
+        message: "Milestone step assignment email sent successfully!",
+        ids: dataIds,
+      });
+    } catch (error) {
+      console.log("error sending milestone assignment notification", error);
+      res.status(400).send({
+        message: "There was an error sending milestone step assignment email",
       });
     }
   },

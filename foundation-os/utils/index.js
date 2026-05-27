@@ -21,12 +21,20 @@ const taskAssignmentNotification = fs.readFileSync(
   path.join(__dirname, "../email-templates/task-assigned.html"),
   "utf8",
 );
+const milestoneStepAssignmentNotification = fs.readFileSync(
+  path.join(__dirname, "../email-templates/milestone-step.html"),
+  "utf8",
+);
 const subscriptionUpgradeMessage = fs.readFileSync(
   path.join(__dirname, "../email-templates/subscription-upgrade.html"),
   "utf8",
 );
 const volunteerInviteMessage = fs.readFileSync(
   path.join(__dirname, "../email-templates/volunteer-invite.html"),
+  "utf8",
+);
+const passwordResetMessage = fs.readFileSync(
+  path.join(__dirname, "../email-templates/password-reset.html"),
   "utf8",
 );
 
@@ -139,6 +147,25 @@ module.exports = {
     }
   },
 
+  sendMilestoneStepAssignmentNotificationMessage: (body) => {
+    try {
+      return milestoneStepAssignmentNotification
+        .replaceAll("{{foundation_name}}", body.ngoName)
+        .replaceAll("{{assignee_name}}", body.assigneeName)
+        .replaceAll("{{assigner_name}}", body.assigner ?? "Admin")
+        .replaceAll("{{step_title}}", body.mileStoneTitle)
+        .replaceAll("{{milestone_name}}", body.mileStoneTitle)
+        .replaceAll("{{project_name}}", body.projectTitle)
+        .replaceAll("{{step_due_date}}", body.dueDate)
+        .replaceAll("{{step_status}}", body.status)
+        .replaceAll("{{step_url}}", body.stepUrl)
+        .replaceAll("{{step_description}}", body.mileStoneDescription ?? "");
+    } catch (error) {
+      console.log("error", error);
+      return { message: "Failed to send email" };
+    }
+  },
+
   sendSubscriptionUpgradeMessage: (body) => {
     try {
       return subscriptionUpgradeMessage
@@ -167,6 +194,31 @@ module.exports = {
         .replaceAll("{{role}}", body.roleLabel)
         .replaceAll("{{role_description}}", "")
         .replaceAll("{{invite_url}}", body.inviteUrl);
+    } catch (error) {
+      console.log("error", error);
+      return { message: "Failed to send email" };
+    }
+  },
+
+  sendPasswordResetMessage: (body) => {
+    try {
+      return passwordResetMessage
+        .replaceAll("{{first_name}}", body.firstName)
+        .replaceAll("{{expiry_hours}}", body.expiryHours ?? "1")
+        .replaceAll("{{reset_url}}", body.resetUrl)
+        .replaceAll("{{support_email}}", FOUNDATION_OS_SUPPORT_EMAIL);
+    } catch (error) {
+      console.log("error", error);
+      return { message: "Failed to send email" };
+    }
+  },
+
+  sendConfirmPasswordReset: (body) => {
+    try {
+      return passwordResetMessage
+        .replaceAll("{{first_name}}", body.firstName)
+        .replaceAll("{{account_email}}", body.firstName)
+        .replaceAll("{{support_email}}", FOUNDATION_OS_SUPPORT_EMAIL);
     } catch (error) {
       console.log("error", error);
       return { message: "Failed to send email" };

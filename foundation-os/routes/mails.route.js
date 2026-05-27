@@ -8,6 +8,7 @@ router.post(
   "/admin-waitlist-notification",
   mailController.notifyAdminForNewWaitlistUser,
 );
+// router.post("/password-reset", mailController.sendPasswordResetEmail);
 router.post("/new-user-notification", mailController.notifyAdminForNewUsers);
 router.post(
   "/member-invite",
@@ -18,6 +19,11 @@ router.post(
   "/assign-task",
   checkAuthorization,
   mailController.sendTaskNotification,
+);
+router.post(
+  "/assign-milestone-step",
+  checkAuthorization,
+  mailController.sendMileStoneAssignmentNotification,
 );
 router.post(
   "/subscription-upgrade",
