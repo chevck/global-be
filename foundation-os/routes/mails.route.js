@@ -8,7 +8,7 @@ router.post(
   "/admin-waitlist-notification",
   mailController.notifyAdminForNewWaitlistUser,
 );
-// router.post("/password-reset", mailController.sendPasswordResetEmail);
+router.post("/admin-demo-request", mailController.notifyAdminForDemoUsers);
 router.post("/new-user-notification", mailController.notifyAdminForNewUsers);
 router.post(
   "/member-invite",

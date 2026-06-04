@@ -9,6 +9,7 @@ const {
   sendVolunteerInviteMessage,
   sendPasswordResetMessage,
   sendConfirmPasswordReset,
+  sendDemoSignupMessage,
 } = require("../utils");
 const { Resend } = require("resend");
 const { db } = require("../utils/firebase");
@@ -39,7 +40,7 @@ module.exports = {
     try {
       const { data, error } = await resend.emails.send({
         from: "Foundation OS <noreply@usefoundationos.com>",
-        to: ["excellence@usefoundationos.com"],
+        to: ["oyeniranexcellenced@gmail.com", "excellence@usefoundationos.com"],
         subject: "New Foundation Signup 🥳",
         html: sendWaitlistSignupMessage(req.body),
       });
@@ -52,6 +53,27 @@ module.exports = {
       console.log("error sending email to notify admin", error);
       res.status(400).send({
         message: "There was an error sending waitlist admin notification",
+      });
+    }
+  },
+
+  notifyAdminForDemoUsers: async (req, res) => {
+    try {
+      const { data, error } = await resend.emails.send({
+        from: "Foundation OS <noreply@usefoundationos.com>",
+        to: ["oyeniranexcellenced@gmail.com", "excellence@usefoundationos.com"],
+        subject: "New Foundation Wants Demo 🥳",
+        html: sendDemoSignupMessage(req.body),
+      });
+      if (error) throw error;
+      return res.status(200).json({
+        message: "Admin Demo Signup Notification email sent",
+        id: data?.id,
+      });
+    } catch (error) {
+      console.log("error sending email to notify admin for demo signup", error);
+      res.status(400).send({
+        message: "There was an error sending demo signup admin notification",
       });
     }
   },

@@ -9,6 +9,10 @@ const newWaitlistUserSignupEmailTemplate = fs.readFileSync(
   path.join(__dirname, "../email-templates/waitlist-signup.html"),
   "utf8",
 );
+const newDemoUserSignupEmailTemplate = fs.readFileSync(
+  path.join(__dirname, "../email-templates/demo-signup.html"),
+  "utf8",
+);
 const newTeamMemberInviteMessage = fs.readFileSync(
   path.join(__dirname, "../email-templates/team-invite.html"),
   "utf8",
@@ -82,6 +86,24 @@ module.exports = {
           new Date(body.nextChargeDate).toLocaleDateString(),
         )
         .replaceAll("{{support_email}}", FOUNDATION_OS_SUPPORT_EMAIL);
+    } catch (error) {
+      console.log("error", error);
+      return { message: "Failed to send email" };
+    }
+  },
+
+  sendDemoSignupMessage: (body) => {
+    try {
+      return newDemoUserSignupEmailTemplate
+        .replaceAll("{{foundation_name}}", body.organization)
+        .replaceAll("{{contact_person}}", body.name)
+        .replaceAll("{{email}}", body.email)
+        .replaceAll("{{team_size}}", body.teamSize)
+        .replaceAll("{{message}}", body.message)
+        .replaceAll(
+          "{{admin_url}}",
+          "https://foundation-os-admin.netlify.app/",
+        );
     } catch (error) {
       console.log("error", error);
       return { message: "Failed to send email" };
