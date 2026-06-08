@@ -41,10 +41,15 @@ const passwordResetMessage = fs.readFileSync(
   path.join(__dirname, "../email-templates/password-reset.html"),
   "utf8",
 );
+const projectInactivityWarningMessage = fs.readFileSync(
+  path.join(__dirname, "../email-templates/project-inactivity-warning.html"),
+  "utf8",
+);
 
 const FOUNDATION_OS_SUPPORT_EMAIL = "thefoundationoscompany@gmail.com";
 
 module.exports = {
+  FOUNDATION_OS_SUPPORT_EMAIL,
   emailConfig: async (email, subject, html, user) => {
     const transporter = nodemailer.createTransport({
       host: "smtp.gmail.com",
@@ -244,6 +249,24 @@ module.exports = {
     } catch (error) {
       console.log("error", error);
       return { message: "Failed to send email" };
+    }
+  },
+
+  sendProjectInactivityWarningMessage: (body) => {
+    try {
+      return projectInactivityWarningMessage
+        .replaceAll("{{first_name}}", body.firstName)
+        .replaceAll("{{foundation_name}}", body.ngoName)
+        .replaceAll("{{project_name}}", body.projectTitle)
+        .replaceAll("{{project_status}}", body.projectStatus ?? "In Progress")
+        .replaceAll("{{last_activity_date}}", body.lastActivityDate)
+        .replaceAll("{{days_inactive}}", String(body.daysInactive))
+        .replaceAll("{{pause_deadline}}", body.pauseDeadline)
+        .replaceAll("{{project_url}}", body.projectUrl)
+        .replaceAll("{{support_email}}", FOUNDATION_OS_SUPPORT_EMAIL);
+    } catch (error) {
+      console.log("error", error);
+      return { message: "Failed to send project inactivity email" };
     }
   },
 

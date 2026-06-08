@@ -49,13 +49,27 @@ app.post("/test", async (req, res) => {});
 cron.schedule(
   "0 0 * * *",
   () => {
+    console.log(`[cron] NGO renewal sweep scheduled daily at 00:00 (${tz})`);
     rechargeNgosSubscriptionFees().catch((error) =>
       console.error("[cron] NGO paid subscription renewal sweep failed", error),
     );
   },
   { timezone: tz },
 );
-console.log(`[cron] NGO renewal sweep scheduled daily at 00:00 (${tz})`);
+
+// pause inactive projects
+cron.schedule(
+  "0 0 * * *",
+  () => {
+    console.log(
+      `[cron] NGO project lifecycle tracking scheduled daily at 00:00 (${tz})`,
+    );
+    rechargeNgosSubscriptionFees().catch((error) =>
+      console.error("[cron] NGO paid subscription renewal sweep failed", error),
+    );
+  },
+  { timezone: tz },
+);
 
 app.listen(port, async () => {
   console.log(`Server ready on port ${port}.`);

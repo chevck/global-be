@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Project inactivity notice — Foundation OS</title>
+    <style>
+      body { margin: 0; padding: 0; background: #faf7f2; color: #334155; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif; line-height: 1.5; }
+      .preheader { display: none !important; visibility: hidden; height: 0; overflow: hidden; }
+      .wrapper { padding: 32px 16px; }
+      .container { max-width: 560px; margin: 0 auto; }
+      .card { background: #fff; border: 1px solid #eadfd0; border-radius: 20px; overflow: hidden; }
+      .brand { padding: 24px 32px 0; font-size: 15px; font-weight: 700; color: #0f172a; }
+      .hero { padding: 28px 32px 8px; }
+      .eyebrow { display: inline-block; padding: 5px 10px; margin-bottom: 16px; font-size: 11px; font-weight: 600; letter-spacing: .1em; text-transform: uppercase; color: #b45309; background: #fffbeb; border: 1px solid #fde68a; border-radius: 999px; }
+      .hero-title { margin: 0; font-size: 24px; font-weight: 700; color: #0f172a; }
+      .hero-sub { margin: 12px 0 0; font-size: 15px; color: #475569; }
+      .body { padding: 12px 32px 8px; }
+      .summary-card { margin-top: 18px; padding: 20px; border: 1px solid #eadfd0; border-radius: 14px; }
+      .summary-title { margin: 0 0 14px; font-size: 11px; font-weight: 700; text-transform: uppercase; color: #94a3b8; }
+      .fields td { padding: 9px 0; border-top: 1px solid #f1eee6; font-size: 14px; }
+      .fields tr:first-child td { border-top: 0; }
+      .fields .label { color: #94a3b8; font-size: 11px; text-transform: uppercase; width: 130px; }
+      .fields .value { color: #0f172a; font-weight: 600; }
+      .notice { margin: 18px 0 0; padding: 16px 18px; font-size: 14px; line-height: 1.65; color: #334155; background: #fffbeb; border: 1px solid #fde68a; border-radius: 12px; }
+      .notice strong { color: #92400e; }
+      .lead { margin: 18px 0 0; font-size: 15px; color: #475569; }
+      .cta-wrap { padding: 24px 32px 8px; text-align: center; }
+      .btn { display: inline-block; padding: 14px 32px; font-size: 15px; font-weight: 600; color: #fff !important; background: #059669; border-radius: 12px; text-decoration: none; }
+      .fallback { padding: 16px 32px 28px; text-align: center; font-size: 12px; color: #94a3b8; }
+      .footer { padding: 22px 32px; border-top: 1px solid #f1eee6; background: #fdfbf7; font-size: 11px; color: #b3a795; }
+      a { color: #047857; }
+    </style>
+  </head>
+  <body>
+    <span class="preheader">{{project_name}} has had no activity for {{days_inactive}} days — it will be paused at the end of today unless you take action.</span>
+    <div class="wrapper">
+      <div class="container">
+        <div class="card">
+          <div class="brand">Foundation OS</div>
+          <div class="hero">
+            <span class="eyebrow">Inactivity notice</span>
+            <h1 class="hero-title"><span style="color:#b45309">{{project_name}}</span> will be paused today</h1>
+            <p class="hero-sub">Hi {{first_name}}, your project at <strong>{{foundation_name}}</strong> has been active for more than {{days_inactive}} days without any recorded activity. If nothing changes, we will pause it at the end of today ({{pause_deadline}}).</p>
+          </div>
+          <div class="body">
+            <div class="summary-card">
+              <p class="summary-title">Project details</p>
+              <table class="fields" role="presentation" width="100%">
+                <tr><td class="label">Project</td><td class="value">{{project_name}}</td></tr>
+                <tr><td class="label">Foundation</td><td class="value">{{foundation_name}}</td></tr>
+                <tr><td class="label">Status</td><td class="value">{{project_status}}</td></tr>
+                <tr><td class="label">Last activity</td><td class="value">{{last_activity_date}}</td></tr>
+                <tr><td class="label">Days inactive</td><td class="value">{{days_inactive}} days</td></tr>
+              </table>
+            </div>
+            <div class="notice">
+              <strong>Why we pause inactive projects</strong><br />
+              Pausing a project stops it from counting toward your active subscription. That way, you are not charged for projects your team is no longer working on. You can resume the project at any time once you are ready to continue.
+            </div>
+            <p class="lead">To keep this project active, open it in Foundation OS and record any activity — for example, update a task, add a comment, or log progress on a milestone step.</p>
+          </div>
+          <div class="cta-wrap"><a href="{{project_url}}" class="btn">Open project</a></div>
+          <div class="fallback">Button not working?<br /><a href="{{project_url}}">{{project_url}}</a></div>
+          <div class="footer">You received this notice because you manage this project at {{foundation_name}} on Foundation OS. Questions? Contact us at <a href="mailto:{{support_email}}">{{support_email}}</a>.</div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

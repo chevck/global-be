@@ -10,6 +10,7 @@ const {
   sendPasswordResetMessage,
   sendConfirmPasswordReset,
   sendDemoSignupMessage,
+  sendProjectInactivityWarningMessage,
 } = require("../utils");
 const { Resend } = require("resend");
 const { db } = require("../utils/firebase");
@@ -334,6 +335,26 @@ module.exports = {
       res.status(400).send({
         message: "There was an error sending milestone step assignment email",
       });
+    }
+  },
+
+  sendProjectInactivityNotification: async (body) => {
+    try {
+      console.log("sending email to project owner", body);
+      const { data, error } = await resend.emails.send({
+        from: "Foundation OS <noreply@usefoundationos.com>",
+        to: [body.emails],
+        subject: `We have noticed inactivity on ${body.projectName} project`,
+        html: sendProjectInactivityWarningMessage(body),
+      });
+      if (error) throw error;
+      return { message: "Welcome email sent", id: data?.id };
+    } catch (error) {
+      console.log("error sending project inactivity notification");
+      return {
+        message:
+          "Unfortunately, there was an issue with sending project inactivity email",
+      };
     }
   },
 };
