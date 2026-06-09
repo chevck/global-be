@@ -7,10 +7,14 @@ const mailRoutes = require("./foundation-os/routes/mails.route");
 const paymentRoutes = require("./foundation-os/routes/payment.route");
 const webhookRoutes = require("./foundation-os/routes/webhook.route");
 const authRoutes = require("./foundation-os/routes/auth.route");
+const speaklyAuthRoutes = require("./speakly/routes/auth.route");
 const documentRoutes = require("./foundation-os/routes/document.route");
 const {
   rechargeNgosSubscriptionFees,
 } = require("./foundation-os/jobs/ngosPaidSubscriptionRenewal.job");
+const {
+  checkIfProjectShouldBePausedAndSendNotification,
+} = require("./foundation-os/jobs/projects.job");
 
 const tz = process.env.CRON_TIMEZONE || "UTC";
 
@@ -43,6 +47,8 @@ app.use("/api/payment", paymentRoutes);
 app.use("/api/webhooks", webhookRoutes);
 app.use("/api/documents", documentRoutes);
 
+app.use("/speakly-api/auth", speaklyAuthRoutes);
+
 app.post("/test", async (req, res) => {});
 
 // recharge the account of users
@@ -64,8 +70,22 @@ cron.schedule(
     console.log(
       `[cron] NGO project lifecycle tracking scheduled daily at 00:00 (${tz})`,
     );
-    rechargeNgosSubscriptionFees().catch((error) =>
-      console.error("[cron] NGO paid subscription renewal sweep failed", error),
+    checkIfProjectShouldBePausedAndSendNotification().catch((error) =>
+      console.error("[cron] NGO project lifecycle examination failed", error),
+    );
+  },
+  { timezone: tz },
+);
+
+// pause inactive projects
+cron.schedule(
+  "0 0 * * *",
+  () => {
+    console.log(
+      `[cron] NGO project lifecycle tracking scheduled daily at 00:00 (${tz})`,
+    );
+    checkIfProjectShouldBePausedAndSendNotification().catch((error) =>
+      console.error("[cron] NGO project lifecycle examination failed", error),
     );
   },
   { timezone: tz },

@@ -256,12 +256,14 @@ module.exports = {
     try {
       return projectInactivityWarningMessage
         .replaceAll("{{first_name}}", body.firstName)
-        .replaceAll("{{foundation_name}}", body.ngoName)
-        .replaceAll("{{project_name}}", body.projectTitle)
-        .replaceAll("{{project_status}}", body.projectStatus ?? "In Progress")
+        .replaceAll(
+          "{{foundation_name}}",
+          body.foundationName ?? body.ngoName ?? "",
+        )
+        .replaceAll("{{project_name}}", body.projectName ?? body.projectTitle ?? "")
+        .replaceAll("{{project_status}}", body.projectStatus ?? "Paused")
         .replaceAll("{{last_activity_date}}", body.lastActivityDate)
         .replaceAll("{{days_inactive}}", String(body.daysInactive))
-        .replaceAll("{{pause_deadline}}", body.pauseDeadline)
         .replaceAll("{{project_url}}", body.projectUrl)
         .replaceAll("{{support_email}}", FOUNDATION_OS_SUPPORT_EMAIL);
     } catch (error) {

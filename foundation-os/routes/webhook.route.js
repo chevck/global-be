@@ -1,7 +1,7 @@
 const express = require("express");
 const requireCronWebhookSecret = require("../middlewares/requireCronWebhookSecret");
 const ngosRenewalWebhookController = require("../controllers/ngosRenewalWebhook.controller");
-const projectLifecycleWebhookController = require("../jobs/projectLifecycle.job");
+const projectLifecycleWebhookController = require("../jobs/projects.job");
 
 const router = express.Router();
 
@@ -13,7 +13,7 @@ router.post(
 );
 router.get(
   "/project-lifecycle",
-  // requireCronWebhookSecret,
+  requireCronWebhookSecret,
   projectLifecycleWebhookController.checkIfProjectShouldBePausedAndSendNotification,
 );
 

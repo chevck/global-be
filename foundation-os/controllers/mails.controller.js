@@ -200,9 +200,7 @@ module.exports = {
         .limit(1)
         .get();
       if (ngoSnapshot.empty) {
-        return {
-          message: "No account found for this email address",
-        };
+        throw { message: "No account found for this email address" };
       }
       const ngoDoc = ngoSnapshot.docs[0];
       const ngo = { id: ngoDoc.id, ...ngoDoc.data() };
@@ -238,7 +236,7 @@ module.exports = {
         .limit(1)
         .get();
       if (ngoSnapshot.empty) {
-        return {
+        throw {
           message: "No account found for this email address",
         };
       }
@@ -343,14 +341,14 @@ module.exports = {
       console.log("sending email to project owner", body);
       const { data, error } = await resend.emails.send({
         from: "Foundation OS <noreply@usefoundationos.com>",
-        to: [body.emails],
-        subject: `We have noticed inactivity on ${body.projectName} project`,
+        to: body.emails,
+        subject: `${body.projectName} has been paused due to inactivity`,
         html: sendProjectInactivityWarningMessage(body),
       });
       if (error) throw error;
       return { message: "Welcome email sent", id: data?.id };
     } catch (error) {
-      console.log("error sending project inactivity notification");
+      console.log("error sending project inactivity notification", error);
       return {
         message:
           "Unfortunately, there was an issue with sending project inactivity email",
