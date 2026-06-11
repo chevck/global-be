@@ -7,7 +7,6 @@ const mailRoutes = require("./foundation-os/routes/mails.route");
 const paymentRoutes = require("./foundation-os/routes/payment.route");
 const webhookRoutes = require("./foundation-os/routes/webhook.route");
 const authRoutes = require("./foundation-os/routes/auth.route");
-const speaklyAuthRoutes = require("./speakly/routes/auth.route");
 const documentRoutes = require("./foundation-os/routes/document.route");
 const {
   rechargeNgosSubscriptionFees,
@@ -15,6 +14,9 @@ const {
 const {
   checkIfProjectShouldBePausedAndSendNotification,
 } = require("./foundation-os/jobs/projects.job");
+
+const speaklyAuthRoutes = require("./speakly/routes/auth.route");
+const speaklyTaskRoutes = require("./speakly/routes/tasks.route");
 
 const tz = process.env.CRON_TIMEZONE || "UTC";
 
@@ -48,6 +50,7 @@ app.use("/api/webhooks", webhookRoutes);
 app.use("/api/documents", documentRoutes);
 
 app.use("/speakly-api/auth", speaklyAuthRoutes);
+app.use("/speakly-api/task", speaklyTaskRoutes);
 
 app.post("/test", async (req, res) => {});
 
