@@ -294,6 +294,7 @@ module.exports = {
       const dataIds = [];
       for (const assignee of req.body.assignees) {
         let assigneeData;
+        console.log("assignee type", assignee.type);
         if (assignee.type === "member") {
           const assigneeeSnapshot = await db
             .collection("foundationMembers")
