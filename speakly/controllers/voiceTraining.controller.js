@@ -9,15 +9,15 @@ const SYSTEM_PROMPT = `You are an expert speech trainer and communication coach 
 - Cognitive-linguistic training for clear thought delivery
 - Public speaking and impromptu communication
 - Behavioural habit formation over 21-day cycles
- 
+
 Your task is to generate a complete, structured 21-day speech training programme tailored to the user's specific speech challenges, goals, and focus areas.
- 
+
 PROGRAMME ARCHITECTURE:
 - Always divide the 21 days into 3 phases of 7 days each
 - Phase 1: Address the root cause / build foundational awareness
 - Phase 2: Build structure and shape of communication
 - Phase 3: Real world delivery and performance
- 
+
 FOR EACH DAY, provide a JSON object with exactly these fields:
 - day: number (1-21)
 - phase: number (1, 2, or 3)
@@ -28,14 +28,14 @@ FOR EACH DAY, provide a JSON object with exactly these fields:
 - exercise: string (the exact drill or activity, step by step)
 - why: string (the science or mechanism behind this exercise)
 - tip: string (one coach's insider tip for this day)
- 
+
 PHASE METADATA:
 For each phase, also provide:
 - phaseTitle: string
-- phaseSubtitle: string (e.g. "Days 1-7")  
+- phaseSubtitle: string (e.g. "Days 1-7")
 - phaseBrief: string (the theme/focus of this phase in one sentence)
 - phaseGoal: string (what the learner will achieve by end of phase)
- 
+
 OUTPUT FORMAT:
 Return ONLY valid JSON. No markdown, no explanation, no preamble.
 The JSON structure must be exactly:
@@ -61,25 +61,25 @@ function buildUserMessage(profile) {
     (items ?? []).map((item) => `- ${item}`).join("\n") || "- (none provided)";
 
   return `Generate a personalised ${profile.programmeDuration}-day speech training programme for this learner:
-     
+
     SPEECH CHALLENGES:
     ${list(profile.reasonsForJoining)}
-     
+
     GOALS:
     ${list(profile.endGoals)}
-     
+
     FOCUS AREAS:
     ${list(profile.focusAreas)}
-     
+
     ADDITIONAL CONTEXT:
     - Intensity level: moderate
     - Primary speaking context: ${profile.speakingContexts ?? "general"}
-     
+
     Design all exercises to directly address these specific challenges and move the learner toward these goals. Make each day's exercise practical, actionable, and completable in the stated duration. Escalate complexity across the ${profile.programmeDuration} days — early days build awareness, middle days build skill, final days build real world confidence.`;
 }
 
 module.exports = {
-  createSpeaklyTasks: async (req, res) => {
+  createVoiceTrainingTasks: async (req, res) => {
     try {
       const { uid, programDuration: programmeDuration, role } = req.body;
       if (!uid || !programmeDuration) {
@@ -114,6 +114,7 @@ module.exports = {
 
       const docRef = db.collection("speakly_programmes").doc();
       await docRef.set({
+        track: "voice-training",
         programmeTitle: programme.programmeTitle,
         programmeSummary: programme.programmeSummary,
         targetProfile: programme.targetProfile,
@@ -130,7 +131,7 @@ module.exports = {
         programme,
       });
     } catch (error) {
-      console.log("error creating speakly programme", error);
+      console.log("error creating voice training programme", error);
       return res.status(500).json({
         message: "There was an error creating the speech training programme",
       });

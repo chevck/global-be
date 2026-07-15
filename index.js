@@ -68,10 +68,10 @@ cron.schedule(
 
 // pause inactive projects
 cron.schedule(
-  "0 0 * * *",
+  "*/15 * * * *",
   () => {
     console.log(
-      `[cron] NGO project lifecycle tracking scheduled daily at 00:00 (${tz})`,
+      `[cron] NGO project lifecycle tracking scheduled every 15 minutes (${tz})`,
     );
     checkIfProjectShouldBePausedAndSendNotification().catch((error) =>
       console.error("[cron] NGO project lifecycle examination failed", error),
