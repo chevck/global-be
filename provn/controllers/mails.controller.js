@@ -13,7 +13,7 @@ module.exports = {
   }) => {
     try {
       const { data, error } = await resend.emails.send({
-        from: "PERSONA - Speakly <noreply@usefoundationos.com>",
+        from: "PERSONA - Provn <noreply@usefoundationos.com>",
         to: [email],
         subject: "Forgot your password?",
         html: sendPasswordResetMessage({

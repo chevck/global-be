@@ -15,8 +15,8 @@ const {
   checkIfProjectShouldBePausedAndSendNotification,
 } = require("./foundation-os/jobs/projects.job");
 
-const speaklyAuthRoutes = require("./speakly/routes/auth.route");
-const speaklyTaskRoutes = require("./speakly/routes/tasks.route");
+const provnAuthRoutes = require("./provn/routes/auth.route");
+const provnTaskRoutes = require("./provn/routes/tasks.route");
 
 const tz = process.env.CRON_TIMEZONE || "UTC";
 
@@ -49,8 +49,8 @@ app.use("/api/payment", paymentRoutes);
 app.use("/api/webhooks", webhookRoutes);
 app.use("/api/documents", documentRoutes);
 
-app.use("/speakly-api/auth", speaklyAuthRoutes);
-app.use("/speakly-api/task", speaklyTaskRoutes);
+app.use("/provn-api/auth", provnAuthRoutes);
+app.use("/provn-api/task", provnTaskRoutes);
 
 app.post("/test", async (req, res) => {});
 

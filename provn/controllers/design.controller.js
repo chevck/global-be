@@ -113,7 +113,7 @@ module.exports = {
       const cleaned = rawText.replace(/```json|```/g, "").trim();
       const programme = JSON.parse(cleaned);
 
-      const docRef = db.collection("speakly_programmes").doc();
+      const docRef = db.collection("provn_programmes").doc();
       await docRef.set({
         track: "design",
         programmeTitle: programme.programmeTitle,

@@ -6,14 +6,14 @@ const passwordResetTemplate = fs.readFileSync(
   "utf8",
 );
 
-const SPEAKLY_SUPPORT_EMAIL =
-  process.env.SPEAKLY_SUPPORT_EMAIL ?? "support@personadevelopments.com";
+const PROVN_SUPPORT_EMAIL =
+  process.env.PROVN_SUPPORT_EMAIL ?? "support@personadevelopments.com";
 
 module.exports = {
-  SPEAKLY_SUPPORT_EMAIL,
+  PROVN_SUPPORT_EMAIL,
 
   sendPasswordResetMessage: (body) => {
-    const appUrl = (body.appUrl ?? process.env.SPEAKLY_APP_URL ?? "").replace(
+    const appUrl = (body.appUrl ?? process.env.PROVN_APP_URL ?? "").replace(
       /\/$/,
       "",
     );
@@ -24,7 +24,7 @@ module.exports = {
       .replaceAll("{{reset_url}}", body.resetUrl ?? "")
       .replaceAll("{{expiry_hours}}", body.expiryHours ?? "1")
       .replaceAll("{{app_url}}", appUrl)
-      .replaceAll("{{speakly_url}}", `${appUrl}/speakly/welcome`)
-      .replaceAll("{{support_email}}", SPEAKLY_SUPPORT_EMAIL);
+      .replaceAll("{{provn_url}}", `${appUrl}/provn/welcome`)
+      .replaceAll("{{support_email}}", PROVN_SUPPORT_EMAIL);
   },
 };

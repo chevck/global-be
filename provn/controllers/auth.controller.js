@@ -28,7 +28,7 @@ module.exports = {
           expiresAt: Timestamp.fromDate(new Date(Date.now() + 60 * 60 * 1000)),
           used: false,
         });
-      const resetLink = `${req.headers.origin}/speakly/reset-password?token=${token}`;
+      const resetLink = `${req.headers.origin}/provn/reset-password?token=${token}`;
       const firstName =
         user.displayName?.trim().split(/\s+/)[0] ||
         user.email?.split("@")[0] ||
